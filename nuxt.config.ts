@@ -48,7 +48,10 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // router: {
+  //   middleware: ['loading.global'],
+  // },
   css: [
-    "~/assets/main.css",
-  ],
+    "@/assets/main.css"
+  ]
 })

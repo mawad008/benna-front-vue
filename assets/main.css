@@ -1,3 +1,31 @@
-html,body{
-    overflow-x: clip;
+@font-face {
+  font-family: "Janna LT";
+  src: url("/fonts/JannaLT-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Janna LT";
+  src: url("/fonts/JannaLT-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+* {
+  font-family: "Janna LT", sans-serif !important;
+  
+}
+
+*::selection {
+  background: #138b96;
+}
+input::selection,
+textarea::selection {
+  background: #138b96;
+}
+
+html,
+body {
+  overflow-x: clip;
+  background-color: #fff;
 }
