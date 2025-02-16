@@ -18,9 +18,9 @@
 
     <UButton 
       @click="store.nextStep" 
-      block 
-      color="primary" 
+      block
       class="mt-4"
+      color="primary"
     >
       متابعة التسجيل
     </UButton>

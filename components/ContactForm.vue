@@ -5,7 +5,7 @@
         <span class="font-bold">920002568</span> أو تعبئة النموذج أدناه
       </p>
   
-      <div class="flex justify-center gap-4 mb-4">
+      <div class="flex justify-center gap-4 mb-4 text-dark">
         <URadio v-for="option in options" :key="option.value" v-model="contactStore.type" :value="option.value" :label="option.label" />
       </div>
   
