@@ -1,192 +1,190 @@
 <template>
   <div class="p-4">
-    <!-- Search Input -->
-    <UInput
-      v-model="searchQuery"
-      placeholder="بحث..."
-      class="mb-4 w-full max-w-md"
-      :ui="{
-        base: 'rounded-lg shadow-sm focus:ring-2 focus:ring-[#138B96] focus:border-[#138B96]',
-        color: { white: { outline: 'border-gray-300' } },
-      }"
-    />
+    <div class="container bg-white rounded-lg shadow-md p-4 mb-4">
+      <!-- Filters & Search Row -->
+      <div class="flex flex-wrap justify-between items-center gap-4">
+        <!-- Filters Section -->
+        <div class="flex flex-col gap-2">
+          <div class="flex items-center gap-2 text-gray-700 font-semibold">
+            <i class="i-lucide-filter"></i>
+            <!-- Filter Icon -->
+            <span>تصفية النتائج</span>
+          </div>
+          <div class="flex gap-4">
+            <!-- Status Filter -->
+            <div class="flex flex-col gap-1">
+              <label class="text-sm text-gray-600 font-medium"
+                >حالة البيع</label
+              >
+              <USelect
+                v-model="selectedStatus"
+                :options="statusOptions"
+                placeholder="اختر حالة البيع"
+                color="primary"
+                variant="outline"
+              />
+            </div>
+
+            <!-- Type Filter -->
+            <div class="flex flex-col gap-1">
+              <label class="text-sm text-gray-600 font-medium"
+                >نوع الاستقطاع</label
+              >
+              <USelect
+                v-model="selectedType"
+                :options="typeOptions"
+                placeholder="اختر نوع الاستقطاع"
+                color="primary"
+                variant="outline"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Section -->
+        <div class="flex flex-col gap-2 w-full md:w-auto">
+          <div class="flex items-center gap-2 text-gray-700 font-semibold">
+            <i class="i-lucide-search"></i>
+            <!-- Search Icon -->
+            <span>البحث</span>
+          </div>
+          <UInput
+            v-model="searchQuery"
+            placeholder="بحث..."
+            class="w-full max-w-md"
+            :ui="{
+              base: 'rounded-lg shadow-sm focus:ring-2 focus:ring-[#138B96] focus:border-[#138B96]',
+              color: { white: { outline: 'border-gray-300' } },
+            }"
+          />
+        </div>
+      </div>
+    </div>
 
     <!-- Table -->
     <UTable
       :rows="paginatedData"
       :columns="columns"
-      class="relative overflow-x-auto text-gray-900 bg-white rounded-lg shadow-md"
-      @sort="handleSort"
+      class="w-full text-left text-sm text-gray-700"
       :ui="{
-        wrapper: 'rounded-lg shadow-md',
-        base: 'min-w-full table-fixed',
-        thead: 'bg-[#138B96] text-white',
-        th: { padding: 'px-6 py-4', font: 'font-semibold', size: 'text-sm' },
-        td: { padding: 'px-6 py-4', color: 'text-gray-700', size: 'text-sm' },
+        wrapper: 'rounded-lg shadow-md overflow-hidden',
+        base: 'min-w-full divide-y divide-gray-200',
+        thead: 'bg-gray-50',
+        th: {
+          padding: 'px-6 py-3',
+          font: 'font-medium',
+          size: 'text-xs',
+          color: 'text-gray-500 uppercase tracking-wider',
+        },
+        td: { padding: 'px-6 py-4', color: 'text-gray-900', size: 'text-sm' },
         tr: { active: 'hover:bg-gray-50 transition-colors duration-200' },
       }"
     >
       <!-- Row Number -->
       <template #cell(index)="{ rowIndex }">
-        <span class="text-dark">{{
-          (page - 1) * pageSize + rowIndex + 1
-        }}</span>
+        <span class="text-gray-900">
+          {{ (page - 1) * pageSize + rowIndex + 1 }}
+        </span>
       </template>
 
       <!-- Status Badge -->
       <template #cell(status)="{ row }">
-        <div class="bg-gray-100 p-2">
-          <UBadge
-            :color="row.status === 'مستمر' ? 'green' : 'red'"
-            variant="subtle"
+        <UBadge :color="row.status === 'مستمر' ? 'emerald' : 'orange'" variant="subtle">
+          {{ row.status }}
+        </UBadge>
+      </template>
+
+      <!-- Action Column -->
+      <template #cell(actions)="{ row }">
+        <div class="flex gap-2 items-center">
+          <!-- Update Payment Data Button -->
+          <UButton
+            color="primary"
+            variant="solid"
+            class="text-sm"
+            @click="updatePaymentData(row)"
           >
-            {{ row.status }}
-          </UBadge>
+            تحديث الدفع
+          </UButton>
+
+          <!-- Toggle Donation Status Button -->
+          <UButton
+            :color="row.status === 'مستمر' ? 'primary' : 'icon'"
+            variant="solid"
+            class="text-sm"
+            @click="toggleDonationStatus(row)"
+          >
+            {{ row.status === "مستمر" ? "إيقاف التبرع" : "استمرار التبرع" }}
+          </UButton>
+
+          <!-- Three-Dot Icon -->
+          <UIcon name="i-heroicons-ellipsis-vertical" class="cursor-pointer" @click="handleAction(row)" />
         </div>
       </template>
     </UTable>
 
     <!-- Pagination -->
-    <div class="flex justify-between items-center mt-6">
-      <div class="flex items-center gap-2">
-        <UButton
-          :disabled="page === 1"
-          @click="page = page - 1"
-          :ui="{
-            base: 'rounded-lg shadow-sm',
-            color: {
-              primary: { solid: 'bg-[#138B96] text-white hover:bg-[#107b86]' },
-            },
-          }"
-        >
-          &lt;
-          <!-- Left Arrow -->
-        </UButton>
-        <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-        <UButton
-          :disabled="page === pageCount"
-          @click="page = page + 1"
-          :ui="{
-            base: 'rounded-lg shadow-sm',
-            color: {
-              primary: { solid: 'bg-[#138B96] text-white hover:bg-[#107b86]' },
-            },
-          }"
-        >
-          &gt;
-          <!-- Right Arrow -->
-        </UButton>
-      </div>
+    <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
+      <div class="flex justify-between items-center mt-6">
+        <div class="flex items-center gap-2">
+          <UButton
+            :disabled="page === 1"
+            @click="page = page - 1"
+            :ui="{
+              base: 'rounded-lg shadow-sm',
+              color: {
+                primary: {
+                  solid: 'bg-[#138B96] text-white hover:bg-[#107b86]',
+                },
+              },
+            }"
+          >
+            &lt;
+          </UButton>
+          <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
+          <UButton
+            :disabled="page === pageCount"
+            @click="page = page + 1"
+            :ui="{
+              base: 'rounded-lg shadow-sm',
+              color: {
+                primary: {
+                  solid: 'bg-[#138B96] text-white hover:bg-[#107b86]',
+                },
+              },
+            }"
+          >
+            &gt;
+          </UButton>
+        </div>
 
-      <div class="flex text-gray-600 text-sm gap-1">
-        <span>{{ filteredData.length }} </span>
-        <span> of </span>
-        <span
-          >{{ (page - 1) * pageSize + 1 }}-{{
-            Math.min(page * pageSize, filteredData.length)
-          }}
-        </span>
+        <div class="flex text-gray-600 text-sm gap-1">
+          <span>{{ filteredData.length }} </span>
+          <span> of </span>
+          <span
+            >{{ (page - 1) * pageSize + 1 }}-{{
+              Math.min(page * pageSize, filteredData.length)
+            }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
 </template>
-<script setup lang="ts" >
+
+<script setup lang="ts">
 import { ref, computed } from "vue";
+import tableData from "@/assets/data.json";
 
 // Search Query
 const searchQuery = ref("");
 
-// Table Data
-const tableData = ref([
-  {
-    id: 1,
-    name: "أحمد يوسف",
-    amount: 50,
-    date: "2024-12-01",
-    type: "يومي",
-    status: "مستمر",
-  },
-  {
-    id: 2,
-    name: "محمد احمد يوسف",
-    amount: 100,
-    date: "2024-11-15",
-    type: "اسبوعي",
-    status: "متوقف",
-  },
-  {
-    id: 3,
-    name: "يوسف",
-    amount: 75,
-    date: "2024-10-10",
-    type: "شهري",
-    status: "مستمر",
-  },
-  {
-    id: 4,
-    name: "احمد ف",
-    amount: 200,
-    date: "2024-09-20",
-    type: "يومي",
-    status: "متوقف",
-  },
-  {
-    id: 5,
-    name: "محمد",
-    amount: 125,
-    date: "2024-08-05",
-    type: "اسبوعي",
-    status: "مستمر",
-  },
-  {
-    id: 6,
-    name: "عبدالله",
-    amount: 300,
-    date: "2024-07-01",
-    type: "شهري",
-    status: "مستمر",
-  },
-  {
-    id: 7,
-    name: "علي حسن",
-    amount: 90,
-    date: "2024-06-15",
-    type: "اسبوعي",
-    status: "متوقف",
-  },
-  {
-    id: 8,
-    name: "خالد",
-    amount: 150,
-    date: "2024-05-22",
-    type: "يومي",
-    status: "مستمر",
-  },
-  {
-    id: 9,
-    name: "ياسر",
-    amount: 220,
-    date: "2024-04-30",
-    type: "شهري",
-    status: "متوقف",
-  },
-  {
-    id: 10,
-    name: "سعيد",
-    amount: 130,
-    date: "2024-03-18",
-    type: "اسبوعي",
-    status: "مستمر",
-  },
-  {
-    id: 11,
-    name: "مروان",
-    amount: 180,
-    date: "2024-02-10",
-    type: "يومي",
-    status: "متوقف",
-  },
-]);
+// Filter Options
+const selectedStatus = ref("");
+const selectedType = ref("");
+
+const statusOptions = ["الكل", "مستمر", "متوقف"];
+const typeOptions = ["الكل", "يومي", "اسبوعي", "شهري"];
 
 // Table Columns
 const columns = ref([
@@ -196,6 +194,7 @@ const columns = ref([
   { key: "date", label: "تاريخ البدء", sortable: true },
   { key: "type", label: "نوع الاستقطاع" },
   { key: "status", label: "حالة البيع" },
+  { key: "actions", label: "الإجراءات" },
 ]);
 
 // Pagination Variables
@@ -207,10 +206,17 @@ const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
 
 // Computed - Filtered Data
 const filteredData = computed(() => {
-  return tableData.value.filter(
+  return tableData.filter(
     (row) =>
-      row.name.includes(searchQuery.value) ||
-      row.type.includes(searchQuery.value)
+      (searchQuery.value === "" ||
+        row.name.includes(searchQuery.value) ||
+        row.type.includes(searchQuery.value)) &&
+      (selectedStatus.value === "الكل" ||
+        selectedStatus.value === "" ||
+        row.status === selectedStatus.value) &&
+      (selectedType.value === "الكل" ||
+        selectedType.value === "" ||
+        row.type === selectedType.value)
   );
 });
 
@@ -247,5 +253,34 @@ const pageCount = computed(() =>
 // Sorting Handler
 const handleSort = (key: string, order: "asc" | "desc" | null) => {
   sorting.value = order ? { key, order } : null;
+};
+
+// Dropdown Items
+const getDropdownItems = (row: any) => {
+  return [
+    [
+      {
+        label: "تحديث بيانات الدفع",
+        icon: "i-heroicons-pencil-square",
+        click: () => updatePaymentData(row),
+      },
+      {
+        label: row.status === "مستمر" ? "إيقاف التبرع" : "استمرار التبرع",
+        icon: row.status === "مستمر" ? "i-heroicons-pause" : "i-heroicons-play",
+        click: () => toggleDonationStatus(row),
+      },
+    ],
+  ];
+};
+
+// Update Payment Data
+const updatePaymentData = (row: any) => {
+  console.log("Update Payment Data for:", row);
+};
+
+// Toggle Donation Status
+const toggleDonationStatus = (row: any) => {
+  row.status = row.status === "مستمر" ? "متوقف" : "مستمر";
+  console.log("Toggled Donation Status for:", row);
 };
 </script>

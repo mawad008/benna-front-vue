@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center w-[70%] h-fit mt-10 mb-5">
+  <div class="flex justify-center md:w-[70%] lg:w-[50%] sm:[100%]  h-fit mt-10 mb-5">
     <div class="w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white">
       <!-- Title with Badge -->
       <Title title="تفعيل استقطاع جديد" badge="1" class="mb-4" />
@@ -14,6 +14,7 @@
             :label="amount + ' ر.س'" 
             @click="donorStore.setAmount(amount)" 
             variant="outline" 
+            color="selector"
             class="px-4 py-2 rounded-lg" 
             :class="{ 'bg-[#138B96] text-white': donorStore.selectedAmount === amount }"
           />
@@ -22,6 +23,8 @@
               v-model="donorStore.customAmount" 
               placeholder="مبلغ آخر" 
               class="w-28 border-gray-300" 
+              color="white"
+              varient="solid"
               @input="donorStore.setCustomAmount($event.target.value)"
             />
             <p v-if="donorStore.errors.amount" class="text-red-500 text-xs mt-1">
@@ -41,6 +44,7 @@
             :label="type.label" 
             @click="donorStore.setRecurringType(type.value)" 
             variant="outline" 
+            color="selector"
             class="px-4 py-2 rounded-lg" 
             :class="{ 'bg-[#138B96] text-white': donorStore.recurringType === type.value }"
           />
@@ -59,6 +63,8 @@
             v-model="donorStore.startDate" 
             class="w-full border-gray-300 p-2 rounded-lg" 
             @change="donorStore.setStartDate(donorStore.startDate)"
+            color="white"
+            varient="outline"
           />
           <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
             {{ donorStore.errors.startDate }}

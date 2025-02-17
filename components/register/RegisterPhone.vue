@@ -6,7 +6,7 @@
     <div class="flex items-center gap-2">
       <UInput
         v-model="store.phone"
-        color="primary"
+        color="white"
         variant="outline"
         class="flex-1 text-gray-900"
       />
@@ -20,7 +20,8 @@
       @click="store.nextStep" 
       block
       class="mt-4"
-      color="primary"
+       color="primary"
+       variant="solid"
     >
       متابعة التسجيل
     </UButton>

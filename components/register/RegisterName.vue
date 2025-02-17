@@ -12,7 +12,7 @@
     <div class="text-right mb-2 text-dark font-medium">الاسم الكامل</div>
     <UInput 
       v-model="store.name"
-      color="primary"
+      color="white"
       variant="outline"
     />
 
@@ -20,6 +20,7 @@
       @click="store.nextStep" 
       block 
       color="primary" 
+      variant="solid"
       class="mt-4"
     >
       متابعة التسجيل

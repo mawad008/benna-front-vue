@@ -5,7 +5,7 @@
       size="lg"
       color="primary"
       variant="outline"
-      class="bg-[#A6AFC366] text-[#138B96] ring-1 ring-[#138B96]"
+      class="bg-[#138B9633] text-[#138B96] ring-0 ring-[#138B96]"
       :label="isIcon ? undefined : badge"
       :icon="isIcon ? badge : undefined"
       :trailing="false"

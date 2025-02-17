@@ -6,7 +6,7 @@
     <UInput 
       type="password" 
       v-model="store.otp"
-      color="primary"
+      color="white"
       variant="outline"
     />
 
@@ -22,6 +22,7 @@
       @click="store.nextStep" 
       block 
       color="primary" 
+      variant="solid"
       class="mt-4"
     >
       تأكيد
