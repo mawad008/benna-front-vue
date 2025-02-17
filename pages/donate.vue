@@ -2,7 +2,7 @@
          <Hero />
     <div class="container lg:mt-10 md:mt-20">
     <DonationTable />
-    <Table/>
+    <!-- <Table/> -->
     <!-- <TableDonation/> -->
     </div>
    
