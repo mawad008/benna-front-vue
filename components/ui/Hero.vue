@@ -1,12 +1,12 @@
 <template>
   <section
-    class="relative h-[90vh] hidden md:flex items-center justify-center bg-cover bg-center px-8"
+    class="relative h-[90vh] hidden md:flex items-center justify-center bg-cover bg-center px-8 "
     style="background-image: url('/hero-bg.png')"
   >
     <div
-      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white text-center md:text-right w-[95%]  gap-20"
+      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white text-center w-[95%]  "
     >
-      <div class="w-[100%] mx-10px ">
+      <div class="w-[100%]  ml-80  ">
         <h1 class="font-bold lg:text-[40px] md:text-[28px] md:leading-[42px] lg:leading-[45px] text-right">
           جمعية بناء لرعاية الأيتام تأسست الجمعية عام 2010 م ، تحت إشراف المركز
           الوطني لتنمية القطاع الغير ربحي بترخيص رقم 568 تساهم الجمعية برعاية
@@ -20,8 +20,8 @@
         </p>
       </div>
 
-      <div class="flex justify-center relative justify-end">
-        <div class="hero-image relative">
+      <div class="flex justify-center relative">
+        <div class="hero-image relative ">
           <div
             v-for="(ball, index) in balls"
             :key="index"
@@ -41,7 +41,7 @@
             v-if="heroImage"
             :src="heroImage"
             alt="Hero Image"
-            class="masked-image relative z-[5] w-[90%] "
+            class="masked-image relative z-[5] w-[90%]  "
           />
         </div>
       </div>
@@ -80,7 +80,7 @@ const balls = ref([
 <style scoped>
 .hero-image {
   position: relative;
-  width:900%;
+  width:100%;
   /* width: fit-content;
   height: fit-content; */
   display: flex;

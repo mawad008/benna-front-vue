@@ -14,9 +14,9 @@
 
       <!-- Return Button -->
       <UButton
-        class="mt-6 w-full border border-gray-300 text-[#138B96] font-bold py-2 rounded-lg"
+        class="mt-6 w-full font-bold py-2 rounded-lg"
         color="primary"
-        
+        variant="solid"
         @click="closeModal"
       >
         الرجوع

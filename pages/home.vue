@@ -1,6 +1,6 @@
 <template>
      <Hero />
-  <div class="min-h-screen flex flex-col items-center bg-gray-50 mt-20">
+  <div class="min-h-screen flex flex-col items-center bg-gray-50 lg:mt-10 md:mt-20">
     <div class="w-full flex flex-col items-center p-4">
       <DonationCard />
       <DonorNameCard />

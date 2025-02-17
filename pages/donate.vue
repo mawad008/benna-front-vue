@@ -1,6 +1,6 @@
 <template>
          <Hero />
-    <div class="container mt-20">
+    <div class="container lg:mt-10 md:mt-20">
     <DonationTable />
     <Table/>
     <!-- <TableDonation/> -->

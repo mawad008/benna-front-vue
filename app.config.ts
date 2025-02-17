@@ -97,7 +97,7 @@ export default defineAppConfig({
       color: {
         white: {
           outline:
-            "shadow-sm bg-transparent dark:bg-gray-900 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-1 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+          "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-1 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
         },
         gray: {
           outline:
@@ -184,6 +184,24 @@ export default defineAppConfig({
         leaveFrom: "opacity-100 scale-100",
         leaveTo: "opacity-0 scale-95"
       }
+    },
+    radio: {
+        wrapper: 'relative flex items-start',
+        container: 'flex items-center h-5',
+        base: 'h-4 w-4 dark:checked:bg-current dark:checked:border-transparent disabled:opacity-50 disabled:cursor-not-allowed focus:ring-0 focus:ring-transparent focus:ring-offset-transparent',
+        form: 'form-radio',
+        color: 'text-{color}-500 dark:text-{color}-400',
+        background: 'bg-white dark:bg-white',
+        border: 'border border-gray-300 dark:border-gray-700',
+        ring: 'focus-visible:ring-2 focus-visible:ring-{color}-500 dark:focus-visible:ring-{color}-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-900',
+        inner: 'ms-3 flex flex-col',
+        label: 'text-sm font-medium text-[#111928] dark:text-[#111928]',
+        required: 'text-sm text-red-500 dark:text-red-400',
+        help: 'text-sm text-gray-500 dark:text-gray-400',
+        default: {
+          color: 'primary'
+        }
+      
     },
   },
 });

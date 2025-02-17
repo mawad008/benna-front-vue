@@ -10,24 +10,24 @@
       </div>
   
       <div>
-        <UInput v-model="contactStore.fullName" placeholder="الاسم الكامل" class="mb-1" required />
+        <UInput v-model="contactStore.fullName" placeholder="الاسم الكامل" class="mb-1" required color="white" variant="outline"/>
         <p v-if="contactStore.errors.fullName" class="text-red-500 text-sm mb-2">{{ contactStore.errors.fullName }}</p>
       </div>
   
       <div>
         <div class="flex items-center gap-2">
-          <UInput v-model="contactStore.phone" placeholder="رقم الهاتف" class="flex-1 mb-1" required />
+          <UInput v-model="contactStore.phone" placeholder="رقم الهاتف" class="flex-1 mb-1" required  color="white" varient="outline" />
           <div class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md border border-gray-300">+966</div>
         </div>
         <p v-if="contactStore.errors.phone" class="text-red-500 text-sm mb-2">{{ contactStore.errors.phone }}</p>
       </div>
   
       <div>
-        <UTextarea v-model="contactStore.message" placeholder="اكتب هنا" class="mb-1" required />
+        <UTextarea v-model="contactStore.message" placeholder="اكتب هنا" class="mb-1" required color="white" variant="outline" />
         <p v-if="contactStore.errors.message" class="text-red-500 text-sm mb-2">{{ contactStore.errors.message }}</p>
       </div>
   
-      <UButton @click="handleSubmit" class="w-full" color="primary">
+      <UButton @click="handleSubmit" class="w-full mt-5" color="primary" variant="solid">
         إرسال
       </UButton>
   
