@@ -300,7 +300,7 @@ export default defineAppConfig({
       default: {
         sortAscIcon: "i-heroicons-bars-arrow-up-20-solid",
         sortDescIcon: "i-heroicons-bars-arrow-down-20-solid",
-        color: "primary",
+        color: "#111928",
         sortButton: {
           icon: "i-heroicons-arrows-up-down-20-solid",
           trailing: true,

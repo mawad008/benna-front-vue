@@ -4,7 +4,7 @@
     style="background-image: url('/hero-bg.png')"
   >
     <div
-      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white text-center w-[95%]  "
+      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white text-center w-[95%] "
     >
       <div class="w-[100%]  ml-80  ">
         <h1 class="font-bold lg:text-[40px] md:text-[28px] md:leading-[42px] lg:leading-[45px] text-right">
@@ -20,7 +20,7 @@
         </p>
       </div>
 
-      <div class="flex justify-center relative">
+      <div class="flex justify-center relative ">
         <div class="hero-image relative ">
           <div
             v-for="(ball, index) in balls"
@@ -87,6 +87,7 @@ const balls = ref([
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-right: 90px;
 }
 
 .masked-image {

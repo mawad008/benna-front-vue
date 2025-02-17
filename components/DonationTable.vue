@@ -40,7 +40,8 @@
     </div>
 
     <!-- Table -->
-    <UTable :rows="paginatedData" :columns="columns" class="w-full ">
+    <UTable :rows="paginatedData" :columns="columns" class="w-full "
+      :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: '#111928', variant: 'outline'}">
       <!-- Row Number -->
       <template #cell(index)="{ rowIndex }">
         <span class="text-gray-900">
@@ -70,7 +71,6 @@
             {{ row.status === "مستمر" ? "إيقاف التبرع" : "استمرار التبرع" }}
           </UButton> -->
 
-          <!-- Three-Dot Icon -->
           <!-- <UIcon name="i-heroicons-ellipsis-vertical" class="cursor-pointer" @click="handleAction(row)" />  -->
         </div>
       </template>
@@ -229,8 +229,8 @@ const selectedRow = ref(null);
 
 // Update Payment Data
 const updatePaymentData = (row: any) => {
-  selectedRow.value = row; 
-  isEditModalOpen.value = true; 
+  selectedRow.value = row;
+  isEditModalOpen.value = true;
 };
 
 const toggleDonationStatus = (row: any) => {
