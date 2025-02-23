@@ -1,18 +1,18 @@
 <template>
   <section
-    class="relative h-[90vh] hidden md:flex items-center justify-center bg-cover bg-center px-8 "
+    class="relative h-[70vh] hidden md:flex items-center justify-center bg-cover bg-center px-8 "
     style="background-image: url('/hero-bg.png')"
   >
     <div
       class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white text-center w-[95%] "
     >
       <div class="w-[100%]  ml-80  ">
-        <h1 class="font-bold lg:text-[40px] md:text-[28px] md:leading-[42px] lg:leading-[45px] text-right">
+        <h1 class="font-bold lg:text-[30px] md:text-[28px] md:leading-[42px] lg:leading-[45px] text-right text-justify">
           جمعية بناء لرعاية الأيتام تأسست الجمعية عام 2010 م ، تحت إشراف المركز
           الوطني لتنمية القطاع الغير ربحي بترخيص رقم 568 تساهم الجمعية برعاية
           وكفالة أكثر من 4500 يتيم ويتيمة
         </h1>
-        <p class="font-normal lg:text-[28px] md:text-[20px] md:leading-[34px] lg:leading-[36px] text-right mt-4">
+        <p class="font-normal lg:text-[24px] md:text-[20px] md:leading-[34px] lg:leading-[36px] text-right mt-4 text-justify">
           قالَ رَسُول اللَّه ﷺ: (مَا مِنْ يَوْمٍ يُصبِحُ العِبادُ فِيهِ إِلَّا
           مَلَكَانِ يَنْزِلانِ، فَيَقُولُ أَحَدُهُمَا: اللَّهُمَّ أَعْطِ
           مُنْفِقًا خَلَفًا، وَيَقُولُ الآخَرُ: اللَّهُمَّ أَعْطِ مُمْسِكًا

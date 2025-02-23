@@ -1,28 +1,41 @@
 <template>
   <div class="p-4">
     <div class="container bg-white rounded-lg shadow-md p-4 mb-4">
-      <!-- Filters & Search  -->
+      <!-- Filters & Search -->
       <div class="flex flex-wrap justify-between items-center gap-4">
         <!-- Filters Section -->
         <div class="flex flex-col gap-2">
           <div class="flex items-center gap-2 text-gray-700 font-semibold">
             <i class="i-lucide-filter"></i>
-            <!-- Filter Icon -->
             <span>تصفية النتائج</span>
           </div>
           <div class="flex gap-4">
             <!-- Status Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium">حالة البيع</label>
-              <USelect v-model="selectedStatus" :options="statusOptions" placeholder="اختر حالة البيع" color="white"
-                variant="outline" />
+              <label class="text-sm text-gray-600 font-medium"
+                >حالة البيع</label
+              >
+              <USelect
+                v-model="selectedStatus"
+                :options="statusOptions"
+                placeholder="اختر حالة البيع"
+                color="white"
+                variant="outline"
+              />
             </div>
 
             <!-- Type Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium">نوع الاستقطاع</label>
-              <USelect v-model="selectedType" :options="typeOptions" placeholder="اختر نوع الاستقطاع" color="white"
-                variant="outline" />
+              <label class="text-sm text-gray-600 font-medium"
+                >نوع الاستقطاع</label
+              >
+              <USelect
+                v-model="selectedType"
+                :options="typeOptions"
+                placeholder="اختر نوع الاستقطاع"
+                color="white"
+                variant="outline"
+              />
             </div>
           </div>
         </div>
@@ -31,98 +44,124 @@
         <div class="flex flex-col gap-2 w-full md:w-auto">
           <div class="flex items-center gap-2 text-gray-700 font-semibold">
             <i class="i-lucide-search"></i>
-            <!-- Search Icon -->
             <span>البحث</span>
           </div>
-          <UInput v-model="searchQuery" placeholder="بحث..." class="w-full max-w-md" color="white" variant="outline" />
+          <UInput
+            v-model="searchQuery"
+            placeholder="بحث..."
+            class="w-full max-w-md"
+            color="white"
+            variant="outline"
+          />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable :rows="paginatedData" :columns="columns" class="w-full "
-      :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: '#111928', variant: 'outline'}">
+    <UTable
+      :rows="paginatedData"
+      :columns="columns"
+      class="w-full"
+      :sort-button="{
+        icon: 'i-heroicons-sparkles-20-solid',
+        color: '#111928',
+        variant: 'outline',
+      }"
+    >
       <!-- Row Number -->
-      <template #cell(index)="{ rowIndex }">
+      <template #index-data="{ rowIndex }">
         <span class="text-gray-900">
           {{ (page - 1) * pageSize + rowIndex + 1 }}
         </span>
       </template>
 
       <!-- Status Badge -->
-      <template #cell(status)="{ row }">
+      <template #status-data="{ row }">
         <UBadge :color="getStatusColor(row.status)" variant="subtle">
           {{ row.status }}
         </UBadge>
-
       </template>
 
       <!-- Action Column -->
-      <template #cell(actions)="{ row }">
-        <div class="flex gap-2 items-center">
-          <!-- Update Payment Data Button
-          <UButton color="primary" variant="solid" class="text-sm" @click="updatePaymentData(row)">
-            تحديث الدفع
-          </UButton>
-
-          <!-- Toggle Donation Status Button -->
-          <!-- <UButton :color="row.status === 'مستمر' ? 'primary' : 'icon'" variant="solid" class="text-sm"
-            @click="toggleDonationStatus(row)">
-            {{ row.status === "مستمر" ? "إيقاف التبرع" : "استمرار التبرع" }}
-          </UButton> -->
-
-          <!-- <UIcon name="i-heroicons-ellipsis-vertical" class="cursor-pointer" @click="handleAction(row)" />  -->
-        </div>
-      </template>
-
-      <template #action-data="{ row }">
+      <template #actions-data="{ row }">
         <UDropdown :items="items(row)">
-          <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" />
+          <UButton
+            color="icon"
+            variant="solid"
+            icon="i-heroicons-ellipsis-vertical-20-solid"
+          />
         </UDropdown>
       </template>
     </UTable>
 
     <!-- Pagination -->
     <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
-      <div class="flex justify-between items-center mt-6">
+      <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
-          <UButton :disabled="page === 1" @click="page = page - 1" color="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
             </svg>
-
-
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          <UButton
+            :disabled="page === pageCount"
+            @click="page = page + 1"
+            color="icon"
+            class="p-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
             </svg>
-
-
           </UButton>
         </div>
 
         <div class="flex text-gray-600 text-sm gap-1">
-          <span>{{ filteredData.length }} </span>
-          <span> of </span>
-          <span>{{ (page - 1) * pageSize + 1 }}-{{
-            Math.min(page * pageSize, filteredData.length)
-          }}
-          </span>
+          <span>{{ filteredData.length }}</span>
+          <span>of</span>
+          <span
+            >{{ (page - 1) * pageSize + 1 }}-{{
+              Math.min(page * pageSize, filteredData.length)
+            }}</span
+          >
         </div>
       </div>
     </div>
   </div>
-  <EditPayment v-if="isEditModalOpen" :row="selectedRow" @close="isEditModalOpen = false" />
+  <EditPayment
+    v-if="isEditModalOpen"
+    :row="selectedRow"
+    @close="isEditModalOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import tableData from "@/assets/data.json";
 import EditPayment from "@/components/modals/EditPayment.vue";
+
 // Search Query
 const searchQuery = ref("");
 
@@ -141,7 +180,7 @@ const columns = ref([
   { key: "date", label: "تاريخ البدء", sortable: true },
   { key: "type", label: "نوع الاستقطاع" },
   { key: "status", label: "حالة البيع" },
-  { key: "action", label: "الإجراءات" },
+  { key: "actions", label: "الإجراءات" },
 ]);
 
 const items = (row) => [
@@ -149,22 +188,27 @@ const items = (row) => [
     {
       label: "تحديث بيانات الدفع",
       icon: "i-heroicons-pencil-square-20-solid",
+      class: "text-blue-600 hover:bg-blue-50",
       click: () => updatePaymentData(row),
     },
     {
       label: row.status === "مستمر" ? "إيقاف التبرع" : "تفعيل التبرع",
-      icon: row.status === "مستمر" ? "i-heroicons-pause-20-solid" : "i-heroicons-play-20-solid",
+      icon:
+        row.status === "مستمر"
+          ? "i-heroicons-pause-20-solid"
+          : "i-heroicons-play-20-solid",
+      class:
+        row.status === "مستمر"
+          ? "text-red-600 hover:bg-green-50"
+          : "text-green-600 hover:bg-red-50", 
       click: () => toggleDonationStatus(row),
     },
   ],
 ];
 
-
 const getStatusColor = (status: string) => {
-  return status === "مستمر" ? "red" : status === "متوقف" ? "green" : "gray";
+  return status === "مستمر" ? "green" : "red";
 };
-
-
 
 // Pagination Variables
 const page = ref(1);
@@ -173,20 +217,31 @@ const pageSize = ref(10);
 // Sorting Variables
 const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
 
-// Computed - Filtered Data
+// Arabic Normalization Function
+const normalizeArabic = (text: string) => {
+  return text
+    .replace(/[أآإ]/g, "ا")
+    .replace(/ى/g, "ي") 
+    .replace(/ة/g, "ه"); 
+};
+// Computed - Filtered Data with Normalized Arabic Search
 const filteredData = computed(() => {
-  return tableData.filter(
-    (row) =>
+  const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
+  return tableData.filter((row) => {
+    const normalizedName = normalizeArabic(row.name.toLowerCase());
+    const normalizedType = normalizeArabic(row.type.toLowerCase());
+    return (
       (searchQuery.value === "" ||
-        row.name.includes(searchQuery.value) ||
-        row.type.includes(searchQuery.value)) &&
+        normalizedName.includes(normalizedQuery) ||
+        normalizedType.includes(normalizedQuery)) &&
       (selectedStatus.value === "الكل" ||
         selectedStatus.value === "" ||
         row.status === selectedStatus.value) &&
       (selectedType.value === "الكل" ||
         selectedType.value === "" ||
         row.type === selectedType.value)
-  );
+    );
+  });
 });
 
 // Computed - Sorted Data
@@ -235,8 +290,6 @@ const updatePaymentData = (row: any) => {
 
 const toggleDonationStatus = (row: any) => {
   row.status = row.status === "مستمر" ? "متوقف" : "مستمر";
-
   localStorage.setItem("tableData", JSON.stringify(tableData));
 };
-
 </script>
