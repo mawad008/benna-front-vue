@@ -30,15 +30,32 @@
         <div class="flex justify-between items-start gap-6">
           <!-- Start Date -->
           <div class="flex-1">
-            <label class="block text-dark font-bold text-sm mb-3">تاريخ بدء الاستقطاع الدوري</label>
-            <div class="flex flex-col ">
-              <UInput type="date" v-model="donorStore.startDate" class="w-full border-gray-300 px-5 py-2.5 rounded-lg "
+            <label class="block text-dark font-bold text-sm mb-5">تاريخ بدء الاستقطاع الدوري</label>
+            <!-- <div class="flex flex-col "> -->
+              <!-- <UInput type="date" v-model="donorStore.startDate" class="w-full border-gray-300 px-5 py-2.5 rounded-lg "
                 @change="donorStore.setStartDate(donorStore.startDate)" color="white" variant="outline" />
               <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
                 {{ donorStore.errors.startDate }}
+              </p> -->
+
+
+              <UPopover :popper="{ placement: 'bottom-start' }">
+                <UButton icon="i-heroicons-calendar-days-20-solid" :label="format(date, 'd MMM, yyy')" class="w-full px-5 py-2.5"  color="icon"  />
+
+                <template #panel="{ close }">
+                  <DatePicker v-model="date" is-required @close="close" @click="HandleDate" />
+                </template>
+              </UPopover>
+
+              <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
+                {{ donorStore.errors.startDate }}
               </p>
-            </div>
+
+
+            <!-- </div> -->
           </div>
+
+
 
           <!-- Recurring Donation Type -->
           <div class="flex-1">
@@ -64,7 +81,9 @@
 <script setup>
 import Title from "@/components/ui/Title.vue";
 import { useDonorStore } from "@/stores/donation/donorStore";
+import { format } from 'date-fns'
 
+const date = ref(new Date());
 const donorStore = useDonorStore();
 const amounts = [5, 10, 50, 100];
 const types = [
@@ -72,10 +91,12 @@ const types = [
   { label: "اسبوعي", value: "weekly" },
   { label: "يومي", value: "daily" },
 ];
+
+const HandleDate = () => {
+  donorStore.setStartDate(date.value);
+
+}
+
 </script>
 
-<style>
-.date-input-black-icon::-webkit-calendar-picker-indicator {
-  filter: invert(0);
-}
-</style>
+<style></style>

@@ -1,23 +1,17 @@
 <template>
   <Hero />
   <div class=" flex flex-col items-center bg-gray-50 py-12">
-    <div
-      class="w-full  flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8"
-    >
+    <div class="w-full  flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8">
       <!-- Cards -->
       <DonationCard />
       <DonorNameCard />
       <PaymentOptionsCard />
+     
 
       <!-- Donation Button -->
       <div class="mt-4 md:w-[50%] lg:w-[48%] sm:w-[100%] ">
-        <UButton
-          class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center"
-          @click="handleDonation"
-          color="primary"
-          variant="solid"
-          block
-        >
+        <UButton class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center" @click="handleDonation"
+          color="primary" variant="solid" block>
           تبرع الآن
         </UButton>
       </div>
@@ -51,10 +45,10 @@ const handleDonation = async () => {
 </script>
 
 <style scoped>
-
 button {
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
+
 button:hover {
   transform: translateY(-2px);
 }
