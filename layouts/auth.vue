@@ -8,7 +8,7 @@ import { useRoute } from "vue-router";
 import { useHead } from "#app";
 
 const route = useRoute();
-const websiteName = "Benna";
+const websiteName = "Benaa";
 
 useHead({
   title: computed(() => {

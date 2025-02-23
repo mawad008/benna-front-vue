@@ -9,13 +9,12 @@ export const useDonationStore = defineStore("donation", {
   actions: {
     async submitDonation() {
       const donorStore = useDonorStore();
-      // const paymentStore = usePaymentStore();
+      const paymentStore = usePaymentStore();
 
       const isValidDonor = donorStore.validateDonor();
-      // const isValidPayment = paymentStore.validatePayment();
+      const isValidPayment = paymentStore.validatePayment();
 
-      // if (!isValidDonor || !isValidPayment) {
-      if (!isValidDonor ) {
+      if (!isValidDonor || !isValidPayment) {
         this.submissionError = "يرجى ملء جميع الحقول المطلوبة بشكل صحيح.";
         return;
       }
@@ -25,13 +24,13 @@ export const useDonationStore = defineStore("donation", {
         amount: donorStore.selectedAmount || donorStore.customAmount,
         recurringType: donorStore.recurringType,
         startDate: donorStore.startDate,
-        // paymentDetails: {
-        //   selectedPaymentMethod: paymentStore.selectedPaymentMethod,
-        //   cardholderName: paymentStore.cardholderName,
-        //   cardNumber: paymentStore.cardNumber,
-        //   expiryDate: paymentStore.expiryDate,
-        //   cvv: paymentStore.cvv,
-        // },
+        paymentDetails: {
+          selectedPaymentMethod: paymentStore.selectedPaymentMethod,
+          cardholderName: paymentStore.cardholderName,
+          cardNumber: paymentStore.cardNumber,
+          expiryDate: paymentStore.expiryDate,
+          cvv: paymentStore.cvv,
+        },
       };
 
       console.log("Submitting donation:", donationData);
@@ -47,11 +46,11 @@ export const useDonationStore = defineStore("donation", {
         donorStore.startDate = new Date().toISOString().split("T")[0];
 
         // Reset payment store
-        // paymentStore.selectedPaymentMethod = "";
-        // paymentStore.cardholderName = "";
-        // paymentStore.cardNumber = "";
-        // paymentStore.expiryDate = "";
-        // paymentStore.cvv = "";
+        paymentStore.selectedPaymentMethod = "";
+        paymentStore.cardholderName = "";
+        paymentStore.cardNumber = "";
+        paymentStore.expiryDate = "";
+        paymentStore.cvv = "";
 
         this.submissionError = "";
         // alert('تم التبرع بنجاح!');

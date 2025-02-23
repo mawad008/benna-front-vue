@@ -15,7 +15,7 @@ import LayoutFooter from "@/components/layout/LayoutFooter.vue";
 // import Loader from "@/components/ui/Loader.vue";
 
 const route = useRoute();
-const websiteName = "Benna";
+const websiteName = "Benaa";
 
 
 

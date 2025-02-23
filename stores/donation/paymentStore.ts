@@ -5,7 +5,7 @@ export const usePaymentStore = defineStore('payment', {
     selectedPaymentMethod: '',
     cardholderName: '',
     cardNumber: '',
-    expiryDate: '', 
+    expiryDate: '',  
     cvv: '',
     errors: {
       paymentMethod: '',
@@ -26,6 +26,7 @@ export const usePaymentStore = defineStore('payment', {
       if (['visa', 'mastercard'].includes(this.selectedPaymentMethod)) {
         this.errors.cardholderName = this.cardholderName.trim() ? '' : 'يرجى إدخال اسم حامل البطاقة';
         this.errors.cardNumber = this.cardNumber.length === 16 ? '' : 'يرجى إدخال رقم بطاقة صالح';
+        
         // Validate expiry date
         const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; 
         if (expiryDateRegex.test(this.expiryDate)) {

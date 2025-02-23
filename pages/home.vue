@@ -7,10 +7,10 @@
       <!-- Cards -->
       <DonationCard />
       <DonorNameCard />
-      <!-- <PaymentOptionsCard /> -->
+      <PaymentOptionsCard />
 
       <!-- Donation Button -->
-      <div class="mt-4 md:w-[50%] lg:w-[40%] sm:w-[100%] ">
+      <div class="mt-4 md:w-[50%] lg:w-[48%] sm:w-[100%] ">
         <UButton
           class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center"
           @click="handleDonation"
@@ -33,7 +33,7 @@ import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
 import SuccessModal from "@/components/modals/SuccessModal.vue";
 import { useDonationStore } from "@/stores/donation/donationStore";
-// import PaymentOptionsCard from "@/components/cards/PaymentOptionsCard.vue";
+import PaymentOptionsCard from "@/components/cards/PaymentOptionsCard.vue";
 
 definePageMeta({
   layout: "default",

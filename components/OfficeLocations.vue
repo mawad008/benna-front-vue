@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="p-6 bg-white rounded-lg shadow-md w-full mx-auto max-w-5xl flex flex-col"
-  >
+  <div class="p-6 bg-white rounded-lg shadow-md w-full mx-auto max-w-5xl flex flex-col">
     <!-- Title -->
     <div class="flex items-center gap-2 mb-6">
       <Title title="الفروع والمكاتب" badge="i-heroicons-map-pin" />
@@ -10,15 +8,9 @@
     <div class="flex flex-col lg:flex-row items-start gap-6">
       <!-- Office Selection Buttons  -->
       <div class="w-full lg:w-1/4 flex flex-col gap-3">
-        <UButton
-          v-for="(office, key) in officeStore.offices"
-          :key="key"
-          @click="officeStore.setOffice(key)"
-          :color="officeStore.selectedOffice === key ? 'primary' : 'gray'"
-          block
-          variant="outline"
-          class="text-sm py-2"
-        >
+        <UButton v-for="(office, key) in officeStore.offices" :key="key" @click="officeStore.setOffice(key)"
+          color="primary" block :variant="officeStore.selectedOffice === key ? 'solid' : 'outline'"
+          class="text-sm py-2">
           {{ office.name }}
         </UButton>
       </div>
@@ -53,17 +45,13 @@
             <img src="/fax.png" alt="Fax Icon" class="w-5 h-5" />
             <p class="text-gray-700">{{ selectedOfficeDetails.fax }}</p>
           </div>
-          
+
         </div>
       </div>
 
       <!-- Map Section -->
       <div class="w-full lg:w-1/3 flex justify-center">
-        <img
-          src="/map-placeholder.png"
-          alt="Map"
-          class="w-full h-auto rounded-lg shadow-sm"
-        />
+        <img src="/map-placeholder.png" alt="Map" class="w-full h-auto rounded-lg shadow-sm" />
       </div>
     </div>
   </div>

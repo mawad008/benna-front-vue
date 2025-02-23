@@ -1,12 +1,7 @@
 <template>
-  <header
-    class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent"
-  >
+  <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent">
     <nav class="flex items-center justify-between px-8 py-4 text-white">
-      <div
-        class="flex items-center space-x-6"
-        :class="{ 'flex-row-reverse': locale === 'ar' }"
-      >
+      <div class="flex items-center space-x-6" :class="{ 'flex-row-reverse': locale === 'ar' }">
         <!-- Language Switcher (Desktop) -->
         <NuxtLink :to="changeLanguage()" class="hidden md:block">
           <button class="lang-btn">
@@ -16,23 +11,14 @@
 
         <!-- User Avatar with Dropdown -->
         <div class="relative hidden md:flex items-center" ref="dropdownRef">
-          <div
-            @click="toggleDropdown"
-            class="cursor-pointer bg-white rounded-full p-1 border-2 border-white"
-          >
+          <div @click="toggleDropdown" class="cursor-pointer bg-white rounded-full p-1 border-2 border-white">
             <img src="/user-avatar.png" alt="User Avatar" class="h-4 w-4" />
           </div>
 
           <!-- Logout Dropdown Menu -->
-          <div
-            v-if="isDropdownOpen"
-            class="absolute left-2 top-6 mt-2 w-max bg-white text-black rounded-md shadow-lg"
-          >
-            <NuxtLink
-              to="/"
-              @click="handleLogout"
-              class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-            >
+          <div v-if="isDropdownOpen" class="absolute left-2 top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg">
+            <NuxtLink to="/" @click="handleLogout"
+              class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50">
               <img src="/logout.png" alt="Logout" class="h-4 w-4" />
               <span>تسجيل الخروج</span>
             </NuxtLink>
@@ -40,16 +26,9 @@
         </div>
 
         <!-- Desktop Navbar -->
-        <ul
-          class="hidden md:flex space-x-6"
-          :class="{ 'space-x-reverse': locale === 'ar' }"
-        >
+        <ul class="hidden md:flex space-x-6" :class="{ 'space-x-reverse': locale === 'ar' }">
           <li v-for="route in routes" :key="route.path">
-            <NuxtLink
-              :to="localePath(route.path)"
-              class="nav-link"
-              exact-active-class="active-link"
-            >
+            <NuxtLink :to="localePath(route.path)" class="nav-link" exact-active-class="active-link">
               {{ $t(route.name) }}
             </NuxtLink>
           </li>
@@ -57,11 +36,8 @@
       </div>
 
       <!-- Logo -->
-      <div
-        class="cursor-pointer"
-        :class="{ 'order-first': locale === 'ar' }"
-        @click="$router.push(localePath('/home'))"
-      >
+      <div class="cursor-pointer" :class="{ 'order-first': locale === 'ar' }"
+        @click="$router.push(localePath('/home'))">
         <img src="/nav-logo.png" alt="Logo" class="h-18 w-[100%]" />
       </div>
 
@@ -72,17 +48,11 @@
     </nav>
 
     <!-- Mobile Menu -->
-    <div
-      v-if="isMenuOpen"
-      class="absolute top-18 left-0 w-full bg-[#138b96] md:hidden"
-    >
+    <div v-if="isMenuOpen" class="absolute top-18 left-0 w-full bg-[#138b96] md:hidden">
       <ul class="flex flex-col text-white text-center py-4">
         <li v-for="route in routes" :key="route.path">
-          <NuxtLink
-            :to="localePath(route.path)"
-            class="block py-2 relative mobile-nav-link"
-            exact-active-class="active-mobile-link"
-          >
+          <NuxtLink :to="localePath(route.path)" class="block py-2 relative mobile-nav-link"
+            exact-active-class="active-mobile-link">
             {{ $t(route.name) }}
             <span class="mobile-underline"></span>
           </NuxtLink>
@@ -95,13 +65,10 @@
         </li>
         <!-- Logout (Mobile) -->
         <li>
-          <NuxtLink
-            to="/"
-            @click="handleLogout"
-            class="block py-2 text-red-600 flex items-center justify-center space-x-2"
-          >
+          <NuxtLink to="/" @click="handleLogout"
+            class="block py-2 text-red-500 flex items-center justify-center space-x-2">
             <img src="/logout.png" alt="Logout" class="h-4 w-4" />
-            <span>تسجيل الخروج</span>
+            <span class="px-2">تسجيل الخروج</span>
           </NuxtLink>
         </li>
       </ul>
@@ -132,9 +99,9 @@ const toggleDropdown = () => {
 };
 
 const handleLogout = () => {
-  registerStore.reset(); 
-  isDropdownOpen.value = false; 
-  isMenuOpen.value = false; 
+  registerStore.reset();
+  isDropdownOpen.value = false;
+  isMenuOpen.value = false;
 };
 
 onMounted(() => {
