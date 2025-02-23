@@ -12,30 +12,16 @@
           <div class="flex gap-4">
             <!-- Status Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium"
-                >حالة البيع</label
-              >
-              <USelect
-                v-model="selectedStatus"
-                :options="statusOptions"
-                placeholder="اختر حالة البيع"
-                color="white"
-                variant="outline"
-              />
+              <label class="text-sm text-gray-600 font-medium">حالة البيع</label>
+              <USelect v-model="selectedStatus" :options="statusOptions" placeholder="اختر حالة البيع" color="white"
+                variant="outline" />
             </div>
 
             <!-- Type Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium"
-                >نوع الاستقطاع</label
-              >
-              <USelect
-                v-model="selectedType"
-                :options="typeOptions"
-                placeholder="اختر نوع الاستقطاع"
-                color="white"
-                variant="outline"
-              />
+              <label class="text-sm text-gray-600 font-medium">نوع الاستقطاع</label>
+              <USelect v-model="selectedType" :options="typeOptions" placeholder="اختر نوع الاستقطاع" color="white"
+                variant="outline" />
             </div>
           </div>
         </div>
@@ -46,28 +32,17 @@
             <i class="i-lucide-search"></i>
             <span>البحث</span>
           </div>
-          <UInput
-            v-model="searchQuery"
-            placeholder="بحث..."
-            class="w-full max-w-md"
-            color="white"
-            variant="outline"
-          />
+          <UInput v-model="searchQuery" placeholder="بحث..." class="w-full max-w-md" color="white" variant="outline" />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable
-      :rows="paginatedData"
-      :columns="columns"
-      class="w-full"
-      :sort-button="{
-        icon: 'i-heroicons-sparkles-20-solid',
-        color: '#111928',
-        variant: 'outline',
-      }"
-    >
+    <UTable :rows="paginatedData" :columns="columns" class="w-full" :sort-button="{
+      icon: 'i-heroicons-sparkles-20-solid',
+      color: '#111928',
+      variant: 'outline',
+    }">
       <!-- Row Number -->
       <template #index-data="{ rowIndex }">
         <span class="text-gray-900">
@@ -85,11 +60,7 @@
       <!-- Action Column -->
       <template #actions-data="{ row }">
         <UDropdown :items="items(row)">
-          <UButton
-            color="icon"
-            variant="solid"
-            icon="i-heroicons-ellipsis-vertical-20-solid"
-          />
+          <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" />
         </UDropdown>
       </template>
     </UTable>
@@ -99,41 +70,16 @@
       <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
           <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton
-            :disabled="page === pageCount"
-            @click="page = page + 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
-              />
+          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon" class="p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </UButton>
         </div>
@@ -141,20 +87,14 @@
         <div class="flex text-gray-600 text-sm gap-1">
           <span>{{ filteredData.length }}</span>
           <span>of</span>
-          <span
-            >{{ (page - 1) * pageSize + 1 }}-{{
-              Math.min(page * pageSize, filteredData.length)
-            }}</span
-          >
+          <span>{{ (page - 1) * pageSize + 1 }}-{{
+            Math.min(page * pageSize, filteredData.length)
+          }}</span>
         </div>
       </div>
     </div>
   </div>
-  <EditPayment
-    v-if="isEditModalOpen"
-    :row="selectedRow"
-    @close="isEditModalOpen = false"
-  />
+  <EditPayment v-if="isEditModalOpen" :row="selectedRow" @close="isEditModalOpen = false" />
 </template>
 
 <script setup lang="ts">
@@ -200,7 +140,7 @@ const items = (row) => [
       class:
         row.status === "مستمر"
           ? "text-red-600 hover:bg-green-50"
-          : "text-green-600 hover:bg-red-50", 
+          : "text-green-600 hover:bg-red-50",
       click: () => toggleDonationStatus(row),
     },
   ],
@@ -221,10 +161,10 @@ const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
 const normalizeArabic = (text: string) => {
   return text
     .replace(/[أآإ]/g, "ا")
-    .replace(/ى/g, "ي") 
-    .replace(/ة/g, "ه"); 
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه");
 };
-// Computed - Filtered Data with Normalized Arabic Search
+// Computed - Filtered Data 
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
   return tableData.filter((row) => {

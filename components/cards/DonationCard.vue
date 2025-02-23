@@ -13,15 +13,16 @@
             class="px-5 py-2.5 rounded-lg min-w-[80px]" :class="{
               'bg-[#138B96] text-white': donorStore.selectedAmount === amount,
             }" />
-          <div class="flex flex-col items-end ">
+          <div class="flex flex-col items-end flex-1">
             <UInput v-model="donorStore.customAmount" placeholder="مبلغ آخر" class="w-full border-gray-300 px-5 py-2.5"
               color="white" varient="solid" @input="donorStore.setCustomAmount($event.target.value)" />
 
-            <p v-if="donorStore.errors.amount" class="text-red-500 text-xs mt-1">
-              {{ donorStore.errors.amount }}
-            </p>
           </div>
         </div>
+
+        <p v-if="donorStore.errors.amount" class="text-red-500 text-xs mt-1">
+          {{ donorStore.errors.amount }}
+        </p>
       </div>
 
       <!-- Start Date and Recurring Donation Type -->
@@ -31,8 +32,7 @@
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-3">تاريخ بدء الاستقطاع الدوري</label>
             <div class="flex flex-col ">
-              <UInput type="date" v-model="donorStore.startDate"
-                class="w-full border-gray-300 p-2.5 rounded-lg "
+              <UInput type="date" v-model="donorStore.startDate" class="w-full border-gray-300 px-5 py-2.5 rounded-lg "
                 @change="donorStore.setStartDate(donorStore.startDate)" color="white" variant="outline" />
               <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
                 {{ donorStore.errors.startDate }}
