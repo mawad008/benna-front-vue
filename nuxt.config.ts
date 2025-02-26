@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   compatibilityDate: '2024-11-01',
-  modules:["@pinia/nuxt" , "@nuxt/ui" , "@nuxtjs/tailwindcss" , "@nuxtjs/i18n"],
+  modules:["@pinia/nuxt" , "@nuxt/ui" , "@nuxtjs/tailwindcss" , "@nuxtjs/i18n", ],
   i18n: {
     locales: [
       {
@@ -48,7 +48,10 @@ export default defineNuxtConfig({
       ],
     },
   },
+  // router: {
+  //   middleware: ['loading.global'],
+  // },
   css: [
-    "~/assets/main.css",
-  ],
+    "@/assets/main.css"
+  ]
 })

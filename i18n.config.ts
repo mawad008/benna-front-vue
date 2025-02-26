@@ -5,17 +5,9 @@ export default defineI18nConfig(() => ({
     lazy: true,
     strategy: "prefix_and_default",
     detectBrowserLanguage: {
-      useCookie: true, // Enable cookie usage
-      cookieKey: "i18n_redirected", // Name of the cookie
-      redirectOn: "root", // Redirect only on the root path
-      alwaysRedirect: false, // Disable to avoid redirecting every visit
+      useCookie: true,
+      cookieKey: "i18n_redirected", 
+      redirectOn: "root", 
+      alwaysRedirect: false, 
     },
-    messages: {
-      en: {
-        home: 'home'
-      },
-      ar: {
-        welcome: 'الرئيسية'
-      }
-    }
   }))
