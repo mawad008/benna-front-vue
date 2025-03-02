@@ -5,7 +5,7 @@
       <Title title="تفعيل استقطاع جديد" badge="1" class="mb-6" />
 
       <!-- Donation Amount Selection -->
-      <div class="mt-6">
+      <div class="mt-6 sm:flex sm:flex-col">
         <label class="block text-dark font-bold text-sm mb-3">اختر مبلغ المتبرع</label>
         <div class="flex flex-wrap gap-3 items-center">
           <UButton v-for="amount in amounts" :key="amount" :label="amount + ' ر.س'"
@@ -26,36 +26,22 @@
       </div>
 
       <!-- Start Date and Recurring Donation Type -->
-      <div class="mt-8">
+      <div class="mt-6 sm:flex sm:flex-col ">
         <div class="flex justify-between items-start gap-6">
           <!-- Start Date -->
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-5">تاريخ بدء الاستقطاع الدوري</label>
-            <!-- <div class="flex flex-col "> -->
-              <!-- <UInput type="date" v-model="donorStore.startDate" class="w-full border-gray-300 px-5 py-2.5 rounded-lg "
-                @change="donorStore.setStartDate(donorStore.startDate)" color="white" variant="outline" />
-              <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
-                {{ donorStore.errors.startDate }}
-              </p> -->
-
-
-              <UPopover :popper="{ placement: 'bottom-start' }">
-                <UButton icon="i-heroicons-calendar-days-20-solid" :label="format(date, 'd MMM, yyy')" class="w-full px-5 py-2.5"  color="icon"  />
-
-                <template #panel="{ close }">
-                  <DatePicker v-model="date" is-required @close="close" @click="HandleDate" />
-                </template>
-              </UPopover>
-
-              <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
-                {{ donorStore.errors.startDate }}
-              </p>
-
-
-            <!-- </div> -->
+            <UPopover :popper="{ placement: 'bottom-start' }">
+              <UButton icon="i-heroicons-calendar-days-20-solid" :label="format(date, 'd MMM, yyy')"
+                class="w-full px-5 py-2.5" color="icon" />
+              <template #panel="{ close }">
+                <DatePicker v-model="date" is-required @close="close" @click="HandleDate" />
+              </template>
+            </UPopover>
+            <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
+              {{ donorStore.errors.startDate }}
+            </p>
           </div>
-
-
 
           <!-- Recurring Donation Type -->
           <div class="flex-1">

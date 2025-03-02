@@ -1,30 +1,23 @@
 <template>
   <div>
     <div class="text-right mb-2 text-dark font-medium">رقم الجوال</div>
-    <VueTelInput
-      v-model="phone"
-      mode="international"
-      :defaultCountry="'SA'"
-      :preferred-countries="['SA']"
-      :inputOptions="{
-        placeholder: 'أدخل رقم الجوال',
+    <VueTelInput v-model="phone" mode="international" :defaultCountry="'SA'" :preferred-countries="['SA']"
+      autoFormat="true" :inputOptions="{
         styleClasses: 'custom-input',
-      }"
-      :dropdownOptions="{
-        showDialCodeInSelection: true,
+      }" :dropdownOptions="{
         showSearchBox: true,
+        searchBoxPlaceholder: 'Search country code....',
+        showDialCodeInSelection: true,
+        showFlags: true,
         styleClasses: 'custom-dropdown',
-      }"
-      @validate="handlePhoneValidation"
-      class="w-full custom-tel-input"
-    />
+      }" @validate="handlePhoneValidation" class="w-full custom-tel-input" />
     <p v-if="errors.phone" class="text-red-500 text-xs mt-1 text-right">
       {{ errors.phone }}
     </p>
   </div>
 </template>
-  
-  <script setup lang="ts">
+
+<script setup lang="ts">
 import { VueTelInput } from "vue-tel-input";
 import "vue-tel-input/dist/vue-tel-input.css";
 import { useForm, useField } from "vee-validate";
@@ -63,8 +56,8 @@ const handlePhoneValidation = (phoneObject: {
   emit("update:modelValue", phoneObject.number);
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .custom-tel-input {
   direction: ltr;
 }

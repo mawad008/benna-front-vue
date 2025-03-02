@@ -8,14 +8,14 @@
       v-model="phone"
       mode="international"
       :defaultCountry="'SA'"
-      :preferred-countries="['SA']"
       :inputOptions="{
-        placeholder: 'أدخل رقم الجوال',
         styleClasses: 'custom-input',
       }"
       :dropdownOptions="{
         showDialCodeInSelection: true,
+        showFlags:true,
         showSearchBox: true,
+        searchBoxPlaceholder:'Search country code',
         styleClasses: 'custom-dropdown',
       }"
       @validate="handlePhoneValidation"
@@ -51,7 +51,7 @@ const store = useRegisterStore();
 const schema = yup.object({
   phone: yup
     .string()
-    .required("رقم الجوال مطلوب")
+    .required("")
     .test("phone-valid", "رقم الجوال غير صالح", (value) => {
       const phoneRegex = /^\+?\d{10,14}$/;
       return phoneRegex.test(value || "");
