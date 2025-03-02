@@ -66,41 +66,41 @@ export default defineAppConfig({
     },
     input: {
       wrapper: "relative",
-      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0",
+      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 border-[#d1d5db] dark:border-[#d1d5db] ",
       form: "form-input",
-      rounded: "rounded-md",
+      rounded: "rounded-sm",
       placeholder: "placeholder-gray-400 dark:placeholder-gray-500",
       color: {
         white: {
           outline:
-            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-1 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-1 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db]",
         },
         gray: {
           outline:
-            "shadow-sm bg-transparent dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+            "shadow-sm bg-transparent dark:bg-white text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
         },
       },
       variant: {
         outline:
-          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#138B96] dark:ring-[#138B96] focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96] bg-[#A6AFC366]",
+          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-2 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db] bg-[#A6AFC366]",
         none: "bg-transparent focus:ring-0 focus:shadow-none",
       },
       default: {
-        size: "sm",
+        size: "md",
         color: "primary",
         variant: "outline",
       },
     },
     textarea: {
       wrapper: "relative",
-      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0",
+      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 border-[#d1d5db] dark:border-[#d1d5db] ",
       form: "form-textarea",
       rounded: "rounded-md",
       placeholder: "placeholder-gray-400 dark:placeholder-gray-500",
       color: {
         white: {
           outline:
-            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-1 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-1 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db]",
         },
         gray: {
           outline:
@@ -109,7 +109,7 @@ export default defineAppConfig({
       },
       variant: {
         outline:
-          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#138B96] dark:ring-[#138B96] focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96] bg-[#A6AFC366]",
+          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-2 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db] bg-[#A6AFC366]",
         none: "bg-transparent focus:ring-0 focus:shadow-none",
       },
       default: {

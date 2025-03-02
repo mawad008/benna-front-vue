@@ -33,26 +33,12 @@
       </p>
     </div>
 
+    <!-- Phone Input -->
     <div class="mb-4">
-      <label for="phone" class="block text-gray-700 mb-1 font-semibold">رقم الهاتف</label>
-      <div class="flex items-center gap-2">
-        <UInput
-          id="phone"
-          v-model="contactStore.phone"
-          class="flex-1 mb-1"
-          required
-          color="white"
-          variant="outline"
-        />
-        <div
-          class="px-3 py-1 bg-gray-100 text-gray-700 rounded-md border border-gray-300"
-        >
-          +966
-        </div>
-      </div>
-      <p v-if="contactStore.errors.phone" class="text-red-500 text-sm mb-2">
+      <PhoneInput v-model="contactStore.phone" />
+      <!-- <p v-if="contactStore.errors.phone" class="text-red-500 text-sm mb-2">
         {{ contactStore.errors.phone }}
-      </p>
+      </p> -->
     </div>
 
     <div class="mb-4">
@@ -89,6 +75,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useContactStore } from "@/stores/contact";
+import PhoneInput from "@/components/ui/PhoneInput.vue"; 
 
 const contactStore = useContactStore();
 const successMessage = ref("");

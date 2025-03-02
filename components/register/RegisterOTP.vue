@@ -6,15 +6,15 @@
 
     <p class="text-dark mb-4">ادخل رمز التحقق (OTP) إلى هاتفك</p>
     <UInput
-      type="password"
-      v-model="store.otp"
+      type="text"
+      v-model="otp"
       color="white"
       variant="outline"
-      @blur="store.validateOtp"
-      @input="store.validateOtp"
+      @blur="validateField"
+      @input="validateField"
     />
-    <p v-if="store.errors.otp" class="text-red-500 text-xs mt-1 text-right">
-      {{ store.errors.otp }}
+    <p v-if="errors.otp" class="text-red-500 text-xs mt-1 text-right">
+      {{ errors.otp }}
     </p>
 
     <p
@@ -29,12 +29,12 @@
     </p>
 
     <UButton
-      @click="store.nextStep"
+      @click="onSubmit"
       block
       color="primary"
       variant="solid"
       class="mt-6"
-      :disabled="!!store.errors.otp || !store.otp.trim()"
+      :disabled="!meta.valid || !otp.trim()"
     >
       تأكيد
     </UButton>
@@ -44,10 +44,42 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRegisterStore } from "@/stores/register";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
 
 const store = useRegisterStore();
 const countdown = ref(60);
 let interval: ReturnType<typeof setInterval> | null = null;
+
+
+const schema = yup.object({
+  otp: yup
+    .string()
+    .required("رمز التحقق مطلوب")
+    .matches(/^\d{4}$/, "رمز التحقق يجب أن يكون 4 أرقام"),
+});
+
+
+const { errors, meta, handleSubmit } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    otp: store.otp, 
+  },
+});
+
+
+const { value: otp } = useField<string>("otp");
+
+
+const validateField = () => {
+  store.otp = otp.value; 
+};
+
+
+const onSubmit = handleSubmit(() => {
+  store.nextStep(); 
+});
+
 
 onMounted(() => {
   startCountdown();

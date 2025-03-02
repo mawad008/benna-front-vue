@@ -6,8 +6,8 @@
     <LayoutFooter></LayoutFooter>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 import { useRoute } from "vue-router";
 import { useHead } from "#app";
 import LayoutNavbar from "@/components/layout/LayoutNavbar.vue";
@@ -26,6 +26,7 @@ useHead({
         "/home": "Home",
         "/contact": "Contact",
         "/donate": "Donate",
+        "/terms": "Terms",
       }[route.path] || "Page";
     return `${websiteName} - ${pageTitle}`;
   }),

@@ -72,6 +72,7 @@
           </NuxtLink>
         </li>
       </ul>
+
     </div>
   </header>
 </template>
@@ -132,6 +133,7 @@ const routes = [
   { path: "/home", name: "home" },
   { path: "/donate", name: "donate" },
   { path: "/contact", name: "contact" },
+  { path: "/terms", name: "terms" },
 ];
 </script>
 

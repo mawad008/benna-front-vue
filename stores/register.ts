@@ -8,8 +8,8 @@ export const useRegisterStore = defineStore("register", {
     otp: "" as string,
     transitionDirection: "slide-left",
     errors: {
-      name: "" as string,
       phone: "" as string,
+      name: "" as string,
       otp: "" as string,
     },
   }),
@@ -24,52 +24,37 @@ export const useRegisterStore = defineStore("register", {
       }
       return !this.errors.name;
     },
-    validatePhone() {
-      const phoneRegex = /^\d{9}$/;
-      if (!this.phone.trim()) {
-        this.errors.phone = "رقم الجوال مطلوب";
-      } else if (!phoneRegex.test(this.phone)) {
-        this.errors.phone = "رقم الجوال يجب أن يكون 9 أرقام";
-      } else {
-        this.errors.phone = "";
-      }
-      return !this.errors.phone;
-    },
-    validateOtp() {
-      const otpRegex = /^\d{4}$/;
-      if (!this.otp.trim()) {
-        this.errors.otp = "رمز التحقق مطلوب";
-      } else if (!otpRegex.test(this.otp)) {
-        this.errors.otp = "رمز التحقق يجب أن يكون 4 أرقام";
-      } else {
-        this.errors.otp = "";
-      }
-      return !this.errors.otp;
-    },
+    
     nextStep() {
       let isValid = false;
-      if (this.step === 0) isValid = this.validatePhone();
-      else if (this.step === 1) isValid = this.validateName();
-      else if (this.step === 2) isValid = this.validateOtp();
+      if (this.step === 0) {
+        isValid = !this.errors.phone && !!this.phone.trim();
+      } else if (this.step === 1) {
+        isValid = this.validateName();
+      } else if (this.step === 2) {
+        isValid = !this.errors.otp && !!this.otp.trim();
+      }
 
       if (isValid && this.step < 3) {
         this.transitionDirection = "slide-left";
         this.step++;
       }
     },
+
     prevStep() {
       if (this.step > 0) {
         this.transitionDirection = "slide-right";
         this.step--;
       }
     },
+
     reset() {
       this.step = 0;
       this.phone = "";
       this.name = "";
       this.otp = "";
-      this.errors.name = "";
       this.errors.phone = "";
+      this.errors.name = "";
       this.errors.otp = "";
       this.transitionDirection = "slide-left";
     },

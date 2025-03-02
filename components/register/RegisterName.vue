@@ -12,23 +12,23 @@
     </div>
     <div class="text-right mb-2 text-dark font-medium">الاسم الكامل</div>
     <UInput
-      v-model="store.name"
+      v-model="name"
       color="white"
       variant="outline"
-      @blur="store.validateName"
-      @input="store.validateName"
+      @blur="validateField"
+      @input="validateField"
     />
-    <p v-if="store.errors.name" class="text-red-500 text-xs mt-1 text-right">
-      {{ store.errors.name }}
+    <p v-if="errors.name" class="text-red-500 text-xs mt-1 text-right">
+      {{ errors.name }}
     </p>
 
     <UButton
-      @click="store.nextStep"
+      @click="onSubmit"
       block
       color="primary"
       variant="solid"
       class="mt-6"
-      :disabled="!!store.errors.name || !store.name.trim()"
+      :disabled="!meta.valid || !name.trim()"
     >
       متابعة التسجيل
     </UButton>
@@ -37,5 +37,38 @@
 
 <script setup lang="ts">
 import { useRegisterStore } from "@/stores/register";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
+
 const store = useRegisterStore();
+
+
+const schema = yup.object({
+  name: yup
+    .string()
+    .required("الاسم مطلوب")
+    .min(2, "الاسم يجب أن يكون حرفين على الأقل"),
+});
+
+
+const { errors, meta, handleSubmit } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    name: store.name, 
+  },
+});
+
+
+const { value: name } = useField<string>("name");
+
+
+const validateField = () => {
+  store.name = name.value; 
+  store.validateName();
+};
+
+
+const onSubmit = handleSubmit(() => {
+  store.nextStep();
+});
 </script>

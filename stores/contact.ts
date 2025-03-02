@@ -15,7 +15,6 @@ export const useContactStore = defineStore('contact', {
   actions: {
     validateForm() {
       this.errors.fullName = this.fullName ? '' : 'الاسم مطلوب';
-      this.errors.phone = /^\d{9}$/.test(this.phone) ? '' : 'رقم الهاتف يجب أن يكون 9 أرقام';
       this.errors.message = this.message ? '' : 'الرسالة مطلوبة';
 
       return !this.errors.fullName && !this.errors.phone && !this.errors.message;
