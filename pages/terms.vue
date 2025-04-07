@@ -1,6 +1,6 @@
 <template>
   <Hero />
-  <div class="lg:mt-10 md:mt-20 container">
+  <div class="lg:mt-10 md:mt-20 mt-10 container">
     <h1 class="text-2xl font-bold mb-4 text-primary">الشروط والأحكام</h1>
 
     <div class="space-y-4">
