@@ -1,18 +1,20 @@
 <template>
-  <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent">
+  <!-- <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent "> -->
+    <header class="relative md:absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent">
+
     <nav class="flex items-center justify-between px-8 py-4 text-white">
       <div class="flex items-center space-x-6" :class="{ 'flex-row-reverse': locale === 'ar' }">
         <!-- Language Switcher (Desktop) -->
-        <NuxtLink :to="changeLanguage()" class="hidden md:block">
+        <!-- <NuxtLink :to="changeLanguage()" class="hidden md:block">
           <button class="lang-btn">
             {{ locale === "ar" ? "EN" : "عربي" }}
           </button>
-        </NuxtLink>
+        </NuxtLink> -->
 
         <!-- User Avatar with Dropdown -->
         <div class="relative hidden md:flex items-center" ref="dropdownRef">
           <div @click="toggleDropdown" class="cursor-pointer bg-white rounded-full p-1 border-2 border-white">
-            <img src="/user-avatar.png" alt="User Avatar" class="h-4 w-4" />
+            <img src="/user-avatar.png" alt="User Avatar" class="h-4 w-4 object-contain" />
           </div>
 
           <!-- Logout Dropdown Menu -->
@@ -58,11 +60,11 @@
           </NuxtLink>
         </li>
         <!-- Language Switcher (Mobile) -->
-        <li>
+        <!-- <li>
           <NuxtLink :to="changeLanguage()" class="block py-2">
             {{ locale === "ar" ? "English" : "عربي" }}
           </NuxtLink>
-        </li>
+        </li> -->
         <!-- Logout (Mobile) -->
         <li>
           <NuxtLink to="/" @click="handleLogout"
@@ -186,7 +188,7 @@ const routes = [
   left: 0;
 }
 
-/* Language Button */
+
 .lang-btn {
   background: rgba(255, 255, 255, 0.2);
   padding: 6px 12px;

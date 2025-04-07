@@ -8,7 +8,7 @@ export function useApi(){
     const config = useRuntimeConfig();
     // Create Axios instance with default configuration
     const apiClient: AxiosInstance = axios.create({
-      baseURL: '',
+      baseURL: 'https://benaa.webstdy.com',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,7 +40,7 @@ export function useApi(){
         if (error.response?.status === 401) {
           const authStore = useAuthStore();
           authStore.clearAuth();
-          navigateTo('/login');
+          navigateTo('/');
         }
     
         if (error.response) {

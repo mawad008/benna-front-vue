@@ -52,3 +52,46 @@ export const useOfficeStore = defineStore('office', {
     }
   }
 });
+
+
+// import { defineStore } from 'pinia';
+// import { useApi } from '@/composables/api';
+
+// interface Office {
+//   id: number;
+//   name: string;
+//   location: string;
+//   ifram: string;
+//   worktime: string;
+//   phone: string;
+//   email: string;
+// }
+
+// export const useOfficeStore = defineStore('office', {
+//   state: () => ({
+//     selectedOfficeId: null as number | null,
+//     offices: [] as Office[],
+//   }),
+//   getters: {
+//     selectedOffice(state) {
+//       return state.offices.find(o => o.id === state.selectedOfficeId) || null;
+//     }
+//   },
+//   actions: {
+//     async fetchOffices() {
+//       try {
+//         const api = useApi();
+//         const response = await api.get<{ data: Office[] }>('/api/Branches');
+//         this.offices = response.data.data;
+//         if (this.offices.length > 0) {
+//           this.selectedOfficeId = this.offices[0].id; 
+//         }
+//       } catch (error) {
+//         console.error('Failed to load offices', error);
+//       }
+//     },
+//     setOffice(id: number) {
+//       this.selectedOfficeId = id;
+//     }
+//   }
+// });
