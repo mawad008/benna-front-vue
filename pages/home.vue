@@ -9,7 +9,7 @@
      
 
       <!-- Donation Button -->
-      <div class="mt-4 md:w-[50%] lg:w-[48%] sm:w-[100%] ">
+      <div class="mt-4 md:w-[50%] lg:w-[48%] w-full ">
         <UButton class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center" @click="handleDonation"
           color="primary" variant="solid" block>
           تبرع الآن

@@ -1,19 +1,19 @@
 <template>
   <div class="flex justify-center md:w-[80%] lg:w-[60%] sm:w-[100%] h-fit  mb-4">
-    <div class="w-4/5 p-8 border border-gray-300 rounded-lg shadow-sm bg-white">
+    <div class="w-full lg:w-4/5 p-8 border border-gray-300 rounded-lg shadow-sm bg-white">
       <!-- Title with Badge -->
       <Title title="تفعيل استقطاع جديد" badge="1" class="mb-6" />
 
       <!-- Donation Amount Selection -->
-      <div class="mt-6 sm:flex sm:flex-col">
+      <div class="mt-6 flex flex-col lg:flex-row">
         <label class="block text-dark font-bold text-sm mb-3">اختر مبلغ المتبرع</label>
-        <div class="flex flex-wrap gap-3 items-center">
+        <div class="flex  lg:flex-row gap-3 flex-wrap items-center">
           <UButton v-for="amount in amounts" :key="amount" :label="amount + ' ر.س'"
             @click="donorStore.setAmount(amount)" variant="outline" color="selector"
             class="px-5 py-2.5 rounded-lg min-w-[80px]" :class="{
               'bg-[#138B96] text-white': donorStore.selectedAmount === amount,
             }" />
-          <div class="flex flex-col items-end flex-1">
+          <div class="flex flex-col items-end lg:flex-1 sm:flex-none ">
             <UInput v-model="donorStore.customAmount" placeholder="مبلغ آخر" class="w-full border-gray-300 px-5 py-2.5"
               color="white" varient="solid" @input="donorStore.setCustomAmount($event.target.value)" />
 
@@ -26,8 +26,8 @@
       </div>
 
       <!-- Start Date and Recurring Donation Type -->
-      <div class="mt-6 sm:flex sm:flex-col ">
-        <div class="flex justify-between items-start gap-6">
+      <div class="mt-6 ">
+        <div class="flex flex-col lg:flex-row justify-between items-start gap-6 ">
           <!-- Start Date -->
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-5">تاريخ بدء الاستقطاع الدوري</label>

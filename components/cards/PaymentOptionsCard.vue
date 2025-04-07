@@ -1,6 +1,6 @@
 <template>
-  <div class="flex justify-center md:w-[80%] lg:w-[60%] sm:w-[100%] h-fit mb-4">
-    <div class="w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white">
+  <div class="flex justify-center md:w-[80%] lg:w-[60%] w-full h-fit mb-4">
+    <div class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white">
       <!-- Title with Badge -->
       <Title title="خيارات الدفع المتاحة" badge="3" class="mb-4 text-end" />
 
