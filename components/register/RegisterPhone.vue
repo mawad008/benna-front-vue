@@ -75,6 +75,9 @@ const onSubmit = handleSubmit(() => {
   store.phone = phone.value;
   store.nextStep();
 });
+
+
+
 </script>
 
 <style scoped>
