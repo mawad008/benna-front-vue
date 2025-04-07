@@ -67,14 +67,14 @@ const validateField = () => {
 };
 
 
-// const onSubmit = handleSubmit(() => {
-//   store.nextStep();
-// });
+const onSubmit = handleSubmit(() => {
+  store.nextStep();
+});
 // const loading = ref(false);
 
-const onSubmit = handleSubmit(async () => {
+// const onSubmit = handleSubmit(async () => {
   // loading.value = true;
-  await store.Register();
+  // await store.Register();
   // loading.value = false;
-});
+// });
 </script>

@@ -20,14 +20,14 @@
         <!-- Address -->
         <div class="flex items-center gap-4">
           <img src="/address.png" alt="Address Icon" class="w-5 h-5" />
-          <p class="text-gray-700">{{ selectedOfficeDetails.address }}</p>
+          <p class="text-gray-700">{{ selectedOfficeDetails?.address }}</p>
         </div>
 
         <!-- Working Hours -->
         <div class="flex items-center gap-4">
           <img src="/clock.png" alt="Clock Icon" class="w-5 h-5" />
           <p class="text-sm text-gray-600">
-            {{ selectedOfficeDetails.workingHours }}
+            {{ selectedOfficeDetails?.workingHours }}
           </p>
         </div>
 
@@ -35,11 +35,11 @@
         <div class="flex flex-col gap-4">
           <div class="flex items-center gap-4">
             <img src="/phone.png" alt="Phone Icon" class="w-4 h-5" />
-            <p class="text-gray-700">{{ selectedOfficeDetails.phone1 }}</p>
+            <p class="text-gray-700">{{ selectedOfficeDetails?.phone1 }}</p>
           </div>
           <div class="flex items-center gap-4">
             <img src="/email.png" alt="Mail Icon" class="w-5 h-4" />
-            <p class="text-gray-700">{{ selectedOfficeDetails.email }}</p>
+            <p class="text-gray-700">{{ selectedOfficeDetails?.email }}</p>
           </div>
           <div class="flex items-center gap-4">
             <img src="/fax.png" alt="Fax Icon" class="w-5 h-5" />
@@ -66,4 +66,6 @@ const officeStore = useOfficeStore();
 const selectedOfficeDetails = computed(
   () => officeStore.offices[officeStore.selectedOffice]
 );
+
+
 </script>

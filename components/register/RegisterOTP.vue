@@ -77,8 +77,8 @@ const validateField = () => {
 
 
 const onSubmit = handleSubmit(async () => {
-  // store.nextStep(); 
-  await store.ValidateOTP(); 
+  store.nextStep(); 
+  // await store.ValidateOTP(); 
 });
 
 
@@ -100,7 +100,7 @@ const startCountdown = () => {
 const resendOtp = async () => {
   if (countdown.value === 0) {
     console.log("Resending OTP...");
-    await store.ResendOTP();
+    // await store.ResendOTP();
     startCountdown();
   }
 };

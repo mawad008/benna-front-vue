@@ -94,6 +94,7 @@ export const useRegisterStore = defineStore("register", {
 
     async Register() {
       const api = useApi();
+      const localePath = useLocalePath();
       try {
         const payload = {
           name: this.name,
@@ -102,6 +103,7 @@ export const useRegisterStore = defineStore("register", {
         const response = await api.post('/api/create/record', payload);
         console.log('Submitted user successfully:', response.data);
          this.nextStep();
+         
       } catch (error: any) {
         if (error.response?.data?.errors?.name) {
           this.errors.name = error.response.data.errors.name[0];
