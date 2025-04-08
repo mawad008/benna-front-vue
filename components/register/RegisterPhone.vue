@@ -32,7 +32,7 @@
       class="mt-6"
       color="primary"
       variant="solid"
-      :disabled="!meta.valid || !phone"
+      :disabled="!phone"
     >
       متابعة التسجيل
     </UButton>
@@ -51,25 +51,27 @@ const store = useRegisterStore();
 const schema = yup.object({
   phone: yup
     .string()
-    .required("")
+    .required("يرجى إدخال رقم الجوال")
     .test("phone-valid", "رقم الجوال غير صالح", (value) => {
-      const phoneRegex = /^\+?\d{10,14}$/;
-      return phoneRegex.test(value || "");
+      if (!value) return false;
+      const cleaned = value.replace(/\D/g, ""); 
+      return cleaned.length >= 10 && cleaned.length <= 14;
     }),
 });
 
-const { errors, meta, handleSubmit } = useForm({
+const { errors, handleSubmit } = useForm({
   validationSchema: schema,
 });
 
 const { value: phone } = useField<string>("phone");
-
-const handlePhoneValidation = (phoneObject: {
-  valid: boolean;
-  number: string;
-}) => {
-  phone.value = phoneObject.number;
+  const handlePhoneValidation = (phoneObject: { valid: boolean; number: string }) => {
+  if (phoneObject.valid) {
+    phone.value = phoneObject.number;
+  } else {
+    phone.value = ""; 
+  }
 };
+
 
 const onSubmit = handleSubmit(() => {
   store.phone = phone.value;

@@ -82,8 +82,8 @@
         <h2 class="text-xl font-semibold">9. اتصل بنا</h2>
         <p>
           إذا كان لديك أي استفسارات، يُرجى التواصل معنا عبر البريد الإلكتروني
-          <a href="mailto:your@email.com" class="text-blue-600"
-            >your@email.com</a
+          <a href="mailto:benaa@email.com" class="text-blue-600"
+            >benaa@email.com</a
           >.
         </p>
       </section>

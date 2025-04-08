@@ -5,13 +5,13 @@ export default defineNuxtConfig({
   modules:["@pinia/nuxt" , "@nuxt/ui" , "@nuxtjs/tailwindcss" , "@nuxtjs/i18n", ],
   i18n: {
     locales: [
-      {
-        code: "en",
-        language: "en",
-        name: "EN",
-        dir: "ltr",
-        file: "en.json",
-      },
+      // {
+      //   code: "en",
+      //   language: "en",
+      //   name: "EN",
+      //   dir: "ltr",
+      //   file: "en.json",
+      // },
       {
         code: "ar",
         language: "ar",
@@ -22,7 +22,6 @@ export default defineNuxtConfig({
     ],
     defaultLocale: "ar",
     lazy: true,
-    legacy:false,
     langDir: "lang",
     strategy: "prefix_and_default",
     detectBrowserLanguage: {
