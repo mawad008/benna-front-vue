@@ -5,8 +5,9 @@
       <Title title="تفعيل استقطاع جديد" badge="1" class="mb-6" />
 
       <!-- Donation Amount Selection -->
+      
+      <label class="block text-dark font-bold text-sm mb-3">اختر مبلغ المتبرع</label>
       <div class="mt-6 flex flex-col lg:flex-row">
-        <label class="block text-dark font-bold text-sm mb-3">اختر مبلغ المتبرع</label>
         <div class="flex  lg:flex-row gap-3 flex-wrap items-center">
           <UButton v-for="amount in amounts" :key="amount" :label="amount + ' ر.س'"
             @click="donorStore.setAmount(amount)" variant="outline" color="selector"
