@@ -1,20 +1,28 @@
 <template>
   <Hero />
-  <div class=" flex flex-col items-center bg-gray-50 py-12">
-    <div class="w-full  flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8">
-      <!-- Cards -->
-      <DonationCard />
-      <DonorNameCard />
-      <PaymentOptionsCard />
-     
+  <div class="flex flex-col items-center bg-gray-50 py-12">
+    <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8">
+      <!-- Show these cards only before payment -->
+      <template v-if="!showPayment">
+        <DonationCard />
+        <DonorNameCard />
+        <div class="mt-4 md:w-[50%] lg:w-[48%] w-full">
+          <UButton
+            class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center"
+            @click="handleDonation"
+            color="primary"
+            variant="solid"
+            block
+          >
+            ادفع الان
+          </UButton>
+        </div>
+      </template>
 
-      <!-- Donation Button -->
-      <div class="mt-4 md:w-[50%] lg:w-[48%] w-full ">
-        <UButton class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center" @click="handleDonation"
-          color="primary" variant="solid" block>
-          تبرع الآن
-        </UButton>
-      </div>
+      <!-- Show payment card after user clicks pay -->
+      <template v-else>
+        <MoyasarPayment />
+      </template>
     </div>
   </div>
 
@@ -27,7 +35,8 @@ import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
 import SuccessModal from "@/components/modals/SuccessModal.vue";
 import { useDonationStore } from "@/stores/donation/donationStore";
-import PaymentOptionsCard from "@/components/cards/PaymentOptionsCard.vue";
+// import PaymentOptionsCard from "@/components/cards/PaymentOptionsCard.vue";
+import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
 
 definePageMeta({
   layout: "default",
@@ -36,12 +45,16 @@ definePageMeta({
 const donationStore = useDonationStore();
 const successModalRef = ref(null);
 
+const showPayment = ref(false);
+
 const handleDonation = async () => {
+  showPayment.value = true;
   await donationStore.submitDonation();
   if (!donationStore.submissionError) {
-    successModalRef.value?.openModal();
+    // successModalRef.value?.openModal();
   }
 };
+
 </script>
 
 <style scoped>

@@ -25,10 +25,10 @@ export default defineNuxtConfig({
     langDir: "lang",
     strategy: "prefix_and_default",
     detectBrowserLanguage: {
-      useCookie: true, // Enable cookie usage
-      cookieKey: "i18n_redirected", // Name of the cookie
-      redirectOn: "root", // Redirect only on the root path
-      alwaysRedirect: false, // Disable to avoid redirecting every visit
+      useCookie: true,
+      cookieKey: "i18n_redirected", 
+      redirectOn: "root", 
+      alwaysRedirect: false, 
       
     },
     vueI18n: './i18n.config.ts'
@@ -41,9 +41,10 @@ export default defineNuxtConfig({
       },
       link:[
         // { rel: "icon", type: "image/svg", href: "/fav.svg" },
+        { rel: "stylesheet", href: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.css" },
       ],
       script: [
-        
+        { src: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js" , type: "text/javascript" },
       ],
     },
   },
