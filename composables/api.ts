@@ -1,24 +1,19 @@
-// composables/api.ts
-
 import { useRuntimeConfig , navigateTo } from "#app";
 import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse , InternalAxiosRequestConfig  } from 'axios';
 import { useAuthStore } from '@/stores/auth';
 export function useApi(){
     const config = useRuntimeConfig();
-    // Create Axios instance with default configuration
     const apiClient: AxiosInstance = axios.create({
       baseURL: 'https://benaa.webstdy.com',
       headers: {
         'Content-Type': 'application/json',
       },
-      timeout: 10000, // Set a timeout
+      timeout: 10000, 
     });
-    
-    // Interceptors for request and response
+        //  for request and response
     apiClient.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        // Add Authorization token if available
         let token;
         if(process.client){
              token = localStorage.getItem('token');
@@ -36,7 +31,6 @@ export function useApi(){
     apiClient.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error) => {
-        // Handle errors globally
         if (error.response?.status === 401) {
           const authStore = useAuthStore();
           authStore.clearAuth();

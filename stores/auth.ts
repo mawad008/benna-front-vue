@@ -24,14 +24,14 @@ interface ApiResponse<T> {
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: null as User | null, // Holds the logged-in user data
-        token: null as string | null, // Holds the authentication token
+        user: null as User | null, 
+        token: null as string | null, 
         pendingLogin: false,
         errorsLogin: undefined,
         errorsRegister: undefined,
     }),
     getters: {
-        isLoggedIn: (state) => !!state.token, // Returns true if token exists
+        isLoggedIn: (state) => !!state.token, 
     },
     actions: {
         async login(form: any) {
@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
                 }
             } catch (error) {
                 this.pendingLogin = false;
-                const axiosError = error as AxiosError; // Cast error to AxiosError
+                const axiosError = error as AxiosError; 
                 this.errorsRegister = axiosError.response?.data?.errors;
             
             }
@@ -79,14 +79,14 @@ export const useAuthStore = defineStore('auth', {
             router.push(localePath('/'));
         },
         initializeAuth() {
-            // Restore token from localStorage
+           
             if (process.client) {
                 const token = localStorage.getItem('token');
                 const user = localStorage.getItem('user');
                 if (token && user) {
                     this.token = token;
                     this.user = JSON.parse(user);
-                    // Optionally fetch user data with the token
+                   
                 }
             }
         },

@@ -4,7 +4,7 @@ export const useDonorStore = defineStore("donor", {
   state: () => ({
     donorName: "",
     customAmount: "",
-    selectedAmount: null as number | null,
+    selectedAmount: "" as string,
     recurringType: "daily",
     startDate: new Date(),
     errors: {
@@ -15,14 +15,14 @@ export const useDonorStore = defineStore("donor", {
     },
   }),
   actions: {
-    setAmount(amount: number) {
-      this.selectedAmount = this.selectedAmount === amount ? null : amount;
+    setAmount(amount: string) {
+      this.selectedAmount = this.selectedAmount === amount ? "" : amount;
       this.customAmount = "";
       this.errors.amount = "";
     },
     setCustomAmount(value: string) {
       this.customAmount = value.replace(/\D/g, "");
-      this.selectedAmount = null;
+      this.selectedAmount = "";
       this.errors.amount = this.customAmount ? "" : "يرجى إدخال مبلغ صالح";
     },
     validateDonor() {

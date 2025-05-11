@@ -23,7 +23,7 @@ useHead({
   title: computed(() => {
     const pageTitle =
       {
-        "/home": "Home",
+        "/": "Home",
         "/contact": "Contact",
         "/donate": "Donate",
         "/terms": "Terms",

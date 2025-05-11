@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-
+import { useApi } from '@/composables/api';
 export const useContactStore = defineStore('contact', {
   state: () => ({
     type: 'message', 
@@ -25,6 +25,21 @@ export const useContactStore = defineStore('contact', {
       this.phone = '';
       this.message = '';
       this.errors = { fullName: '', phone: '', message: '' };
+    },
+    async sendMessage() {
+      if (!this.validateForm()) return;
+      try {
+        const api = useApi();
+        await api.post('/api/Contact', {
+          type: this.type,
+          fullName: this.fullName,
+          phone: this.phone,
+          message: this.message,
+        });
+        this.resetForm();
+      } catch (error) {
+        console.error('Failed to send message', error);
+      }
     },
   },
 });

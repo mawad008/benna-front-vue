@@ -1,82 +1,81 @@
 <template>
-  <div class="h-screen flex flex-col md:flex-row relative">
-    <!-- Background Section -->
-    <div class="absolute md:relative inset-0 h-full lg:w-[50%] w-full bg-[url('/bg.png')] bg-cover bg-center">
-      <div class="hidden md:flex justify-center items-center h-full">
-        <img src="/heart-hands.png" alt="Heart Hands" class="w-45" />
-      </div>
-    </div>
-
-    <!-- Form Section -->
-    <div class="absolute inset-0 md:relative md:w-1/2 flex justify-center items-center p-4">
-      <div class="w-full max-w-sm md:w-full md:max-w-none md:h-full bg-white/30 backdrop-blur-md rounded-lg p-6 
-                  md:bg-white md:backdrop-blur-none md:flex md:items-center md:justify-center">
-
-        <div class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px]  relative">
-          <div
-            class="lg:w-40 lg:h-40 md:w-32 md:h-32 flex items-center justify-center rounded-full bg-gradient-to-b from-[#169FAE] to-[#138B96] p-2 mb-4">
-            <img src="/logo.png" alt="Logo" class="w-[50%] h-[50%]" />
-          </div>
-
-          <p class="text-dark mb-6 font-bold text-center">
-            جمعية بناء لرعاية الأيتام ترخيص 568
-          </p>
-
-          <Transition :name="store.transitionDirection" mode="out-in">
-            <component :is="currentStepComponent"></component>
-          </Transition>
+  <Hero />
+  <div class="flex flex-col items-center bg-gray-50 py-12">
+    <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8">
+      <template v-if="!showPayment">
+        <DonationCard />
+        <DonorNameCard />
+        <div class="mt-4 md:w-[50%] lg:w-[48%] w-full">
+          <UButton
+            class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center"
+            @click="isLoggedIn() ? handleDonation() : openLoginModal()"
+            color="primary"
+            variant="solid"
+            block
+          >
+            ادفع الان
+          </UButton>
         </div>
-      </div>
+      </template>
+
+      <template v-else>
+        <MoyasarPayment />
+      </template>
     </div>
   </div>
+
+  <SuccessModal ref="successModalRef" />
+  <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
 </template>
 
-
-<script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue';
+<script setup>
+import Hero from "@/components/ui/Hero.vue";
+import DonationCard from "@/components/cards/DonationCard.vue";
+import DonorNameCard from "@/components/cards/DonorNameCard.vue";
+import SuccessModal from "@/components/modals/SuccessModal.vue";
+import { useDonationStore } from "@/stores/donation/donationStore";
 import { useRegisterStore } from '@/stores/register';
+import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
+import LoginModal from "@/components/modals/LoginModal.vue";
 definePageMeta({
-  layout: "auth",
+  layout: "default",
 });
 
+const donationStore = useDonationStore();
+const successModalRef = ref(null);
+const loginModalRef = ref(null);
+const showPayment = ref(false);
+const isLoginOpen = ref(false);
 
-const store = useRegisterStore();
+const handleDonation = async () => {
+  showPayment.value = true;
+  await donationStore.submitDonation();
+  if (!donationStore.submissionError) {
+    showPayment.value = false;
+    isLoginOpen.value = true;
+  }
+};
 
-const steps = [
-  defineAsyncComponent(() => import('@/components/register/RegisterPhone.vue')),
-  defineAsyncComponent(() => import('@/components/register/RegisterName.vue')),
-  defineAsyncComponent(() => import('@/components/register/RegisterOTP.vue')),
-  defineAsyncComponent(() => import('@/components/register/RegisterSuccess.vue'))
-];
+const isLoggedIn = () => {
+  const authStore = useAuthStore(); 
+  return authStore.isLoggedIn;
+}
+const openLoginModal = () => {
+  const store = useRegisterStore();
+  if (store) store.step = 0;
+  isLoginOpen.value = true;
+};
 
-const currentStepComponent = computed(() => steps[store.step]);
+
+
 </script>
 
 <style scoped>
-.slide-left-enter-active,
-.slide-right-leave-active,
-.slide-right-enter-active,
-.slide-left-leave-active {
-  transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
+button {
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.slide-left-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-.slide-left-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
+button:hover {
+  transform: translateY(-2px);
 }
 </style>

@@ -100,7 +100,7 @@ export const useRegisterStore = defineStore("register", {
           name: this.name,
           phone: this.phone, 
         };
-        const response = await api.post('/api/create/record', payload);
+        const response = await api.post('/api/register', payload);
         console.log('Submitted user successfully:', response.data);
          this.nextStep();
          
