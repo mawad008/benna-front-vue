@@ -6,21 +6,17 @@
     <div class="text-right mb-2 text-dark font-medium">رقم الجوال</div>
     <VueTelInput
       v-model="phone"
-      mode="international"
+      mode="national"
       :defaultCountry="'SA'"
-      :inputOptions="{
-        styleClasses: 'custom-input',
-      }"
-      :dropdownOptions="{
-        showDialCodeInSelection: true,
-        showFlags:true,
-        showSearchBox: true,
-        searchBoxPlaceholder:'Search country code',
-        styleClasses: 'custom-dropdown',
-      }"
+      :disabledFetchingCountry="true"
+      :enabledCountryCode="false"
+      :onlyCountries="['SA']"
+      :inputOptions="{ styleClasses: 'custom-input' }"
+      :dropdownOptions="{ styleClasses: 'custom-dropdown' }"
       @validate="handlePhoneValidation"
       class="w-full custom-tel-input"
     />
+
     <p v-if="errors.phone" class="text-red-500 text-xs mt-1 text-right">
       {{ errors.phone }}
     </p>
@@ -52,12 +48,12 @@ const schema = yup.object({
   phone: yup
     .string()
     .required("يرجى إدخال رقم الجوال")
-    .test("phone-valid", "رقم الجوال غير صالح", (value) => {
-      if (!value) return false;
-      const cleaned = value.replace(/\D/g, ""); 
-      return cleaned.length >= 10 && cleaned.length <= 14;
-    }),
+    .transform((value) => value.replace(/\D/g, ""))
+    .matches(/^05\d{8}$/, "رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام"),
 });
+
+
+
 
 const { errors, handleSubmit } = useForm({
   validationSchema: schema,
@@ -66,20 +62,18 @@ const { errors, handleSubmit } = useForm({
 const { value: phone } = useField<string>("phone");
   const handlePhoneValidation = (phoneObject: { valid: boolean; number: string }) => {
   if (phoneObject.valid) {
-    phone.value = phoneObject.number;
+    phone.value = phoneObject.number.replace(/\D/g, "");
+
   } else {
-    phone.value = ""; 
+    phone.value = "";
   }
 };
 
 
 const onSubmit = handleSubmit(() => {
-  store.phone = phone.value;
+  store.phone = phone.value.replace(/\D/g, "");
   store.nextStep();
 });
-
-
-
 </script>
 
 <style scoped>

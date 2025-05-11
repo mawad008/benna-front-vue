@@ -1,15 +1,15 @@
 <template>
-  <div class="fixed inset-0 z-50 bg-white flex overflow-hidden w-[95%] h-[95vh]">
+    <Transition name="fade">
+      <div v-if="isOpen" class="fixed inset-0 z-50 bg-white flex overflow-hidden w-[95%] h-[95vh] border border-gray-200 rounded-lg m-auto">
     <div class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative">
       <div class="flex justify-center items-center w-full">
         <img src="/heart-hands.png" alt="Heart Hands" class="w-45" />
       </div>
     </div>
 
-    <div class="md:hidden absolute inset-0 bg-[url('/bg.png')] bg-cover bg-center z-0">
-      <button @click="closeModal" class="absolute top-4 right-4 z-10">
-        <UButton color="gray" variant="ghost" size="sm" icon="heroicons:x-mark" />
-        Close
+    <div class="inset-0 bg-[url('/bg.png')] bg-cover bg-center z-50">
+      <button @click="closeModal" class="absolute top-5 right-5 z-60" ref="isOpen">
+        <UButton color="gray" variant="ghost" size="lg" icon="heroicons:x-mark" />
       </button>
     </div>
 
@@ -36,6 +36,7 @@
       </div>
     </div>
   </div>
+</Transition>
 </template>
 
 <script setup lang="ts">
@@ -56,14 +57,16 @@ const currentStepComponent = computed(() => steps[store.step]);
 const isOpen = ref(true);
 
 
-const emit = defineEmits(['close']);
+// const emit = defineEmits(['close']);
 
 const closeModal = () => {
+  console.log("close");
   isOpen.value = false;
   document.body.classList.remove('modal-open');
-  emit('close');
+  // emit('close');
 };
-  watch(isOpen, (val) => {
+
+watch(isOpen, (val) => {
   document.body.classList.toggle('modal-open', val);
 });
 </script>

@@ -57,8 +57,9 @@ const handleDonation = async () => {
 };
 
 const isLoggedIn = () => {
-  const authStore = useAuthStore(); 
-  return authStore.isLoggedIn;
+  if(localStorage.getItem('token')){
+    return true;
+  }
 }
 const openLoginModal = () => {
   const store = useRegisterStore();

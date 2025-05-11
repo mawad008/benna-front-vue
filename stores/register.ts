@@ -120,6 +120,8 @@ export const useRegisterStore = defineStore("register", {
         };
         const response = await api.post<{ data: { token: string } }>('/api/valid/otp', payload);
         console.log('Submitted otp successfully:', response.data);
+        this.token = response.data.data.token;
+        localStorage.setItem('token', this.token);
          this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.name) {

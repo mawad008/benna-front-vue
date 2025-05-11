@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/auth';
 export function useApi(){
     const config = useRuntimeConfig();
     const apiClient: AxiosInstance = axios.create({
-      baseURL: 'https://benaa.webstdy.com',
+      baseURL: 'https://ws.donate.benaa.org.sa',
       headers: {
         'Content-Type': 'application/json',
       },

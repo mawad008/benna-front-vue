@@ -10,10 +10,8 @@ export const useDonationStore = defineStore("donation", {
     async submitDonation() {
       const donorStore = useDonorStore();
       // const paymentStore = usePaymentStore();
-
       const isValidDonor = donorStore.validateDonor();
       // const isValidPayment = paymentStore.validatePayment();
-
       // if (!isValidDonor || !isValidPayment) {
         if (!isValidDonor) {
         this.submissionError = "يرجى ملء جميع الحقول المطلوبة بشكل صحيح.";
@@ -35,13 +33,14 @@ export const useDonationStore = defineStore("donation", {
       };
 
       console.log("Submitting donation:", donationData);
-
+      const api = useApi();
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await api.post<{data:{message:string}}>('/api/create/deduction', donationData);
+        
 
         // Reset donor store
         donorStore.donorName = "";
-        donorStore.selectedAmount = null;
+        donorStore.selectedAmount = "";
         donorStore.customAmount = "";
         donorStore.recurringType = "daily";
         donorStore.startDate = new Date();
