@@ -2,16 +2,16 @@ import { defineStore } from "pinia";
 
 export const useDonorStore = defineStore("donor", {
   state: () => ({
-    donorName: "",
-    customAmount: "",
+    donorName: "" as string,
+    customAmount: "" as string,
     selectedAmount: "" as string,
-    recurringType: "daily",
+    recurringType: "daily" as string,
     startDate: new Date(),
     errors: {
-      donorName: "",
-      amount: "",
-      startDate: "",
-      recurringType: "",
+      donorName: "" as string,
+      amount: "" as string,
+      startDate: "" as string,
+      recurringType: "" as string,
     },
   }),
   actions: {

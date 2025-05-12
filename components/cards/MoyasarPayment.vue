@@ -11,15 +11,18 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useDonorStore } from "@/stores/donation/donorStore";
 import Title from "@/components/ui/Title.vue";
 const donorStore = useDonorStore();
+const paymnetAmount = computed(() => {
+  return donorStore.selectedAmount || donorStore.customAmount;
+});
 
 onMounted(() => {
   window.Moyasar.init({
     element: ".mysr-form",
-    amount: Number(donorStore.selectedAmount) * 100,
+    amount: Number(paymnetAmount.value) * 100,
     currency: "SAR",
     description: "Donation",
     publishable_api_key: "pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e",
