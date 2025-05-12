@@ -25,14 +25,14 @@
       >
       <UInput
         id="fullName"
-        v-model="contactStore.fullName"
+        v-model="contactStore.name"
         class="mb-1"
         required
         color="white"
         variant="outline"
       />
-      <p v-if="contactStore.errors.fullName" class="text-red-500 text-sm mb-2">
-        {{ contactStore.errors.fullName }}
+      <p v-if="contactStore.errors.name" class="text-red-500 text-sm mb-2">
+        {{ contactStore.errors.name }}
       </p>
     </div>
 
@@ -63,14 +63,14 @@
       >
       <UTextarea
         id="message"
-        v-model="contactStore.message"
+        v-model="contactStore.note"
         class="mb-1"
         required
         color="white"
         variant="outline"
       />
-      <p v-if="contactStore.errors.message" class="text-red-500 text-sm mb-2">
-        {{ contactStore.errors.message }}
+      <p v-if="contactStore.errors.note" class="text-red-500 text-sm mb-2">
+        {{ contactStore.errors.note }}
       </p>
     </div>
 
@@ -107,8 +107,11 @@ import "vue-tel-input/dist/vue-tel-input.css";
 
 const contactStore = useContactStore();
 const successMessage = ref("");
-const handlePhoneInput = (formattedNumber: string, phoneObject: any) => {
-  contactStore.phone = phoneObject.number.replace(/\D/g, '');
+
+const handlePhoneInput = (phoneObject: { valid: boolean; number: string }) => {
+  if (phoneObject.valid) {
+    contactStore.phone = phoneObject.number.replace(/\D/g, "");
+  }
 };
 
 
@@ -120,6 +123,7 @@ const options = [
 
 const handleSubmit = async () => {
   successMessage.value = "";
+  contactStore.phone = contactStore.phone.replace(/\D/g, "");
   const success = await contactStore.sendMessage();
   if (success) {
     successMessage.value = "تم إرسال النموذج بنجاح!";

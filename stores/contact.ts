@@ -3,20 +3,20 @@ import { useApi } from '@/composables/api';
 export const useContactStore = defineStore('contact', {
   state: () => ({
     type: 'message',
-    fullName: '',
+    name: '',
     phone: '',
-    message: '',
+    note: '',
     loading: false,
     apiError: '',
     errors: {
-      fullName: '',
+      name: '',
       phone: '',
-      message: '',
+      note: '',
     },
   }),
   actions: {
     validateForm() {
-      this.errors.fullName = this.fullName ? '' : 'الاسم مطلوب';
+      this.errors.name = this.name ? '' : 'الاسم مطلوب';
       if (!this.phone) {
         this.errors.phone = 'رقم الجوال مطلوب';
       } else {
@@ -26,15 +26,15 @@ export const useContactStore = defineStore('contact', {
           : 'رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام';
       }
       
-      this.errors.message = this.message ? '' : 'الرسالة مطلوبة';
-      return !this.errors.fullName && !this.errors.phone && !this.errors.message;
+      this.errors.note = this.note ? '' : 'الرسالة مطلوبة';
+      return !this.errors.name && !this.errors.phone && !this.errors.note;
     },
     resetForm() {
       this.type = 'message';
-      this.fullName = '';
+      this.name = '';
       this.phone = '';
-      this.message = '';
-      this.errors = { fullName: '', phone: '', message: '' };
+      this.note = '';
+      this.errors = { name: '', phone: '', note: '' };
       this.apiError = '';
     },
   
@@ -50,10 +50,10 @@ export const useContactStore = defineStore('contact', {
       try {
         const api = useApi();
         await api.post("/api/store/suggestion", {
-          type: this.type,
-          fullName: this.fullName,
+          status: this.type,
+          name: this.name,
           phone: this.phone,
-          message: this.message,
+          note: this.note,
         });
         return true;
       } catch (error) {
