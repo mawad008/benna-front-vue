@@ -1,9 +1,10 @@
 <template>
     <Transition name="fade">
-      <div v-if="isOpen" class="fixed inset-0 z-50 bg-white flex overflow-hidden w-[95%] h-[95vh] border border-gray-200 rounded-lg m-auto">
+      <div v-if="isOpen" class="fixed inset-0 z-50 flex overflow-auto w-[100%] h-[100vh] m-auto bg-[#000]/50">
+      <div  class="fixed inset-0 z-50 bg-white flex overflow-auto w-[95%] h-[95vh] border border-gray-200 rounded-lg m-auto">
     <div class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative">
       <div class="flex justify-center items-center w-full">
-        <img src="/heart-hands.png" alt="Heart Hands" class="w-45" />
+        <img src="/heart-hands.png" alt="Heart Hands" class="w-45 px-5" />
       </div>
     </div>
 
@@ -36,6 +37,7 @@
       </div>
     </div>
   </div>
+</div>
 </Transition>
 </template>
 

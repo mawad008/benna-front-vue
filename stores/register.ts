@@ -63,9 +63,7 @@ export const useRegisterStore = defineStore("register", {
           otp: this.otp,
           phone: this.phone,
         };
-        const response = await api.post<{
-          data: { token: string; user: User };
-        }>("/api/valid/otp", payload);
+        const response = await api.post("/api/valid/otp", payload);
         console.log("Submitted otp successfully:", response.data);
         const { token, user } = response.data;
           authStore.setUser(user, token);
