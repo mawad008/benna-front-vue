@@ -1,62 +1,62 @@
 import { defineStore } from "pinia";
 import { useDonorStore } from "./donorStore";
 import { usePaymentStore } from "./paymentStore";
+import { useApi } from "@/composables/api";
 
 export const useDonationStore = defineStore("donation", {
   state: () => ({
+    loading: false,
     submissionError: "",
   }),
+
   actions: {
     async submitDonation() {
       const donorStore = useDonorStore();
-      // const paymentStore = usePaymentStore();
       const isValidDonor = donorStore.validateDonor();
-      // const isValidPayment = paymentStore.validatePayment();
-      // if (!isValidDonor || !isValidPayment) {
-        if (!isValidDonor) {
+
+      if (!isValidDonor) {
         this.submissionError = "يرجى ملء جميع الحقول المطلوبة بشكل صحيح.";
         return;
       }
 
-      const donationData = {
-        donorName: donorStore.donorName,
+      const payload = {
+        name: donorStore.donorName,
         amount: donorStore.selectedAmount || donorStore.customAmount,
-        recurringType: donorStore.recurringType,
-        startDate: donorStore.startDate,
-        // paymentDetails: {
-        //   selectedPaymentMethod: paymentStore.selectedPaymentMethod,
-        //   cardholderName: paymentStore.cardholderName,
-        //   cardNumber: paymentStore.cardNumber,
-        //   expiryDate: paymentStore.expiryDate,
-        //   cvv: paymentStore.cvv,
-        // },
+        type: donorStore.recurringType,
+        date: donorStore.startDate,
       };
 
-      console.log("Submitting donation:", donationData);
       const api = useApi();
-      try {
-        await api.post<{data:{message:string}}>('/api/create/deduction', donationData);
-        
+      this.loading = true;
+      this.submissionError = "";
 
-        // Reset donor store
+      try {
+        const response = await api.post("/api/create/deduction", payload);
+        console.log("Donation submitted:", response.data);
+
+        // Reset donor form
         donorStore.donorName = "";
         donorStore.selectedAmount = "";
         donorStore.customAmount = "";
         donorStore.recurringType = "daily";
         donorStore.startDate = new Date();
 
-        // Reset payment store
-        // paymentStore.selectedPaymentMethod = "";
-        // paymentStore.cardholderName = "";
-        // paymentStore.cardNumber = "";
-        // paymentStore.expiryDate = "";
-        // paymentStore.cvv = "";
-
         this.submissionError = "";
-        // alert('تم التبرع بنجاح!');
-      } catch (error) {
-        this.submissionError =
-          "حدث خطأ أثناء إرسال التبرع، يرجى المحاولة مرة أخرى.";
+      } catch (error: any) {
+        if (error.response?.data?.errors) {
+          const errors = error.response.data.errors;
+          const firstKey = Object.keys(errors)[0];
+          this.submissionError = errors[firstKey][0];
+        } else if (error.response?.data?.message) {
+          this.submissionError = error.response.data.message;
+        } else {
+          this.submissionError =
+            "حدث خطأ أثناء إرسال التبرع، يرجى المحاولة مرة أخرى.";
+        }
+
+        console.error("Donation error:", error);
+      } finally {
+        this.loading = false;
       }
     },
   },

@@ -10,6 +10,7 @@
       />
       <h2 class="text-xl font-bold text-dark">تسجيل دخول</h2>
     </div>
+
     <div class="text-right mb-2 text-dark font-medium">الاسم الكامل</div>
     <UInput
       v-model="name"
@@ -18,8 +19,8 @@
       @blur="validateField"
       @input="validateField"
     />
-    <p v-if="errors.name" class="text-red-500 text-xs mt-1 text-right">
-      {{ errors.name }}
+    <p v-if="store.errors.name" class="text-red-500 text-xs mt-1 text-right">
+      {{ store.errors.name }}
     </p>
 
     <UButton
@@ -28,7 +29,8 @@
       color="primary"
       variant="solid"
       class="mt-6"
-      :disabled="!meta.valid || !name.trim()"
+      :disabled="!meta.valid || !name.trim() || loading"
+      :loading="loading"
     >
       متابعة التسجيل
     </UButton>
@@ -39,9 +41,9 @@
 import { useRegisterStore } from "@/stores/register";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import { ref, watch } from "vue";
 
 const store = useRegisterStore();
-
 
 const schema = yup.object({
   name: yup
@@ -53,24 +55,22 @@ const schema = yup.object({
 const { errors, meta, handleSubmit } = useForm({
   validationSchema: schema,
   initialValues: {
-    name: store.name, 
+    name: store.name,
   },
 });
 
-
 const { value: name } = useField<string>("name");
 
+const loading = ref(false);
+
+watch(name, (newVal) => {
+  store.name = newVal;
+});
 
 const validateField = () => {
-  store.name = name.value; 
+  store.name = name.value;
   store.validateName();
 };
-
-
-// const onSubmit = handleSubmit(() => {
-//   store.nextStep();
-// });
-const loading = ref(false);
 
 const onSubmit = handleSubmit(async () => {
   loading.value = true;

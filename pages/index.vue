@@ -5,10 +5,27 @@
       <template v-if="!showPayment">
         <DonationCard />
         <DonorNameCard />
+
+        <!-- Error message -->
+        <div
+          v-if="donationStore.submissionError"
+          class="text-red-600 text-sm text-center"
+        >
+          {{ donationStore.submissionError }}
+        </div>
+
         <div class="mt-4 md:w-[50%] lg:w-[48%] w-full">
           <UButton
             class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center"
-            @click="isLoggedIn() ? handleDonation() : openLoginModal()"
+            :loading="donationStore.loading"
+            :disabled="donationStore.loading"
+            @click="authStore.isLoggedIn ? handleDonation() : openLoginModal()"
+            :loading-text="
+              authStore.loading
+                ? 'جاري التحقق من تسجيل الدخول...'
+                : 'جاري التحميل...'
+            "
+            :loading-color="authStore.loading ? 'gray' : 'white'"
             color="primary"
             variant="solid"
             block
@@ -24,7 +41,7 @@
     </div>
   </div>
 
-  <SuccessModal ref="successModalRef" />
+  <!-- <SuccessModal ref="successModalRef" /> -->
   <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
 </template>
 
@@ -32,20 +49,28 @@
 import Hero from "@/components/ui/Hero.vue";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
-import SuccessModal from "@/components/modals/SuccessModal.vue";
-import { useDonationStore } from "@/stores/donation/donationStore";
-import { useRegisterStore } from '@/stores/register';
+// import SuccessModal from "@/components/modals/SuccessModal.vue";
 import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
 import LoginModal from "@/components/modals/LoginModal.vue";
+
+import { useDonationStore } from "@/stores/donation/donationStore";
+import { useRegisterStore } from "@/stores/register";
+import { useAuthStore } from "@/stores/auth";
+
 definePageMeta({
   layout: "default",
 });
 
 const donationStore = useDonationStore();
-const successModalRef = ref(null);
+const authStore = useAuthStore();
+const registerStore = useRegisterStore();
+
+// const successModalRef = ref(null);
 const loginModalRef = ref(null);
 const showPayment = ref(false);
 const isLoginOpen = ref(false);
+
+authStore.init();
 
 const handleDonation = async () => {
   showPayment.value = true;
@@ -56,27 +81,9 @@ const handleDonation = async () => {
   }
 };
 
-const isLoggedIn = () => {
-  if(localStorage.getItem('token')){
-    return true;
-  }
-}
 const openLoginModal = () => {
-  const store = useRegisterStore();
-  if (store) store.step = 0;
+  registerStore.reset();
   isLoginOpen.value = true;
 };
-
-
-
 </script>
 
-<style scoped>
-button {
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-}
-</style>

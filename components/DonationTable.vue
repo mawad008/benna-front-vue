@@ -12,16 +12,30 @@
           <div class="flex gap-4">
             <!-- Status Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium">حالة البيع</label>
-              <USelect v-model="selectedStatus" :options="statusOptions" placeholder="اختر حالة البيع" color="white"
-                variant="outline" />
+              <label class="text-sm text-gray-600 font-medium"
+                >حالة البيع</label
+              >
+              <USelect
+                v-model="selectedStatus"
+                :options="statusOptions"
+                placeholder="اختر حالة البيع"
+                color="white"
+                variant="outline"
+              />
             </div>
 
             <!-- Type Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium">نوع الاستقطاع</label>
-              <USelect v-model="selectedType" :options="typeOptions" placeholder="اختر نوع الاستقطاع" color="white"
-                variant="outline" />
+              <label class="text-sm text-gray-600 font-medium"
+                >نوع الاستقطاع</label
+              >
+              <USelect
+                v-model="selectedType"
+                :options="typeOptions"
+                placeholder="اختر نوع الاستقطاع"
+                color="white"
+                variant="outline"
+              />
             </div>
           </div>
         </div>
@@ -32,17 +46,28 @@
             <i class="i-lucide-search"></i>
             <span>البحث</span>
           </div>
-          <UInput v-model="searchQuery" placeholder="بحث..." class="w-full max-w-md" color="white" variant="outline" />
+          <UInput
+            v-model="searchQuery"
+            placeholder="بحث..."
+            class="w-full max-w-md"
+            color="white"
+            variant="outline"
+          />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable :rows="paginatedData" :columns="columns" class="w-full" :sort-button="{
-      icon: 'i-heroicons-sparkles-20-solid',
-      color: '#111928',
-      variant: 'outline',
-    }">
+    <UTable
+      :rows="paginatedData"
+      :columns="columns"
+      class="w-full"
+      :sort-button="{
+        icon: 'i-heroicons-sparkles-20-solid',
+        color: '#111928',
+        variant: 'outline',
+      }"
+    >
       <!-- Row Number -->
       <template #index-data="{ rowIndex }">
         <span class="text-gray-900">
@@ -60,7 +85,11 @@
       <!-- Action Column -->
       <template #actions-data="{ row }">
         <UDropdown :items="items(row)">
-          <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" />
+          <UButton
+            color="icon"
+            variant="solid"
+            icon="i-heroicons-ellipsis-vertical-20-solid"
+          />
         </UDropdown>
       </template>
     </UTable>
@@ -69,17 +98,47 @@
     <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
       <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
-          <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          <UButton
+            :disabled="page === 1"
+            @click="page = page - 1"
+            color="icon"
+            class="p-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
             </svg>
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon" class="p-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          <UButton
+            :disabled="page === pageCount"
+            @click="page = page + 1"
+            color="icon"
+            class="p-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
             </svg>
           </UButton>
         </div>
@@ -87,27 +146,44 @@
         <div class="flex text-gray-600 text-sm gap-1">
           <span>{{ filteredData.length }}</span>
           <span>of</span>
-          <span>{{ (page - 1) * pageSize + 1 }}-{{
-            Math.min(page * pageSize, filteredData.length)
-          }}</span>
+          <span
+            >{{ (page - 1) * pageSize + 1 }}-{{
+              Math.min(page * pageSize, filteredData.length)
+            }}</span
+          >
         </div>
       </div>
     </div>
   </div>
-  <EditPayment v-if="isEditModalOpen" :row="selectedRow" @close="isEditModalOpen = false" />
+  <EditPayment
+    v-if="isEditModalOpen"
+    :row="selectedRow"
+    @close="isEditModalOpen = false"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import tableData from "@/assets/data.json";
+// import tableData from "@/assets/data.json";
 import EditPayment from "@/components/modals/EditPayment.vue";
+import type { Deduction } from "@/stores/deductions";
+import { useDeductionsStore } from "@/stores/deductions";
 
-// Search Query
+const props = defineProps<{
+  deductions: Deduction[];
+}>();
+
+// Search and Filters
 const searchQuery = ref("");
-
-// Filter Options
 const selectedStatus = ref("");
 const selectedType = ref("");
+
+// Pagination
+const page = ref(1);
+const pageSize = ref(10);
+
+// Get store instance
+const deductionsStore = useDeductionsStore();
 
 const statusOptions = ["الكل", "مستمر", "متوقف"];
 const typeOptions = ["الكل", "يومي", "اسبوعي", "شهري"];
@@ -150,24 +226,36 @@ const getStatusColor = (status: string) => {
   return status === "مستمر" ? "green" : "red";
 };
 
-// Pagination Variables
-const page = ref(1);
-const pageSize = ref(10);
-
 // Sorting Variables
 const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
 
 // Arabic Normalization Function
 const normalizeArabic = (text: string) => {
-  return text
-    .replace(/[أآإ]/g, "ا")
-    .replace(/ى/g, "ي")
-    .replace(/ة/g, "ه");
+  return text.replace(/[أآإ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه");
 };
-// Computed - Filtered Data 
+// Computed - Filtered Data
+// const filteredData = computed(() => {
+//   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
+//   return tableData.filter((row) => {
+//     const normalizedName = normalizeArabic(row.name.toLowerCase());
+//     const normalizedType = normalizeArabic(row.type.toLowerCase());
+//     return (
+//       (searchQuery.value === "" ||
+//         normalizedName.includes(normalizedQuery) ||
+//         normalizedType.includes(normalizedQuery)) &&
+//       (selectedStatus.value === "الكل" ||
+//         selectedStatus.value === "" ||
+//         row.status === selectedStatus.value) &&
+//       (selectedType.value === "الكل" ||
+//         selectedType.value === "" ||
+//         row.type === selectedType.value)
+//     );
+//   });
+// });
+
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
-  return tableData.filter((row) => {
+  return props.deductions.filter((row) => {
     const normalizedName = normalizeArabic(row.name.toLowerCase());
     const normalizedType = normalizeArabic(row.type.toLowerCase());
     return (
@@ -228,8 +316,28 @@ const updatePaymentData = (row: any) => {
   isEditModalOpen.value = true;
 };
 
-const toggleDonationStatus = (row: any) => {
-  row.status = row.status === "مستمر" ? "متوقف" : "مستمر";
-  localStorage.setItem("tableData", JSON.stringify(tableData));
+// const toggleDonationStatus = (row: any) => {
+//   row.status = row.status === "مستمر" ? "متوقف" : "مستمر";
+//   localStorage.setItem("tableData", JSON.stringify(tableData));
+// };
+
+const emit = defineEmits(["update:deduction"]);
+
+// const toggleDonationStatus = (row: any) => {
+//   const updatedRow = {
+//     ...row,
+//     status: row.status === "مستمر" ? "متوقف" : "مستمر",
+//   };
+//   emit("update:deduction", updatedRow);
+// };
+
+const toggleDonationStatus = async (row: Deduction) => {
+  try {
+    const newStatus = row.status === "مستمر" ? "متوقف" : "مستمر";
+    await deductionsStore.updateDeductionStatus(row.id, newStatus);
+  } catch (error) {
+    // You might want to show an error notification here
+    console.error("Failed to update status:", error);
+  }
 };
 </script>

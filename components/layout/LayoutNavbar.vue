@@ -18,19 +18,33 @@
           </div>
 
           <!-- Logout Dropdown Menu -->
-          <div v-if="isDropdownOpen" class="absolute left-2 top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg">
-            <NuxtLink to="/" @click="handleLogout"
-              class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50">
+          <div
+            v-if="isDropdownOpen"
+            class="absolute left-2 top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg"
+          >
+            <NuxtLink
+              to="/"
+              @click="handleLogout"
+              class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
+              :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
+            >
               <img src="/logout.png" alt="Logout" class="h-4 w-4" />
-              <span>تسجيل الخروج</span>
+              <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
             </NuxtLink>
           </div>
         </div>
 
         <!-- Desktop Navbar -->
-        <ul class="hidden md:flex space-x-6" :class="{ 'space-x-reverse': locale === 'ar' }">
+        <ul
+          class="hidden md:flex space-x-6"
+          :class="{ 'space-x-reverse': locale === 'ar' }"
+        >
           <li v-for="route in routes" :key="route.path">
-            <NuxtLink :to="localePath(route.path)" class="nav-link" exact-active-class="active-link">
+            <NuxtLink
+              :to="localePath(route.path)"
+              class="nav-link"
+              exact-active-class="active-link"
+            >
               {{ $t(route.name) }}
             </NuxtLink>
           </li>
@@ -38,9 +52,12 @@
       </div>
 
       <!-- Logo -->
-      <div class="cursor-pointer" :class="{ 'order-first': locale === 'ar' }"
-        @click="$router.push(localePath('/home'))">
-        <img src="/nav-logo.png" alt="Logo" class="h-18 w-[100%]" />
+      <div
+        class="cursor-pointer"
+        :class="{ 'order-first': locale === 'ar' }"
+        @click="$router.push(localePath('/home'))"
+      >
+        <img src="/nav-logo.png" alt="Logo" class="h-12 w-auto" />
       </div>
 
       <!-- Mobile Menu Button -->
@@ -50,11 +67,17 @@
     </nav>
 
     <!-- Mobile Menu -->
-    <div v-if="isMenuOpen" class="absolute top-18 left-0 w-full bg-[#138b96] md:hidden">
+    <div
+      v-if="isMenuOpen"
+      class="absolute top-16 left-0 w-full bg-[#138b96] md:hidden"
+    >
       <ul class="flex flex-col text-white text-center py-4">
         <li v-for="route in routes" :key="route.path">
-          <NuxtLink :to="localePath(route.path)" class="block py-2 relative mobile-nav-link"
-            exact-active-class="active-mobile-link">
+          <NuxtLink
+            :to="localePath(route.path)"
+            class="block py-2 relative mobile-nav-link"
+            exact-active-class="active-mobile-link"
+          >
             {{ $t(route.name) }}
             <span class="mobile-underline"></span>
           </NuxtLink>
@@ -67,14 +90,19 @@
         </li> -->
         <!-- Logout (Mobile) -->
         <li>
-          <NuxtLink to="/" @click="handleLogout"
-            class="block py-2 text-red-500 flex items-center justify-center space-x-2">
+          <NuxtLink
+            to="/"
+            @click="handleLogout"
+            class="block py-2 text-red-500 flex items-center justify-center space-x-2"
+            :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
+          >
             <img src="/logout.png" alt="Logout" class="h-4 w-4" />
-            <span class="px-2">تسجيل الخروج</span>
+            <span class="px-2">{{
+              locale === "ar" ? "تسجيل الخروج" : "Logout"
+            }}</span>
           </NuxtLink>
         </li>
       </ul>
-
     </div>
   </header>
 </template>
@@ -140,6 +168,16 @@ const routes = [
 </script>
 
 <style scoped>
+
+header {
+  height: 64px; 
+}
+
+@media (min-width: 768px) {
+  header {
+    height: 80px; 
+  }
+}
 .nav-link {
   position: relative;
   padding-bottom: 2px;
@@ -167,6 +205,7 @@ const routes = [
   font-weight: bold;
 }
 
+
 .mobile-nav-link {
   position: relative;
   display: inline-block;
@@ -183,6 +222,7 @@ const routes = [
   transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
 }
 
+.mobile-nav-link:hover .mobile-underline,
 .active-mobile-link .mobile-underline {
   width: 100%;
   left: 0;
@@ -198,5 +238,9 @@ const routes = [
 
 .lang-btn:hover {
   background: rgba(255, 255, 255, 0.4);
+}
+.space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  margin-right: 1.5rem;
+  margin-left: 0;
 }
 </style>
