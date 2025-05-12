@@ -21,7 +21,7 @@ export function useApi() {
     (config: InternalAxiosRequestConfig) => {
       let token;
       if (process.client) {
-        const token = process.client ? localStorage.getItem("token") : null;
+        token = localStorage.getItem("token");
       }
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;

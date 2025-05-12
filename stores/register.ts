@@ -67,8 +67,10 @@ export const useRegisterStore = defineStore("register", {
           data: { token: string; user: User };
         }>("/api/valid/otp", payload);
         console.log("Submitted otp successfully:", response.data);
-        const { token, user } = response.data.data;
-        authStore.setUser(user, token);
+        const { token, user } = response.data;
+          authStore.setUser(user, token);
+          console.log(authStore.user);
+          console.log(authStore.token);
         this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.otp) {

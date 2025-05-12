@@ -22,15 +22,27 @@
             v-if="isDropdownOpen"
             class="absolute left-2 top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg"
           >
+            <template v-if="isLogged">
             <NuxtLink
               to="/"
               @click="handleLogout"
               class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
               :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
             >
-              <img src="/logout.png" alt="Logout" class="h-4 w-4" />
               <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
+              <img src="/logout.png" alt="Logout" class="h-4 w-4" />
             </NuxtLink>
+            </template>
+            <template v-else>
+              <NuxtLink
+                to="/"
+                @click="openLoginModal"
+                class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
+                :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
+              >
+                <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
+              </NuxtLink>
+            </template>
           </div>
         </div>
 
@@ -96,14 +108,15 @@
             class="block py-2 text-red-500 flex items-center justify-center space-x-2"
             :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
           >
-            <img src="/logout.png" alt="Logout" class="h-4 w-4" />
             <span class="px-2">{{
               locale === "ar" ? "تسجيل الخروج" : "Logout"
             }}</span>
+            <img src="/logout.png" alt="Logout" class="h-4 w-4" />
           </NuxtLink>
         </li>
       </ul>
     </div>
+    <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
   </header>
 </template>
 
@@ -114,12 +127,17 @@ import { useI18n } from "vue-i18n";
 import { useLocalePath, useSwitchLocalePath } from "#i18n";
 import { useHead } from "#app";
 import { useRegisterStore } from "@/stores/register";
+import { useAuthStore } from "@/stores/auth";
+import LoginModal from "@/components/modals/LoginModal.vue";
 
+
+const authStore = useAuthStore(); 
 const registerStore = useRegisterStore();
 
 const isMenuOpen = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
 const isDropdownOpen = ref(false);
+const isLoginOpen = ref(false);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -129,7 +147,15 @@ const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
 
+const isLogged = computed(() => authStore.isLoggedIn);
+
+const openLoginModal = () => {
+  isLoginOpen.value = true;
+  registerStore.step = 0;
+};
+
 const handleLogout = () => {
+  authStore.logout();
   registerStore.reset();
   isDropdownOpen.value = false;
   isMenuOpen.value = false;

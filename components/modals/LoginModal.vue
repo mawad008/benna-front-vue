@@ -30,7 +30,7 @@
           </p>
 
           <Transition :name="store.transitionDirection" mode="out-in">
-            <component :is="currentStepComponent"></component>
+            <component :is="currentStepComponent" @close="closeModal"></component>
           </Transition>
         </div>
       </div>
@@ -57,13 +57,12 @@ const currentStepComponent = computed(() => steps[store.step]);
 const isOpen = ref(true);
 
 
-// const emit = defineEmits(['close']);
+ const emit = defineEmits(['close']);
 
 const closeModal = () => {
-  console.log("close");
   isOpen.value = false;
   document.body.classList.remove('modal-open');
-  // emit('close');
+   emit('close');
 };
 
 watch(isOpen, (val) => {

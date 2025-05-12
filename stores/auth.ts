@@ -3,8 +3,8 @@ import { AxiosError } from "axios";
 import { useApi } from "@/composables/api";
 
 interface User {
-  name: string;
-  phone: string;
+  name: string | null;
+  phone: string | null;
 }
 
 interface AuthState {
@@ -31,9 +31,9 @@ export const useAuthStore = defineStore("auth", {
       if (process.client) {
         const token = localStorage.getItem("token");
         const user = localStorage.getItem("user");
-        if (token && user) {
+        if (token) {
           this.token = token;
-          this.user = JSON.parse(user);
+          this.user = user ? JSON.parse(user) : { name: null, phone: null };
         }
       }
     },
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore("auth", {
       this.token = token;
       if (process.client) {
         localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", user ? JSON.stringify(user) :  "");
       }
     },
 
