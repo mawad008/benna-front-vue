@@ -41,7 +41,6 @@
     </div>
   </div>
 
-  <!-- <SuccessModal ref="successModalRef" /> -->
   <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
 </template>
 
@@ -49,10 +48,8 @@
 import Hero from "@/components/ui/Hero.vue";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
-// import SuccessModal from "@/components/modals/SuccessModal.vue";
 import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
 import LoginModal from "@/components/modals/LoginModal.vue";
-
 import { useDonationStore } from "@/stores/donation/donationStore";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
@@ -61,16 +58,24 @@ definePageMeta({
   layout: "default",
 });
 
+const route = useRoute();
+const router = useRouter();
 const donationStore = useDonationStore();
 const authStore = useAuthStore();
 const registerStore = useRegisterStore();
 
-// const successModalRef = ref(null);
 const loginModalRef = ref(null);
 const showPayment = ref(false);
 const isLoginOpen = ref(false);
 
 authStore.init();
+onMounted(() => {
+  if (route.query.comapaign_id) {
+    donationStore.campaign_id = route.query.comapaign_id;
+    // updateUrlParams({ campaign_id: null });
+    console.log(donationStore.campaign_id);
+  }
+});
 
 const handleDonation = async () => {
   showPayment.value = true;
@@ -85,5 +90,13 @@ const openLoginModal = () => {
   registerStore.reset();
   isLoginOpen.value = true;
 };
-</script>
 
+// const updateUrlParams = (params) => {
+//   router.push({
+//     query: {
+//       ...route.query,
+//       ...params
+//     }
+//   });
+// };
+</script>

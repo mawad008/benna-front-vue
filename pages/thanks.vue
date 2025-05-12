@@ -28,7 +28,7 @@ const { post } = useApi();
 
 const createPayment = async () => {
   try {
-    const response = await post("/api/createPayment/", {
+    const response = await post("/api/createPayment", {
       id,
       status,
       amount,

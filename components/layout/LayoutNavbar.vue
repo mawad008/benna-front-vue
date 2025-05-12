@@ -67,7 +67,7 @@
       <div
         class="cursor-pointer"
         :class="{ 'order-first': locale === 'ar' }"
-        @click="$router.push(localePath('/home'))"
+        @click="$router.push(localePath('/'))"
       >
         <img src="/nav-logo.png" alt="Logo" class="h-12 w-auto" />
       </div>
