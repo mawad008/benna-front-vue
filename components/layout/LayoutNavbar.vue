@@ -34,14 +34,13 @@
             </NuxtLink>
             </template>
             <template v-else>
-              <NuxtLink
-                to="/"
+              <button
                 @click="openLoginModal"
                 class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
                 :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
               >
                 <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
-              </NuxtLink>
+              </button>
             </template>
           </div>
         </div>
