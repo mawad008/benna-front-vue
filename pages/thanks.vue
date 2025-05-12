@@ -32,7 +32,7 @@ const createPayment = async () => {
       id,
       status,
       amount,
-      message,
+      // message,
     });
     console.log(response);
   } catch (error) {
