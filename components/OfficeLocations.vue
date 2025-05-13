@@ -7,9 +7,10 @@
 
     <div class="flex flex-col lg:flex-row items-start gap-6">
       <!-- Office Selection Buttons  -->
-      <div class="w-full lg:w-1/4 flex flex-col gap-3">
-        <UButton v-for="(office, key) in officeStore.offices" :key="key" @click="officeStore.setOffice(key)"
-          color="primary" block :variant="officeStore.selectedOffice === key ? 'solid' : 'outline'"
+      <div class="w-full lg:w-1/4 flex flex-col gap-3 overflow-y-auto h-[300px] scrollable-list">
+
+        <UButton v-for="(office, key) in officeStore.offices" :key="key" @click="selectedOfficeId = key"
+          color="primary" block :variant="selectedOfficeId === key ? 'solid' : 'outline'"
           class="text-sm py-2">
           {{ office.name }}
         </UButton>
@@ -20,14 +21,14 @@
         <!-- Address -->
         <div class="flex items-center gap-4">
           <img src="/address.png" alt="Address Icon" class="w-5 h-5" />
-          <p class="text-gray-700">{{ selectedOfficeDetails?.address }}</p>
+          <p class="text-gray-700">{{ selectedOfficeDetails?.location }}</p>
         </div>
 
         <!-- Working Hours -->
         <div class="flex items-center gap-4">
           <img src="/clock.png" alt="Clock Icon" class="w-5 h-5" />
           <p class="text-sm text-gray-600">
-            {{ selectedOfficeDetails?.workingHours }}
+            {{ selectedOfficeDetails?.worktime }}
           </p>
         </div>
 
@@ -35,15 +36,11 @@
         <div class="flex flex-col gap-4">
           <div class="flex items-center gap-4">
             <img src="/phone.png" alt="Phone Icon" class="w-4 h-5" />
-            <p class="text-gray-700">{{ selectedOfficeDetails?.phone1 }}</p>
+            <p class="text-gray-700">{{ selectedOfficeDetails?.phone }}</p>
           </div>
           <div class="flex items-center gap-4">
             <img src="/email.png" alt="Mail Icon" class="w-5 h-4" />
             <p class="text-gray-700">{{ selectedOfficeDetails?.email }}</p>
-          </div>
-          <div class="flex items-center gap-4">
-            <img src="/fax.png" alt="Fax Icon" class="w-5 h-5" />
-            <p class="text-gray-700">{{ selectedOfficeDetails.fax }}</p>
           </div>
 
         </div>
@@ -51,7 +48,7 @@
 
       <!-- Map Section -->
       <div class="w-full lg:w-1/3 flex justify-center">
-        <img src="/map-placeholder.png" alt="Map" class="w-full h-auto rounded-lg shadow-sm" />
+        <iframe :src="selectedOfficeDetails?.ifram" class="w-full h-[300px] rounded-lg shadow-sm" />
       </div>
     </div>
   </div>
@@ -61,11 +58,40 @@
 import Title from "@/components/ui/Title.vue";
 import { useOfficeStore } from "@/stores/officeStore";
 import { computed } from "vue";
-
+const selectedOfficeId = ref(0);
 const officeStore = useOfficeStore();
+onMounted(() => {
+  officeStore.fetchOffices();
+});
 const selectedOfficeDetails = computed(
-  () => officeStore.offices[officeStore.selectedOffice]
+  () => officeStore.offices[selectedOfficeId.value]
 );
 
 
 </script>
+
+<style scoped>
+.scrollable-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb {
+  background: #138B96;
+  border-radius: 4px;
+}
+
+.scrollable-list::-webkit-scrollbar-thumb:hover {
+  background: #138B96; 
+}
+
+.scrollable-list {
+  scrollbar-width: thin;
+  scrollbar-color: #138B96 #f1f1f1;
+  direction: ltr;
+}
+</style>

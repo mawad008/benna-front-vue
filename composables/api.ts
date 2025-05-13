@@ -13,6 +13,7 @@ export function useApi() {
     baseURL: "https://ws.donate.benaa.org.sa",
     headers: {
       "Content-Type": "application/json",
+      // "Content-Language": "ar",
     },
     timeout: 10000,
   });

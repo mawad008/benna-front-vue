@@ -1,5 +1,5 @@
 <template>
-    <Transition name="fade">
+    <Transition name="slide-left">
       <div v-if="isOpen" class="fixed inset-0 z-50 flex overflow-auto w-[100%] h-[100vh] m-auto bg-[#000]/50">
       <div  class="fixed inset-0 z-50 bg-white flex overflow-auto w-[95%] h-[95vh] border border-gray-200 rounded-lg m-auto">
     <div class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative">
