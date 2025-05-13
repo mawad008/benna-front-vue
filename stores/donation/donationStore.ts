@@ -50,7 +50,7 @@ export const useDonationStore = defineStore("donation", {
         donorStore.donorName = "";
         donorStore.selectedAmount = "";
         donorStore.customAmount = "";
-        donorStore.recurringType = "daily";
+        donorStore.recurringType = "day";
         donorStore.startDate = new Date();
 
         this.submissionError = "";

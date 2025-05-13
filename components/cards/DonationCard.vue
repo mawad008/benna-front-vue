@@ -74,9 +74,10 @@ const date = ref(new Date());
 const donorStore = useDonorStore();
 const amounts = [5, 10, 50, 100];
 const types = [
-  { label: "شهري", value: "monthly" },
-  { label: "اسبوعي", value: "weekly" },
-  { label: "يومي", value: "daily" },
+  { label: "شهري", value: "month" },
+  { label: "اسبوعي", value: "week" },
+  { label: "يومي", value: "day" },
+
 ];
 
 const HandleDate = () => {

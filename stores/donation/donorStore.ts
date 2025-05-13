@@ -5,7 +5,7 @@ export const useDonorStore = defineStore("donor", {
     donorName: "" as string,
     customAmount: "" as string,
     selectedAmount: "" as string,
-    recurringType: "daily" as string,
+    recurringType: "day" as string,
     startDate: new Date(),
     errors: {
       donorName: "" as string,
