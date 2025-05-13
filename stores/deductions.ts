@@ -2,11 +2,11 @@ import { defineStore } from "pinia";
 import { useApi } from "@/composables/api";
 interface Deduction {
   id: number;
-  name: string;
   amount: number;
+  name: string;
   date: string;
-  type: "يومي" | "اسبوعي" | "شهري";
-  status: "مستمر" | "متوقف";
+  type: "day" | "week" | "month";
+  status: "continuous" | "stopped";
 }
 
 
@@ -19,11 +19,13 @@ export const useDeductionsStore = defineStore("deductions", {
 
   actions: {
     async fetchDeductions() {
-      const api = useApi();
+      const { get } = useApi();
       this.loading = true;
       try {
-        const response = await api.get<Deduction[]>("/api/deductions");
-        this.deductions = response.data;
+        const response = await get<{ data: Deduction[] }>("/api/deductions");
+        const { data } = response;
+        this.deductions = data.data;
+        // console.log(this.deductions);
       } catch (error: any) {
         this.error = error.message;
       } finally {

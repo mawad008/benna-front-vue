@@ -41,7 +41,7 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/register", payload);
-        console.log("Submitted user successfully:", response.data);
+        // console.log("Submitted user successfully:", response.data);
         this.errors.name = "";
         this.nextStep();
       } catch (error: any) {
@@ -64,11 +64,11 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/valid/otp", payload);
-        console.log("Submitted otp successfully:", response.data);
+        // console.log("Submitted otp successfully:", response.data);
         const { token, user } = response.data;
           authStore.setUser(user, token);
-          console.log(authStore.user);
-          console.log(authStore.token);
+          // console.log(authStore.user);
+          // console.log(authStore.token);
         this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.otp) {
@@ -86,7 +86,7 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/resend/otp", payload);
-        console.log("Resend OTP successfully:", response.data);
+        // console.log("Resend OTP successfully:", response.data);
       } catch (error: any) {
         if (error.response?.data?.errors?.phone) {
           this.errors.phone = error.response.data.errors.phone[0];

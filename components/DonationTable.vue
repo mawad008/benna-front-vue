@@ -21,6 +21,8 @@
                 placeholder="اختر حالة البيع"
                 color="white"
                 variant="outline"
+                option-attribute="label"
+                value-attribute="value"
               />
             </div>
 
@@ -35,6 +37,8 @@
                 placeholder="اختر نوع الاستقطاع"
                 color="white"
                 variant="outline"
+                option-attribute="label"
+                value-attribute="value"
               />
             </div>
           </div>
@@ -64,22 +68,24 @@
       class="w-full"
       :sort-button="{
         icon: 'i-heroicons-sparkles-20-solid',
-        color: '#111928',
+        color: 'white',
         variant: 'outline',
       }"
     >
       <!-- Row Number -->
-      <template #index-data="{ rowIndex }">
-        <span class="text-gray-900">
-          {{ (page - 1) * pageSize + rowIndex + 1 }}
-        </span>
+      <template #index-data="{ index }">
+        <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
       </template>
 
       <!-- Status Badge -->
       <template #status-data="{ row }">
         <UBadge :color="getStatusColor(row.status)" variant="subtle">
-          {{ row.status }}
+          {{ getStatusLabel(row.status) }}
         </UBadge>
+      </template>
+
+      <template #type-data="{ row }">
+        {{ getTypeLabel(row.type) }}
       </template>
 
       <!-- Action Column -->
@@ -144,11 +150,11 @@
         </div>
 
         <div class="flex text-gray-600 text-sm gap-1">
-          <span>{{ filteredData.length }}</span>
+          <span>{{ filteredData?.length }}</span>
           <span>of</span>
           <span
             >{{ (page - 1) * pageSize + 1 }}-{{
-              Math.min(page * pageSize, filteredData.length)
+              Math.min(page * pageSize, filteredData?.length)
             }}</span
           >
         </div>
@@ -166,31 +172,44 @@
 import { ref, computed } from "vue";
 // import tableData from "@/assets/data.json";
 import EditPayment from "@/components/modals/EditPayment.vue";
-import type { Deduction } from "@/stores/deductions";
 import { useDeductionsStore } from "@/stores/deductions";
 
-const props = defineProps<{
-  deductions: Deduction[];
-}>();
+const deductionsStore = useDeductionsStore();
+
+const deductions = ref(deductionsStore.deductions);
+
+// onMounted(() => {
+//   deductionsStore.fetchDeductions();
+//   deductions.value = deductionsStore.deductions;
+//   // console.log(deductions.value);
+// });
+// Pagination
+const page = ref(1);
+const pageSize = ref(10);
+
 
 // Search and Filters
 const searchQuery = ref("");
 const selectedStatus = ref("");
 const selectedType = ref("");
 
-// Pagination
-const page = ref(1);
-const pageSize = ref(10);
 
-// Get store instance
-const deductionsStore = useDeductionsStore();
-
-const statusOptions = ["الكل", "مستمر", "متوقف"];
-const typeOptions = ["الكل", "يومي", "اسبوعي", "شهري"];
+const statusOptions = [
+  { label: "مستمر", value: "continuous" },
+  { label: "متوقف", value: "stopped" },
+];
+const typeOptions = [
+  { label: "يومي", value: "day" },
+  { label: "أسبوعي", value: "week" },
+  { label: "شهري", value: "month" },
+];
+const getGlobalIndex = (rowIndex: number) => {
+  return (page.value - 1) * pageSize.value + rowIndex + 1;
+};
 
 // Table Columns
 const columns = ref([
-  { key: "id", label: "#" },
+  { key: "index", label: "#" },
   { key: "name", label: "اسم المستقطع" },
   { key: "amount", label: "مبلغ المستقطع", sortable: true },
   { key: "date", label: "تاريخ البدء", sortable: true },
@@ -199,7 +218,7 @@ const columns = ref([
   { key: "actions", label: "الإجراءات" },
 ]);
 
-const items = (row) => [
+const items = (row: any) => [
   [
     {
       label: "تحديث بيانات الدفع",
@@ -208,22 +227,45 @@ const items = (row) => [
       click: () => updatePaymentData(row),
     },
     {
-      label: row.status === "مستمر" ? "إيقاف التبرع" : "تفعيل التبرع",
+      label: row.status === "continuous" ? "إيقاف التبرع" : "تفعيل التبرع",
       icon:
-        row.status === "مستمر"
+        row.status === "continuous"
           ? "i-heroicons-pause-20-solid"
           : "i-heroicons-play-20-solid",
       class:
-        row.status === "مستمر"
+        row.status === "continuous"
           ? "text-red-600 hover:bg-green-50"
           : "text-green-600 hover:bg-red-50",
       click: () => toggleDonationStatus(row),
     },
   ],
 ];
+const getStatusLabel = (status: string) => {
+  switch (status) {
+    case "continuous":
+      return "مستمر";
+    case "stopped":
+      return "متوقف";
+    default:
+      return status;
+  }
+};
+
+const getTypeLabel = (type: string) => {
+  switch (type) {
+    case "day":
+      return "يومي";
+    case "week":
+      return "أسبوعي";
+    case "month":
+      return "شهري";
+    default:
+      return type;
+  }
+};
 
 const getStatusColor = (status: string) => {
-  return status === "مستمر" ? "green" : "red";
+  return status === "continuous" ? "green" : "red";
 };
 
 // Sorting Variables
@@ -255,19 +297,15 @@ const normalizeArabic = (text: string) => {
 
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
-  return props.deductions.filter((row) => {
+  return deductions?.value?.filter((row: any) => {
     const normalizedName = normalizeArabic(row.name.toLowerCase());
     const normalizedType = normalizeArabic(row.type.toLowerCase());
     return (
       (searchQuery.value === "" ||
         normalizedName.includes(normalizedQuery) ||
         normalizedType.includes(normalizedQuery)) &&
-      (selectedStatus.value === "الكل" ||
-        selectedStatus.value === "" ||
-        row.status === selectedStatus.value) &&
-      (selectedType.value === "الكل" ||
-        selectedType.value === "" ||
-        row.type === selectedType.value)
+      (selectedStatus.value === "" || row.status === selectedStatus.value) &&
+      (selectedType.value === "" || row.type === selectedType.value)
     );
   });
 });
@@ -294,12 +332,12 @@ const sortedData = computed(() => {
 // Computed - Paginated Data
 const paginatedData = computed(() => {
   const start = (page.value - 1) * pageSize.value;
-  return sortedData.value.slice(start, start + pageSize.value);
+  return sortedData.value?.slice(start, start + pageSize.value);
 });
 
 // Computed - Page Count
 const pageCount = computed(() =>
-  Math.ceil(filteredData.value.length / pageSize.value)
+  Math.ceil(filteredData.value?.length / pageSize.value)
 );
 
 // Sorting Handler
@@ -317,7 +355,7 @@ const updatePaymentData = (row: any) => {
 };
 
 // const toggleDonationStatus = (row: any) => {
-//   row.status = row.status === "مستمر" ? "متوقف" : "مستمر";
+//   row.status = row.status === "continuous" ? "stopped" : "continuous";
 //   localStorage.setItem("tableData", JSON.stringify(tableData));
 // };
 
@@ -330,13 +368,11 @@ const emit = defineEmits(["update:deduction"]);
 //   };
 //   emit("update:deduction", updatedRow);
 // };
-
-const toggleDonationStatus = async (row: Deduction) => {
+const toggleDonationStatus = async (row: any) => {
   try {
-    const newStatus = row.status === "مستمر" ? "متوقف" : "مستمر";
-    await deductionsStore.updateDeductionStatus(row.id, newStatus);
+    row.status = row.status === "continuous" ? "stopped" : "continuous";
+    // await deductionsStore.updateDeductionStatus(row.id, row.status);
   } catch (error) {
-    // You might want to show an error notification here
     console.error("Failed to update status:", error);
   }
 };
