@@ -104,7 +104,7 @@
           <NuxtLink
             to="/"
             @click="handleLogout"
-            class="block py-2 text-red-500 flex items-center justify-center space-x-2"
+            class="block py-2 text-red-800 flex items-center justify-center space-x-2"
             :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
           >
             <span class="px-2">{{
