@@ -1,12 +1,13 @@
 <template>
-  <UModal v-model="isOpen">
-    <div class="p-6">
+<UModal v-model="isOpen" @ui:close="closeModal">
+
+    <div class="p-6" ref="modalContent">
 
       <!-- Title: Edit Donation -->
       <Title title="تعديل طريقة الاستقطاع" badge="1" class="mb-4" />
 
       <!-- Donation Amount Selection -->
-      <div class="mt-4">
+      <div class="mt-4" >
         <label class="block text-dark font-bold text-sm mb-2">اختر مبلغ المتبرع</label>
         <div class="flex flex-wrap gap-2 justify-end">
           <UButton v-for="amount in amounts" :key="amount" :label="`${amount} ر.س`" variant="outline" color="selector"
@@ -80,10 +81,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps } from "vue";
 import Title from "@/components/ui/Title.vue";
+import { ref, onMounted, onBeforeUnmount, defineProps, defineEmits } from "vue";
 
-// Donation amounts and types
+const props = defineProps({
+  row: Object,
+  open: {
+    type: Boolean,
+    default: false,
+  },
+});
+const emit = defineEmits(["update:open"]);
+
+const isOpen = ref(props.open);
+
+watch(() => props.open, (newVal) => {
+  isOpen.value = newVal;
+});
+watch(isOpen, (newVal) => {
+  emit("update:open", newVal);
+});
+
+
+const closeModal = () => {
+  isOpen.value = false;
+};
+
+
 const amounts = [5, 10, 50, 100];
 const types = [
   { label: "شهري", value: "monthly" },
@@ -91,28 +115,13 @@ const types = [
   { label: "يومي", value: "daily" }
 ];
 
-// Props & Emits
-const props = defineProps({
-  row: Object
-});
-const emit = defineEmits(["close"]);
-
-// Local state for modal and editing
-const isOpen = ref(true);
 const editedRow = ref({ ...props.row });
 
-// Payment methods (icons and names)
 const paymentMethods = [
   { id: "visa", name: "Visa", icon: "/visa.png" },
   { id: "mastercard", name: "MasterCard", icon: "/mastercard.png" },
   { id: "mada", name: "Mada", icon: "/mada.png" }
 ];
-
-// Methods
-const closeModal = () => {
-  isOpen.value = false;
-  emit("close");
-};
 
 const saveChanges = () => {
   console.log("Saving changes:", editedRow.value);

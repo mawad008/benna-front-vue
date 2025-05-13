@@ -162,10 +162,9 @@
     </div>
   </div>
   <EditPayment
-    v-if="isEditModalOpen"
-    :row="selectedRow"
-    @close="isEditModalOpen = false"
-  />
+  v-model:open="isEditModalOpen"
+  :row="selectedRow"
+/>
 </template>
 
 <script setup lang="ts">
@@ -240,6 +239,18 @@ const items = (row: any) => [
     },
   ],
 ];
+const toggleDonationStatus = async (row: any) => {
+  try {
+    if(row.status === "stopped"){
+      await deductionsStore.activePayment();
+    }else{
+      await deductionsStore.cancelPayment();
+    }
+    deductionsStore.fetchDeductions();
+  } catch (error) {
+    console.error("Failed to update status:", error);
+  }
+};
 const getStatusLabel = (status: string) => {
   switch (status) {
     case "continuous":
@@ -354,6 +365,7 @@ const updatePaymentData = (row: any) => {
   isEditModalOpen.value = true;
 };
 
+
 // const toggleDonationStatus = (row: any) => {
 //   row.status = row.status === "continuous" ? "stopped" : "continuous";
 //   localStorage.setItem("tableData", JSON.stringify(tableData));
@@ -368,12 +380,5 @@ const emit = defineEmits(["update:deduction"]);
 //   };
 //   emit("update:deduction", updatedRow);
 // };
-const toggleDonationStatus = async (row: any) => {
-  try {
-    row.status = row.status === "continuous" ? "stopped" : "continuous";
-    // await deductionsStore.updateDeductionStatus(row.id, row.status);
-  } catch (error) {
-    console.error("Failed to update status:", error);
-  }
-};
+
 </script>

@@ -32,5 +32,30 @@ export const useDeductionsStore = defineStore("deductions", {
         this.loading = false;
       }
     },
+
+    async cancelPayment() {
+      const { post } = useApi();
+      this.loading = true;
+      try {
+        await post("/api/cancel-payment", { payment_status: "pending" });
+        this.fetchDeductions();
+      } catch (error: any) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
+      }
+    },
+    async activePayment() {
+      const { post } = useApi();
+      this.loading = true;
+      try {
+        await post("/api/active-payment", { payment_status: "active" });
+        this.fetchDeductions();
+      } catch (error: any) {
+        this.error = error.message;
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 });
