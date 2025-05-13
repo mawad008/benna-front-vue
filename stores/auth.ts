@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 import { useApi } from "@/composables/api";
 
 interface User {
+  id: number;
   name: string | null;
   phone: string | null;
 }
@@ -33,7 +34,7 @@ export const useAuthStore = defineStore("auth", {
         const user = localStorage.getItem("user");
         if (token) {
           this.token = token;
-          this.user = user ? JSON.parse(user) : { name: null, phone: null };
+          this.user = user ? JSON.parse(user) : { id: null, name: null, phone: null };
         }
       }
     },
@@ -43,7 +44,7 @@ export const useAuthStore = defineStore("auth", {
       this.token = token;
       if (process.client) {
         localStorage.setItem("token", token);
-        localStorage.setItem("user", user ? JSON.stringify(user) :  "");
+        localStorage.setItem("user", user ? JSON.stringify(user) : "");
       }
     },
 

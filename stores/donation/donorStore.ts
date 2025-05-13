@@ -6,7 +6,7 @@ export const useDonorStore = defineStore("donor", {
     customAmount: "" as string,
     selectedAmount: "" as string,
     recurringType: "day" as string,
-    startDate: new Date(),
+    startDate: "",
     errors: {
       donorName: "" as string,
       amount: "" as string,
@@ -36,9 +36,9 @@ export const useDonorStore = defineStore("donor", {
       this.errors.recurringType = this.recurringType
         ? ""
         : "يرجى اختيار نوع الاستقطاع الدوري";
-      this.errors.startDate = this.validateStartDate()
-        ? ""
-        : "لا يمكن اختيار تاريخ في الماضي";
+      // this.errors.startDate = this.validateStartDate()
+      //   ? ""
+      //   : "لا يمكن اختيار تاريخ في الماضي";
 
       return !Object.values(this.errors).some((error) => error);
     },
@@ -46,7 +46,7 @@ export const useDonorStore = defineStore("donor", {
       this.recurringType = type;
       this.errors.recurringType = "";
     },
-    setStartDate(date: Date) {
+    setStartDate(date: string) {
       this.startDate = date;
       this.errors.startDate = this.validateStartDate()
         ? ""
@@ -54,7 +54,12 @@ export const useDonorStore = defineStore("donor", {
     },
     validateStartDate() {
       const today = new Date();
-      return this.startDate.getTime() >= today.getTime();
-    },
+      const [day, month, year] = this.startDate.split('-').map(Number);
+      const selectedDate = new Date(year, month - 1, day);
+      selectedDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      return selectedDate >= today;
+    }
+    
   },
 });

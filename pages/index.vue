@@ -78,16 +78,17 @@ onMounted(() => {
 });
 
 const handleDonation = async () => {
-  showPayment.value = true;
   await donationStore.submitDonation();
-  if (!donationStore.submissionError) {
-    showPayment.value = false;
-    isLoginOpen.value = true;
-  }
+  showPayment.value = true;
+
+  // if (!donationStore.submissionError) {
+  //   showPayment.value = false;
+  //  isLoginOpen.value = true;
+  // }
 };
 
 const openLoginModal = () => {
-  registerStore.reset();
+  // registerStore.reset();
   isLoginOpen.value = true;
 };
 

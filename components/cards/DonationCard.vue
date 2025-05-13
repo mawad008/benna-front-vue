@@ -33,15 +33,15 @@
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-5">تاريخ بدء الاستقطاع الدوري</label>
             <UPopover :popper="{ placement: 'bottom-start' }">
-              <UButton icon="i-heroicons-calendar-days-20-solid" :label="format(date, 'd MMM, yyy')"
+              <UButton icon="i-heroicons-calendar-days-20-solid" :label="donorStore.startDate"
                 class="w-full px-5 py-2.5" color="icon" />
               <template #panel="{ close }">
                 <DatePicker v-model="date" is-required @close="close" @click="HandleDate" />
               </template>
             </UPopover>
-            <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
+            <!-- <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
               {{ donorStore.errors.startDate }}
-            </p>
+            </p> -->
           </div>
 
           <!-- Recurring Donation Type -->
@@ -79,11 +79,20 @@ const types = [
   { label: "يومي", value: "day" },
 
 ];
+const formatDate = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
 
 const HandleDate = () => {
-  donorStore.setStartDate(date.value);
-
+  const formatted = formatDate(date.value);
+  donorStore.setStartDate(formatted);
+  // console.log(donorStore.startDate);
 }
+
 
 </script>
 

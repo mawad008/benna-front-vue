@@ -31,8 +31,7 @@ onMounted(() => {
     tokenize: true,
     credit_card: {
       save_card: true,
-    },
-    
+    }, 
   });
 });
 </script>

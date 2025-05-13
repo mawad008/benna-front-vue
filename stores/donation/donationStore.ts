@@ -47,11 +47,11 @@ export const useDonationStore = defineStore("donation", {
         console.log("Donation submitted:", response.data);
 
         // Reset donor form
-        donorStore.donorName = "";
-        donorStore.selectedAmount = "";
-        donorStore.customAmount = "";
-        donorStore.recurringType = "day";
-        donorStore.startDate = new Date();
+        // donorStore.donorName = "";
+        // donorStore.selectedAmount = "";
+        // donorStore.customAmount = "";
+        // donorStore.recurringType = "day";
+        // donorStore.startDate = "";
 
         this.submissionError = "";
       } catch (error: any) {
