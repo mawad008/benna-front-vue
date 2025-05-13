@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center md:w-[80%] lg:w-[60%] sm:w-[100%] h-fit  mb-4">
+  <div class="flex justify-center md:w-[80%] lg:w-[60%] sm:w-[100%] h-fit  mb-4" >
     <div class="w-full lg:w-4/5 p-8 border border-gray-300 rounded-lg shadow-sm bg-white">
       <!-- Title with Badge -->
       <Title title="تفعيل استقطاع جديد" badge="1" class="mb-6" />
