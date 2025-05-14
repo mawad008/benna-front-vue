@@ -338,7 +338,7 @@ export default defineAppConfig({
       background: "bg-white dark:bg-white",
       shadow: "shadow-lg",
       rounded: "rounded-md",
-      ring: "ring-1 ring-gray-200 dark:ring-gray-700",
+      ring: "ring-none dark:ring-none",
       base: "relative focus:outline-none overflow-y-auto scroll-py-1",
       divide: "divide-y divide-gray-200 dark:divide-gray-700",
       padding: "p-1",
@@ -347,12 +347,12 @@ export default defineAppConfig({
         rounded: "rounded-md",
         padding: "px-1.5 py-1.5",
         size: "text-sm",
-        active: "bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white",
+        active: "bg-primary-20 dark:bg-primary-20 text-primary dark:text-primary",
         inactive: "text-[#111928] dark:text-[#111928]",
         disabled: "cursor-not-allowed opacity-50",
         icon: {
           base: "flex-shrink-0 w-5 h-5",
-          active: "text-gray-500 dark:text-gray-400",
+          active: "text-primary dark:text-primary",
           inactive: "text-gray-400 dark:text-gray-500",
         },
         transition: {
@@ -382,5 +382,6 @@ export default defineAppConfig({
         },
       },
     },
+
   },
 });

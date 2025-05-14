@@ -37,7 +37,7 @@
         <!-- Button -->
         <div class="mt-4 w-full">
           <UButton
-            class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center hover:bg-[#0f6f77] transition-colors duration-300"
+            class="w-[50%] mx-auto bg-[#138B96] text-white font-bold py-3 rounded-lg text-center hover:bg-[#0f6f77] transition-colors duration-300"
             :loading="donationStore.loading"
             :disabled="donationStore.loading"
             @click="handleDonation"

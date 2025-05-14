@@ -90,7 +90,7 @@
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
+        <UDropdown :items="items(row)" >
           <UButton
             color="icon"
             variant="solid"
@@ -223,6 +223,10 @@ const items = (row: any) => [
       label: "تحديث بيانات الدفع",
       icon: "i-heroicons-pencil-square-20-solid",
       class: "text-blue-600 hover:bg-blue-50",
+      color:"success",
+      ui: {
+        color: "success",
+      },
       click: () => updatePaymentData(row),
     },
     {
