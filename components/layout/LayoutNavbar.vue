@@ -129,7 +129,7 @@ import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
 import LoginModal from "@/components/modals/LoginModal.vue";
 
-
+const toast = useToast();
 const authStore = useAuthStore(); 
 const registerStore = useRegisterStore();
 
@@ -158,6 +158,12 @@ const handleLogout = () => {
   registerStore.reset();
   isDropdownOpen.value = false;
   isMenuOpen.value = false;
+  toast.add({
+    title: 'لقد تم تسجيل الخروج من بناء',
+    description: 'شكرا لك على تبرعك',
+   
+  })
+
 };
 
 onMounted(() => {

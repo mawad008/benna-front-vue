@@ -48,7 +48,12 @@
 
       <!-- Map Section -->
       <div class="w-full lg:w-1/3 flex justify-center">
-        <iframe :src="selectedOfficeDetails?.ifram" class="w-full h-[300px] rounded-lg shadow-sm" />
+        <div v-if="loading">
+          <img src="/map-placeholder.png" alt="Loading" class="w-full h-[300px] rounded-lg shadow-sm" />
+        </div>
+        <div v-else>
+          <iframe :src="selectedOfficeDetails?.ifram" class="w-full h-[300px] rounded-lg shadow-sm" />
+        </div>
       </div>
     </div>
   </div>
@@ -57,11 +62,15 @@
 <script setup lang="ts">
 import Title from "@/components/ui/Title.vue";
 import { useOfficeStore } from "@/stores/officeStore";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 const selectedOfficeId = ref(0);
+const loading = ref(false);
 const officeStore = useOfficeStore();
 onMounted(() => {
-  officeStore.fetchOffices();
+  loading.value = true;
+  officeStore.fetchOffices().then(() => {
+    loading.value = false;
+  });
 });
 const selectedOfficeDetails = computed(
   () => officeStore.offices[selectedOfficeId.value]

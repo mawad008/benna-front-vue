@@ -1,7 +1,7 @@
 <template>
     <Transition name="slide-left">
-      <div v-if="isOpen" class="fixed inset-0 z-50 flex overflow-auto w-[100%] h-[100vh] m-auto bg-[#000]/50">
-      <div  class="fixed inset-0 z-50 bg-white flex overflow-auto w-[95%] h-[95vh] border border-gray-200 rounded-lg m-auto">
+      <div v-if="isOpen" class="fixed inset-0 z-50 flex overflow-y-auto lg:overflow-hidden md:overflow-hidden w-[100%] h-[100vh] m-auto bg-[#000]/50">
+      <div  class="fixed inset-0 z-50 bg-white flex overflow-y-auto lg:overflow-hidden md:overflow-hidden w-[95%] h-[95vh] border border-gray-200 rounded-lg m-auto">
     <div class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative">
       <div class="flex justify-center items-center w-full">
         <img src="/heart-hands.png" alt="Heart Hands" class="w-45 px-5" />
@@ -62,9 +62,10 @@ const isOpen = ref(true);
  const emit = defineEmits(['close']);
 
 const closeModal = () => {
-  isOpen.value = false;
+
   document.body.classList.remove('modal-open');
    emit('close');
+   isOpen.value = false;
 };
 
 watch(isOpen, (val) => {
@@ -74,8 +75,6 @@ watch(isOpen, (val) => {
 
 <style scoped>
 .slide-left-enter-active,
-.slide-right-leave-active,
-.slide-right-enter-active,
 .slide-left-leave-active {
   transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
 }
@@ -85,20 +84,21 @@ watch(isOpen, (val) => {
   opacity: 0;
 }
 
+.slide-left-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slide-left-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
 .slide-left-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-leave-to {
   transform: translateX(100%);
   opacity: 0;
 }
+
 </style>
 
 <style>
