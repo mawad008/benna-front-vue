@@ -36,6 +36,13 @@ export default defineAppConfig({
         red: {
           solid: "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900",
         },
+        yellow: {
+          solid: "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900",
+        },
+      blue:{
+        solid: "bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900",
+
+      }
       },
       variant: {
         solid:

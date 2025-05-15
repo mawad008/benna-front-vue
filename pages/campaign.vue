@@ -66,10 +66,11 @@
     <div>
       <UBreadcrumb :links="links" />
     </div>
-    <p class="text-2xl font-bold mb-4 text-primary">
+    <br />
+    <p class="text-2xl font-bold mb-4 text-dark">
     سجل الحملات
     </p>
-
+    <br />
     <CampaignTable />
   </div>
 </div>
@@ -113,11 +114,19 @@ const links = [
   {
     label: "الرئيسية",
     href: "/",
+    link: true,
+    onClick: () => {
+      navigateTo("/");
+    }
   },
   {
 
     label: "سجل الحملات",
     href: "/campaigns",
+    link: true,
+    onClick: () => {
+      navigateTo("/campaigns");
+    }
   }
 ];
 </script>

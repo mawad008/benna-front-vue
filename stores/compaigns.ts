@@ -22,7 +22,7 @@ export const useCampaignsStore = defineStore("campaigns", {
       const { get } = useApi();
       this.loading = true;
       try {
-        const response = await get<{ data: Campaign[] }>("/api/deductions");
+        const response = await get<{ data: Campaign[] }>("/api/campaigns");
         const { data } = response;
         this.campaigns = data.data;
         // console.log(this.campaigns);

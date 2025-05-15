@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-
+import { useApi } from "@/composables/api";
 
 interface Deduction {
     id: number;
@@ -20,13 +20,15 @@ export const useDeductionsStore = defineStore("deductions", {
     }),
     actions: {
         async fetchDeductions(campaign_id: string | number) {
+            const { get } = useApi();
             try {
                 this.loading = true;
-                const response = await $fetch<{ data: Deduction[] }>(`/api/deductions/${campaign_id}`);
-                this.deductions = response.data;
-            } catch (error) {
+                const response = await get<{ data: Deduction[] }>(`/api/deductions/${campaign_id}`);
+                const { data } = response;
+                this.deductions = data.data;
+            } catch (error: any) {
                 console.error("Error fetching deductions:", error);
-                this.error = error as string;
+                this.error = error.message;
             } finally {
                 this.loading = false;
             }

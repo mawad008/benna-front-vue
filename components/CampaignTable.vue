@@ -191,8 +191,9 @@ const selectedType = ref("");
 
 
 const statusOptions = [
-  { label: "مستمر", value: "continuous" },
-  { label: "متوقف", value: "stopped" },
+  { label: "مستمر", value: 1 },
+  { label: "متوقف", value: 0 },
+  { label: "قيد الانتظار", value: 2 },
 ];
 const typeOptions = [
   { label: "يومي", value: "day" },
@@ -227,13 +228,13 @@ const items = (row: any) => [
       click: () => updatePaymentData(row),
     },
     {
-      label: row.status === "continuous" ? "إيقاف التبرع" : "تفعيل التبرع",
+      label: row.status === 1 ? "إيقاف التبرع" : "تفعيل التبرع",
       icon:
-        row.status === "continuous"
+        row.status === 1
           ? "i-heroicons-pause-20-solid"
           : "i-heroicons-play-20-solid",
       class:
-        row.status === "continuous"
+        row.status === 1
           ? "text-red-600 hover:bg-green-50"
           : "text-green-600 hover:bg-red-50",
       click: () => toggleDonationStatus(row),
@@ -248,7 +249,7 @@ const items = (row: any) => [
 ];
 const toggleDonationStatus = async (row: any) => {
   try {
-    if(row.status === "stopped"){
+    if(row.status === 0){
       await campaignsStore.activePayment();
     }else{
       await campaignsStore.cancelPayment();
@@ -261,32 +262,16 @@ const toggleDonationStatus = async (row: any) => {
 const showTransactions = (row: any) => {
   router.push(`/deduction/${row.id}`);
 };
-const getStatusLabel = (status: string) => {
-  switch (status) {
-    case "continuous":
-      return "مستمر";
-    case "stopped":
-      return "متوقف";
-    default:
-      return status;
-  }
+const getStatusLabel = (status: number) => {
+  return status === 1 ? "مستمر" : status === 2 ? "متوقف" : "قيد الانتظار";
 };
 
 const getTypeLabel = (type: string) => {
-  switch (type) {
-    case "day":
-      return "يومي";
-    case "week":
-      return "أسبوعي";
-    case "month":
-      return "شهري";
-    default:
-      return type;
-  }
+  return type === "day" ? "يومي" : type === "week" ? "أسبوعي" : "شهري";
 };
 
-const getStatusColor = (status: string) => {
-  return status === "continuous" ? "green" : "red";
+const getStatusColor = (status: number) => {
+  return status === 1 ? "blue" : status === 2 ? "yellow" : "red";
 };
 
 // Sorting Variables
@@ -306,13 +291,13 @@ const filteredData = computed(() => {
       (searchQuery.value === "" ||
         normalizedName.includes(normalizedQuery) ||
         normalizedType.includes(normalizedQuery)) &&
-      (selectedStatus.value === "" || row.status === selectedStatus.value) &&
+      (selectedStatus.value === "" || row.status === Number(selectedStatus.value)) &&
       (selectedType.value === "" || row.type === selectedType.value)
     );
   });
 });
 
-// Computed - Sorted Data
+// Sorted Data
 const sortedData = computed(() => {
   if (!sorting.value) return filteredData.value;
 
@@ -331,13 +316,13 @@ const sortedData = computed(() => {
   });
 });
 
-// Computed - Paginated Data
+// Paginated Data
 const paginatedData = computed(() => {
   const start = (page.value - 1) * pageSize.value;
   return sortedData.value?.slice(start, start + pageSize.value);
 });
 
-// Computed - Page Count
+// Page Count
 const pageCount = computed(() =>
   Math.ceil(filteredData.value?.length / pageSize.value)
 );

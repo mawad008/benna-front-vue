@@ -134,16 +134,14 @@
   
   <script setup lang="ts">
   import { ref, computed } from "vue";
-  import { useDeductionsStore } from "@/stores/deductions";
-  
-  const deductionsStore = useDeductionsStore();
-  
-  const deductions = ref(deductionsStore.deductions);
-  
+
+
+  const props = defineProps<{deductions: any}>();
+  const deductions = ref(props.deductions);
+
   // Pagination
   const page = ref(1);
   const pageSize = ref(10);
-  
   
   // Search and Filters
   const searchQuery = ref("");
@@ -162,20 +160,19 @@
     { key: "status", label: "حالة الاستقطاع" },
   ]);
   
-  const selectedStatus = ref<number | null>(null);
+  const selectedStatus = ref("");
   const statusOptions = [
     { label: "تم الدفع", value: 1 },
     { label: "فشل الدفع", value: 0 },
   ];
 
-  const getStatusColor = (status: number) => {
-    return status === 1 ? "success" : "danger";
-  };
-
   const getStatusLabel = (status: number) => {
     return status === 1 ? "تم الدفع" : "فشل الدفع";
   };
 
+  const getStatusColor = (status: number) => {
+    return status === 1 ? "green" : "red";
+  };
   
   // Sorting Variables
   const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
@@ -190,14 +187,18 @@
     const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
     return deductions?.value?.filter((row: any) => {
       const normalizedName = normalizeArabic(row.name.toLowerCase());
+      const normalizedCampaignName = normalizeArabic(row.campaign_name.toLowerCase());
+
       return (
         (searchQuery.value === "" ||
-          normalizedName.includes(normalizedQuery))
+          normalizedName.includes(normalizedQuery) ||
+          normalizedCampaignName.includes(normalizedQuery)) &&
+          (selectedStatus.value === "" || row.status === Number(selectedStatus.value))
       );
     });
   });
   
-  // Computed - Sorted Data
+  // Sorted Data
   const sortedData = computed(() => {
     if (!sorting.value) return filteredData.value;
   
@@ -216,13 +217,13 @@
     });
   });
   
-  // Computed - Paginated Data
+  // Paginated Data
   const paginatedData = computed(() => {
     const start = (page.value - 1) * pageSize.value;
     return sortedData.value?.slice(start, start + pageSize.value);
   });
   
-  // Computed - Page Count
+  // Page Count
   const pageCount = computed(() =>
     Math.ceil(filteredData.value?.length / pageSize.value)
   );
