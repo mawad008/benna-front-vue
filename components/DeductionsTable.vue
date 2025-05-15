@@ -13,28 +13,12 @@
               <!-- Status Filter -->
               <div class="flex flex-col gap-1">
                 <label class="text-sm text-gray-600 font-medium"
-                  >حالة البيع</label
+                  >حالة الدفع</label
                 >
                 <USelect
                   v-model="selectedStatus"
                   :options="statusOptions"
-                  placeholder="اختر حالة البيع"
-                  color="white"
-                  variant="outline"
-                  option-attribute="label"
-                  value-attribute="value"
-                />
-              </div>
-  
-              <!-- Type Filter -->
-              <div class="flex flex-col gap-1">
-                <label class="text-sm text-gray-600 font-medium"
-                  >نوع الاستقطاع</label
-                >
-                <USelect
-                  v-model="selectedType"
-                  :options="typeOptions"
-                  placeholder="اختر نوع الاستقطاع"
+                  placeholder="اختر حالة الدفع"
                   color="white"
                   variant="outline"
                   option-attribute="label"
@@ -82,21 +66,6 @@
           <UBadge :color="getStatusColor(row.status)" variant="subtle">
             {{ getStatusLabel(row.status) }}
           </UBadge>
-        </template>
-  
-        <template #type-data="{ row }">
-          {{ getTypeLabel(row.type) }}
-        </template>
-  
-        <!-- Action Column -->
-        <template #actions-data="{ row }">
-          <UDropdown :items="items(row)" >
-            <UButton
-              color="icon"
-              variant="solid"
-              icon="i-heroicons-ellipsis-vertical-20-solid"
-            />
-          </UDropdown>
         </template>
       </UTable>
   
@@ -161,15 +130,10 @@
         </div>
       </div>
     </div>
-    <EditPayment
-    v-model:open="isEditModalOpen"
-    :row="selectedRow"
-  />
   </template>
   
   <script setup lang="ts">
   import { ref, computed } from "vue";
-  import EditPayment from "@/components/modals/EditPayment.vue";
   import { useDeductionsStore } from "@/stores/deductions";
   
   const deductionsStore = useDeductionsStore();
@@ -183,19 +147,7 @@
   
   // Search and Filters
   const searchQuery = ref("");
-  const selectedStatus = ref("");
-  const selectedType = ref("");
   
-  
-  const statusOptions = [
-    { label: "مستمر", value: "continuous" },
-    { label: "متوقف", value: "stopped" },
-  ];
-  const typeOptions = [
-    { label: "يومي", value: "day" },
-    { label: "أسبوعي", value: "week" },
-    { label: "شهري", value: "month" },
-  ];
   const getGlobalIndex = (rowIndex: number) => {
     return (page.value - 1) * pageSize.value + rowIndex + 1;
   };
@@ -204,79 +156,26 @@
   const columns = ref([
     { key: "index", label: "#" },
     { key: "name", label: "اسم المستقطع" },
+    { key: "campaign_name", label: "اسم الحملة" },
     { key: "amount", label: "مبلغ المستقطع", sortable: true },
-    { key: "date", label: "تاريخ البدء", sortable: true },
-    { key: "type", label: "نوع الاستقطاع" },
-    { key: "status", label: "حالة البيع" },
-    { key: "actions", label: "الإجراءات" },
+    { key: "deduction_date", label: "تاريخ الاستقطاع", sortable: true },
+    { key: "status", label: "حالة الاستقطاع" },
   ]);
   
-//   const items = (row: any) => [
-//     [
-//       {
-//         label: "تحديث بيانات الدفع",
-//         icon: "i-heroicons-pencil-square-20-solid",
-//         class: "text-blue-600 hover:bg-blue-50",
-//         color:"success",
-//         ui: {
-//           color: "success",
-//         },
-//         click: () => updatePaymentData(row),
-//       },
-//       {
-//         label: row.status === "continuous" ? "إيقاف التبرع" : "تفعيل التبرع",
-//         icon:
-//           row.status === "continuous"
-//             ? "i-heroicons-pause-20-solid"
-//             : "i-heroicons-play-20-solid",
-//         class:
-//           row.status === "continuous"
-//             ? "text-red-600 hover:bg-green-50"
-//             : "text-green-600 hover:bg-red-50",
-//         click: () => toggleDonationStatus(row),
-//       },
-//     ],
-//   ];
-  const toggleDonationStatus = async (row: any) => {
-    try {
-      if(row.status === "stopped"){
-        await deductionsStore.activePayment();
-      }else{
-        await deductionsStore.cancelPayment();
-      }
-      deductionsStore.fetchDeductions();
-    } catch (error) {
-      console.error("Failed to update status:", error);
-    }
+  const selectedStatus = ref<number | null>(null);
+  const statusOptions = [
+    { label: "تم الدفع", value: 1 },
+    { label: "فشل الدفع", value: 0 },
+  ];
+
+  const getStatusColor = (status: number) => {
+    return status === 1 ? "success" : "danger";
   };
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "continuous":
-        return "مستمر";
-      case "stopped":
-        return "متوقف";
-      default:
-        return status;
-    }
+  const getStatusLabel = (status: number) => {
+    return status === 1 ? "تم الدفع" : "فشل الدفع";
   };
-  
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case "day":
-        return "يومي";
-      case "week":
-        return "أسبوعي";
-      case "month":
-        return "شهري";
-      default:
-        return type;
-    }
-  };
-  
-  const getStatusColor = (status: string) => {
-    return status === "continuous" ? "green" : "red";
-  };
+
   
   // Sorting Variables
   const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
@@ -291,13 +190,9 @@
     const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
     return deductions?.value?.filter((row: any) => {
       const normalizedName = normalizeArabic(row.name.toLowerCase());
-      const normalizedType = normalizeArabic(row.type.toLowerCase());
       return (
         (searchQuery.value === "" ||
-          normalizedName.includes(normalizedQuery) ||
-          normalizedType.includes(normalizedQuery)) &&
-        (selectedStatus.value === "" || row.status === selectedStatus.value) &&
-        (selectedType.value === "" || row.type === selectedType.value)
+          normalizedName.includes(normalizedQuery))
       );
     });
   });
@@ -336,31 +231,7 @@
   const handleSort = (key: string, order: "asc" | "desc" | null) => {
     sorting.value = order ? { key, order } : null;
   };
-  
-  const isEditModalOpen = ref(false);
-  const selectedRow = ref(null);
-  
-  // Update Payment Data
-  const updatePaymentData = (row: any) => {
-    selectedRow.value = row;
-    isEditModalOpen.value = true;
-  };
-  
-  
-  // const toggleDonationStatus = (row: any) => {
-  //   row.status = row.status === "continuous" ? "stopped" : "continuous";
-  //   localStorage.setItem("tableData", JSON.stringify(tableData));
-  // };
-  
-  const emit = defineEmits(["update:deduction"]);
-  
-  // const toggleDonationStatus = (row: any) => {
-  //   const updatedRow = {
-  //     ...row,
-  //     status: row.status === "مستمر" ? "متوقف" : "مستمر",
-  //   };
-  //   emit("update:deduction", updatedRow);
-  // };
+    
   
   </script>
   

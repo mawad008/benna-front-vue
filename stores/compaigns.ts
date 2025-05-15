@@ -57,5 +57,8 @@ export const useCampaignsStore = defineStore("campaigns", {
         this.loading = false;
       }
     },
+    getCampaignName(id: number) {
+      return this.campaigns.find((campaign) => campaign.id === id)?.name;
+    },
   },
 });

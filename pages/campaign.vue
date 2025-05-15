@@ -6,6 +6,7 @@
       جاري التحقق من تسجيل الدخول...
     </div>
 
+
     <!-- Not Logged In -->
     <div v-else-if="!authStore.isLoggedIn" class="flex justify-center h-[calc(50vh-100px)] items-center">
       <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
@@ -62,6 +63,13 @@
 
   <!-- Show Campaigns -->
   <div v-else>
+    <div>
+      <UBreadcrumb :links="links" />
+    </div>
+    <p class="text-2xl font-bold mb-4 text-primary">
+    سجل الحملات
+    </p>
+
     <CampaignTable />
   </div>
 </div>
@@ -98,4 +106,18 @@ onMounted(async () => {
     await campaignsStore.fetchCampaigns();
   }
 });
+
+
+
+const links = [
+  {
+    label: "الرئيسية",
+    href: "/",
+  },
+  {
+
+    label: "سجل الحملات",
+    href: "/campaigns",
+  }
+];
 </script>
