@@ -14,6 +14,7 @@
           class="text-sm py-2">
           {{ office.name }}
         </UButton>
+        <USkeleton v-if="loading || error" class="h-full w-full bg-primary-20" />
       </div>
 
       <!-- Office Details-->
@@ -22,6 +23,7 @@
         <div class="flex items-center gap-4">
           <img src="/address.png" alt="Address Icon" class="w-5 h-5" />
           <p class="text-gray-700">{{ selectedOfficeDetails?.location }}</p>
+          <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
         </div>
 
         <!-- Working Hours -->
@@ -30,6 +32,7 @@
           <p class="text-sm text-gray-600">
             {{ selectedOfficeDetails?.worktime }}
           </p>
+          <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
         </div>
 
         <!-- Contact Information -->
@@ -37,10 +40,12 @@
           <div class="flex items-center gap-4">
             <img src="/phone.png" alt="Phone Icon" class="w-4 h-5" />
             <p class="text-gray-700">{{ selectedOfficeDetails?.phone }}</p>
+            <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
           </div>
           <div class="flex items-center gap-4">
             <img src="/email.png" alt="Mail Icon" class="w-5 h-4" />
             <p class="text-gray-700">{{ selectedOfficeDetails?.email }}</p>
+            <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
           </div>
 
         </div>
@@ -48,7 +53,8 @@
 
       <!-- Map Section -->
       <div class="w-full lg:w-1/3 flex justify-center">
-        <div v-if="loading">
+        <USkeleton v-if="loading || error" class="h-[300px] w-full rounded-lg shadow-sm bg-primary-20" />
+        <div v-else-if="loading">
           <img src="/map-placeholder.png" alt="Loading" class="w-full h-[300px] rounded-lg shadow-sm" />
         </div>
         <div v-else>
@@ -65,11 +71,14 @@ import { useOfficeStore } from "@/stores/officeStore";
 import { computed, onMounted, ref } from "vue";
 const selectedOfficeId = ref(0);
 const loading = ref(false);
+const error = ref(false);
 const officeStore = useOfficeStore();
 onMounted(() => {
   loading.value = true;
   officeStore.fetchOffices().then(() => {
     loading.value = false;
+  }).catch(() => {
+    error.value = true;
   });
 });
 const selectedOfficeDetails = computed(

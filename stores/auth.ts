@@ -11,6 +11,7 @@ interface User {
 interface AuthState {
   user: User | null;
   token: string | null;
+  loading: boolean;
 }
 
 interface ApiResponse<T> {
@@ -21,6 +22,7 @@ export const useAuthStore = defineStore("auth", {
   state: (): AuthState => ({
     user: null,
     token: null,
+    loading: false,
   }),
 
   getters: {
@@ -29,6 +31,7 @@ export const useAuthStore = defineStore("auth", {
 
   actions: {
     init() {
+      this.loading = true;
       if (process.client) {
         const token = localStorage.getItem("token");
         const user = localStorage.getItem("user");
@@ -37,6 +40,7 @@ export const useAuthStore = defineStore("auth", {
           this.user = user ? JSON.parse(user) : { id: null, name: null, phone: null };
         }
       }
+      this.loading = false;
     },
 
     setUser(user: User, token: string) {

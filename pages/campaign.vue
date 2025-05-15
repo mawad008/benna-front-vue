@@ -22,17 +22,17 @@
 
   <!-- Logged In -->
 <div v-else>
-  <!-- Deductions Loading -->
+  <!-- Campaigns Loading -->
   <div
-    v-if="deductionsStore.loading"
+    v-if="campaignsStore.loading"
     class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
   >
-    جاري تحميل الاستقطاعات...
+    جاري تحميل سجل الحملات...
   </div>
 
-  <!-- Deductions Error -->
+  <!-- Campaigns Error -->
   <div
-    v-else-if="deductionsStore.error"
+    v-else-if="campaignsStore.error"
     class="text-center my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
   >
     <div class="bg-red-50 border-l-4 border-red-500 p-4 max-w-md mx-auto flex">
@@ -46,23 +46,23 @@
         </svg>
       </div>
       <div class="ml-3 text-sm text-red-700">
-        <p class="mt-2">{{ deductionsStore.error }}</p>
+        <p class="mt-2">{{ campaignsStore.error }}</p>
       </div>
     </div>
   </div>
 
-  <!-- No Deductions -->
+  <!-- No Campaigns -->
   <div
-    v-else-if="deductionsStore.deductions.length === 0"
+    v-else-if="campaignsStore.campaigns.length === 0"
     class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center text-2xl font-medium"
   >
-    لا يوجد استقطاعات حاليا
+    لا يوجد سجلات حاليا
  
   </div>
 
-  <!-- Show Deductions -->
+  <!-- Show Campaigns -->
   <div v-else>
-    <DonationTable />
+    <CampaignTable />
   </div>
 </div>
 </div>
@@ -72,15 +72,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import Hero from "@/components/ui/Hero.vue";
-import DonationTable from "@/components/DonationTable.vue";
+import CampaignTable from "@/components/CampaignTable.vue";
 import LoginModal from "@/components/modals/LoginModal.vue";
-import { useDeductionsStore } from "@/stores/deductions";
+import { useCampaignsStore } from "@/stores/compaigns";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
 
 definePageMeta({ layout: "default" });
 
-const deductionsStore = useDeductionsStore();
+const campaignsStore = useCampaignsStore();
 const authStore = useAuthStore();
 const registerStore = useRegisterStore();
 
@@ -91,11 +91,11 @@ const openLoginModal = () => {
   isLoginOpen.value = true;
   registerStore.step = 0;
 };
-// console.log(deductionsStore.deductions);
+// console.log(campaignsStore.campaigns);
 onMounted(async () => {
   await authStore.init();
   if (authStore.isLoggedIn) {
-    await deductionsStore.fetchDeductions();
+    await campaignsStore.fetchCampaigns();
   }
 });
 </script>

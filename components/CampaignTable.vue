@@ -169,19 +169,16 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-// import tableData from "@/assets/data.json";
 import EditPayment from "@/components/modals/EditPayment.vue";
-import { useDeductionsStore } from "@/stores/deductions";
+import { useCampaignsStore } from "@/stores/compaigns";
+import { useRouter } from "vue-router";
 
-const deductionsStore = useDeductionsStore();
+const router = useRouter();
 
-const deductions = ref(deductionsStore.deductions);
+const campaignsStore = useCampaignsStore();
 
-// onMounted(() => {
-//   deductionsStore.fetchDeductions();
-//   deductions.value = deductionsStore.deductions;
-//   // console.log(deductions.value);
-// });
+const campaigns = ref(campaignsStore.campaigns);
+
 // Pagination
 const page = ref(1);
 const pageSize = ref(10);
@@ -209,8 +206,8 @@ const getGlobalIndex = (rowIndex: number) => {
 // Table Columns
 const columns = ref([
   { key: "index", label: "#" },
-  { key: "name", label: "اسم المستقطع" },
-  { key: "amount", label: "مبلغ المستقطع", sortable: true },
+  { key: "name", label: "اسم الحملة" },
+  { key: "amount", label: "مبلغ الاستقطاع", sortable: true },
   { key: "date", label: "تاريخ البدء", sortable: true },
   { key: "type", label: "نوع الاستقطاع" },
   { key: "status", label: "حالة البيع" },
@@ -241,19 +238,28 @@ const items = (row: any) => [
           : "text-green-600 hover:bg-red-50",
       click: () => toggleDonationStatus(row),
     },
+    {
+      label: "عرض سجل الاستقطاعات",
+      icon: "i-heroicons-eye-20-solid",
+      class: "text-blue-600 hover:bg-blue-50",
+      click: () => showTransactions(row),
+    },
   ],
 ];
 const toggleDonationStatus = async (row: any) => {
   try {
     if(row.status === "stopped"){
-      await deductionsStore.activePayment();
+      await campaignsStore.activePayment();
     }else{
-      await deductionsStore.cancelPayment();
+      await campaignsStore.cancelPayment();
     }
-    deductionsStore.fetchDeductions();
+    campaignsStore.fetchCampaigns();
   } catch (error) {
     console.error("Failed to update status:", error);
   }
+};
+const showTransactions = (row: any) => {
+  router.push(`/deduction/${row.id}`);
 };
 const getStatusLabel = (status: string) => {
   switch (status) {
@@ -290,29 +296,10 @@ const sorting = ref<{ key: string; order: "asc" | "desc" } | null>(null);
 const normalizeArabic = (text: string) => {
   return text.replace(/[أآإ]/g, "ا").replace(/ى/g, "ي").replace(/ة/g, "ه");
 };
-// Computed - Filtered Data
-// const filteredData = computed(() => {
-//   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
-//   return tableData.filter((row) => {
-//     const normalizedName = normalizeArabic(row.name.toLowerCase());
-//     const normalizedType = normalizeArabic(row.type.toLowerCase());
-//     return (
-//       (searchQuery.value === "" ||
-//         normalizedName.includes(normalizedQuery) ||
-//         normalizedType.includes(normalizedQuery)) &&
-//       (selectedStatus.value === "الكل" ||
-//         selectedStatus.value === "" ||
-//         row.status === selectedStatus.value) &&
-//       (selectedType.value === "الكل" ||
-//         selectedType.value === "" ||
-//         row.type === selectedType.value)
-//     );
-//   });
-// });
 
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
-  return deductions?.value?.filter((row: any) => {
+  return campaigns?.value?.filter((row: any) => {
     const normalizedName = normalizeArabic(row.name.toLowerCase());
     const normalizedType = normalizeArabic(row.type.toLowerCase());
     return (
@@ -368,21 +355,5 @@ const updatePaymentData = (row: any) => {
   selectedRow.value = row;
   isEditModalOpen.value = true;
 };
-
-
-// const toggleDonationStatus = (row: any) => {
-//   row.status = row.status === "continuous" ? "stopped" : "continuous";
-//   localStorage.setItem("tableData", JSON.stringify(tableData));
-// };
-
-const emit = defineEmits(["update:deduction"]);
-
-// const toggleDonationStatus = (row: any) => {
-//   const updatedRow = {
-//     ...row,
-//     status: row.status === "مستمر" ? "متوقف" : "مستمر",
-//   };
-//   emit("update:deduction", updatedRow);
-// };
 
 </script>

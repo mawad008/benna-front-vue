@@ -382,6 +382,8 @@ export default defineAppConfig({
         },
       },
     },
-
+    skeleton: {
+         base: 'animate-pulse rounded-md bg-primary-20 dark:bg-primary-20 '
+    },
   },
 });

@@ -25,7 +25,7 @@ useHead({
       {
         "/": "Home",
         "/contact": "Contact",
-        "/donate": "Donate",
+        "/campaign": "Campaigns",
         "/terms": "Terms",
         "/thanks": "Thanks",
       }[route.path] || "Page";

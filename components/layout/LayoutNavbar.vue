@@ -192,7 +192,7 @@ watch(locale, (val) => {
 
 const routes = [
   { path: "/", name: "home" },
-  { path: "/donate", name: "donate" },
+  { path: "/campaign", name: "campaign" },
   { path: "/contact", name: "contact" },
   { path: "/terms", name: "terms" },
 ];
