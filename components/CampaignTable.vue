@@ -79,7 +79,7 @@
 
       <!-- Status Badge -->
       <template #status-data="{ row }">
-        <UBadge :color="getStatusColor(row.status)" variant="subtle">
+        <UBadge :color="getStatusColor(row.status)" variant="soft">
           {{ getStatusLabel(row.status) }}
         </UBadge>
       </template>
@@ -240,6 +240,18 @@ const items = (row: any) => [
       click: () => toggleDonationStatus(row),
     },
     {
+      label: row.status === 2? "إلغاء التبرع": "تفعيل التبرع",
+      icon:
+        row.status === 2
+          ? "i-heroicons-x-circle-20-solid"
+          : "i-heroicons-play-20-solid",
+      class:
+        row.status === 2
+          ? "text-red-600 hover:bg-green-50"
+          : "text-green-600 hover:bg-red-50",
+      click: () => toggleDonationStatus(row),
+    },
+    {
       label: "عرض سجل الاستقطاعات",
       icon: "i-heroicons-eye-20-solid",
       class: "text-blue-600 hover:bg-blue-50",
@@ -250,9 +262,9 @@ const items = (row: any) => [
 const toggleDonationStatus = async (row: any) => {
   try {
     if(row.status === 0){
-      await campaignsStore.activePayment();
-    }else{
-      await campaignsStore.cancelPayment();
+      await campaignsStore.activePayment(row.id);
+    }else if(row.status === 2 || row.status === 1){
+      await campaignsStore.cancelPayment(row.id);
     }
     campaignsStore.fetchCampaigns();
   } catch (error) {
@@ -263,7 +275,7 @@ const showTransactions = (row: any) => {
   router.push(`/deduction/${row.id}`);
 };
 const getStatusLabel = (status: number) => {
-  return status === 1 ? "مستمر" : status === 2 ? "متوقف" : "قيد الانتظار";
+  return status === 1 ? "مستمر" : status === 2 ? "قيد الانتظار" : "متوقف";
 };
 
 const getTypeLabel = (type: string) => {

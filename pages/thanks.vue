@@ -50,6 +50,7 @@ import { useApi } from "@/composables/api";
 const route = useRoute();
 const router = useRouter();
 const id = ref<string | null>(route.query.id as string | null);
+const token = ref<string | null>(route.query.token as string | null);
 const status = ref<string | null>(route.query.status as string | null);
 const amount = ref<number | null>(
   route.query.amount ? parseFloat(route.query.amount as string) : null
@@ -69,13 +70,15 @@ interface PaymentResponse {
 const createPayment = async () => {
   try {
     isLoading.value = true;
-    if (!id.value || !status.value || isNaN(amount.value)) {
+    // if (!id.value || !status.value || !token.value || !amount.value) {
+    if (!token.value || !amount.value) {
       throw new Error("معلومات الدفع غير صالحة");
     }
     const response = await post<PaymentResponse>("/api/createPayment", {
-      id: id.value,
-      status: status.value,
-      amount: amount.value,
+      // id: id.value,
+      // status: status.value,
+      // amount: amount.value,
+      token: token.value,
     });
     // console.log(response.data.status);
     // if (response?.data?.status === "paid") {
@@ -102,7 +105,8 @@ const retryPayment = () => {
 };
 
 onMounted(() => {
-  if (!id.value || !status.value || !amount.value) {
+  // if (!id.value || !status.value || !token.value || !amount.value) {
+  if (!token.value || !amount.value) {
     isLoading.value = false;
     errorMessage.value = "معلومات الدفع غير كاملة";
     return;

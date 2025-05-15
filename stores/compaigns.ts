@@ -33,11 +33,11 @@ export const useCampaignsStore = defineStore("campaigns", {
       }
     },
 
-    async cancelPayment() {
+    async cancelPayment(campaign_id: number) {
       const { post } = useApi();
       this.loading = true;
       try {
-        await post("/api/cancel-payment", { payment_status: "pending" });
+        await post("/api/cancel-payment", { payment_status: "pending" , campaign_id: campaign_id});
         this.fetchCampaigns();
       } catch (error: any) {
         this.error = error.message;
@@ -45,11 +45,11 @@ export const useCampaignsStore = defineStore("campaigns", {
         this.loading = false;
       }
     },
-    async activePayment() {
+    async activePayment(campaign_id: number) {
       const { post } = useApi();
       this.loading = true;
       try {
-        await post("/api/active-payment", { payment_status: "active" });
+        await post("/api/active-payment", { payment_status: "active" , campaign_id: campaign_id});
         this.fetchCampaigns();
       } catch (error: any) {
         this.error = error.message;

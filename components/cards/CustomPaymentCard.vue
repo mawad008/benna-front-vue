@@ -290,7 +290,7 @@ onMounted(() => {
         currency: "SAR",
         
       });
-      const redirectUrl = `http://localhost:3000/thanks?${params.toString()}`;
+      const redirectUrl = `http://localhost:3001/thanks?${params.toString()}`;
       console.log("Redirecting to:", redirectUrl);
       window.location.assign(redirectUrl);
     } catch (error) {

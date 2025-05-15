@@ -28,19 +28,19 @@ export default defineAppConfig({
             "ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800",
         },
         black: {
-          solid: "text-white dark:text-gray-900 bg-gray-900 dark:bg-white",
+          solid: "text-white dark:text-gray-900 bg-gray-900 dark:bg-white ",
         },
         green: {
-          solid: "bg-green-500 dark:bg-green-400 text-white dark:text-gray-900",
+          solid: "bg-green-500 dark:bg-green-400 text-white dark:text-gray-900 ring-1 ring-inset ring-green-500 dark:ring-green-400",
         },
         red: {
-          solid: "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900",
+          solid: "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900 ring-1 ring-inset ring-red-500 dark:ring-red-400",
         },
         yellow: {
-          solid: "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900",
+          solid: "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900 ring-1 ring-inset ring-yellow-500 dark:ring-yellow-400",
         },
       blue:{
-        solid: "bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900",
+        solid: "bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900 ring-1 ring-inset ring-blue-500 dark:ring-blue-400",
 
       }
       },
