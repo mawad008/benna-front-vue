@@ -26,9 +26,10 @@ useHead({
         "/": "Home",
         "/contact": "Contact",
         "/campaign": "Campaigns",
+        "/deduction": "Deductions",
         "/terms": "Terms",
         "/thanks": "Thanks",
-      }[route.path] || "Page";
+      }[route.path] || "";
     return `${websiteName} - ${pageTitle}`;
   }),
 });

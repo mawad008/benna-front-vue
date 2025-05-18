@@ -7,14 +7,19 @@
     <br />
     <br />
     <div class="flex items-center gap-2">
-      <UButton color="primary" variant="solid" icon="i-heroicons-arrow-right" @click="navigateTo('/campaign')">
+      <UButton
+        color="primary"
+        variant="solid"
+        icon="i-heroicons-arrow-right"
+        @click="router.push('/campaign')"
+      >
       </UButton>
       <h1 class="font-janna font-bold text-dark text-[20px] leading-[37.2px]">
-        {{ campaignsStore.getCampaignName(Number(campaign_id)) }}
+        {{ campaignName.value }}
       </h1>
     </div>
     <br />
-    <DeductionsTable :deductions="deductionsStore.deductions"/>
+    <DeductionsTable :deductions="deductionsStore.deductions" />
   </div>
 </template>
 
@@ -24,21 +29,22 @@ import DeductionsTable from "@/components/DeductionsTable.vue";
 import { useRoute } from "vue-router";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useDeductionsStore } from "@/stores/deductions";
+import { onMounted ,ref} from "vue";
+import { useRouter } from "vue-router";
 
+definePageMeta({ layout: "default" });
+const router = useRouter();
+const route = useRoute();
 const deductionsStore = useDeductionsStore();
+const campaignsStore = useCampaignsStore();
+const campaign_id = route.params.id;
+const campaignName = ref("");
 
 onMounted(async () => {
   await deductionsStore.fetchDeductions(campaign_id);
+  campaignName.value = deductionsStore.deductions?.[0].campaign_name;
 });
-definePageMeta({ layout: "default" });
-
-const route = useRoute();
-
-const campaign_id = route.params.id;
-// console.log(campaign_id);
-
-const campaignsStore = useCampaignsStore();
-
+console.log(campaignName.value);
 
 const links = [
   {
@@ -46,7 +52,7 @@ const links = [
     href: "/",
     link: true,
     onClick: () => {
-      navigateTo("/");
+      router.push("/");
     },
   },
   {
@@ -54,7 +60,7 @@ const links = [
     href: "/campaigns",
     link: true,
     onClick: () => {
-      navigateTo("/campaigns");
+      router.push("/campaigns");
     },
   },
   {
@@ -62,9 +68,8 @@ const links = [
     href: `/deduction/${campaign_id}`,
     link: true,
     onClick: () => {
-      navigateTo(`/deduction/${campaign_id}`);
+      router.push(`/deduction/${campaign_id}`);
     },
   },
 ];
-
 </script>

@@ -54,6 +54,28 @@ export const useRegisterStore = defineStore("register", {
         }
       }
     },
+    async Login() {
+      const api = useApi();
+      const authStore = useAuthStore();
+      try {
+        const payload = {
+          phone: this.phone,
+        };
+        const response = await api.post("/api/login", payload);
+        const { token, user } = response.data;
+        authStore.setUser(user, token);
+        this.errors.phone = "";
+        this.nextStep();
+      } catch (error: any) {
+        if (error.response?.data?.errors?.phone) {
+          this.errors.phone = error.response.data.errors.phone[0];
+        } else if (error.response?.data?.message) {
+          this.errors.phone = error.response.data.message;
+        } else {
+          this.errors.phone = "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.";
+        }
+      }
+    },
 
     async ValidateOTP() {
       const api = useApi();

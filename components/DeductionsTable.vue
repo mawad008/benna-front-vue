@@ -133,11 +133,13 @@
   </template>
   
   <script setup lang="ts">
-  import { ref, computed } from "vue";
-
-
+ import { ref, computed, watch } from "vue";
   const props = defineProps<{deductions: any}>();
   const deductions = ref(props.deductions);
+  
+  watch(() => props.deductions, (newDeductions) => {
+  deductions.value = newDeductions;
+}, { deep: true });
 
   // Pagination
   const page = ref(1);

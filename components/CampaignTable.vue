@@ -90,7 +90,7 @@
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
-        <UDropdown :items="items(row)" >
+        <UDropdown :items="items(row)">
           <UButton
             color="icon"
             variant="solid"
@@ -161,10 +161,7 @@
       </div>
     </div>
   </div>
-  <EditPayment
-  v-model:open="isEditModalOpen"
-  :row="selectedRow"
-/>
+  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" />
 </template>
 
 <script setup lang="ts">
@@ -183,12 +180,10 @@ const campaigns = ref(campaignsStore.campaigns);
 const page = ref(1);
 const pageSize = ref(10);
 
-
 // Search and Filters
 const searchQuery = ref("");
 const selectedStatus = ref("");
 const selectedType = ref("");
-
 
 const statusOptions = [
   { label: "مستمر", value: 1 },
@@ -221,34 +216,31 @@ const items = (row: any) => [
       label: "تحديث بيانات الدفع",
       icon: "i-heroicons-pencil-square-20-solid",
       class: "text-blue-600 hover:bg-blue-50",
-      color:"success",
+      color: "success",
       ui: {
         color: "success",
       },
       click: () => updatePaymentData(row),
     },
     {
-      label: row.status === 1 ? "إيقاف التبرع" : "تفعيل التبرع",
+      label:
+        row.status === 0
+          ? "تفعيل التبرع"
+          : row.status === 1
+          ? "ايقاف التبرع"
+          : "الغاء التبرع",
       icon:
-        row.status === 1
+        row.status === 0
+          ? "i-heroicons-play-20-solid"
+          : row.status === 1
           ? "i-heroicons-pause-20-solid"
-          : "i-heroicons-play-20-solid",
+          : "i-heroicons-x-circle-20-solid",
       class:
-        row.status === 1
-          ? "text-red-600 hover:bg-green-50"
-          : "text-green-600 hover:bg-red-50",
-      click: () => toggleDonationStatus(row),
-    },
-    {
-      label: row.status === 2? "إلغاء التبرع": "تفعيل التبرع",
-      icon:
-        row.status === 2
-          ? "i-heroicons-x-circle-20-solid"
-          : "i-heroicons-play-20-solid",
-      class:
-        row.status === 2
-          ? "text-red-600 hover:bg-green-50"
-          : "text-green-600 hover:bg-red-50",
+        row.status === 0
+          ? "text-green-600 hover:bg-green-50"
+          : row.status === 1
+          ? "text-red-600 hover:bg-red-50"
+          : "text-red-600 hover:bg-red-50",
       click: () => toggleDonationStatus(row),
     },
     {
@@ -261,9 +253,9 @@ const items = (row: any) => [
 ];
 const toggleDonationStatus = async (row: any) => {
   try {
-    if(row.status === 0){
+    if (row.status === 0) {
       await campaignsStore.activePayment(row.id);
-    }else if(row.status === 2 || row.status === 1){
+    } else if (row.status === 2 || row.status === 1) {
       await campaignsStore.cancelPayment(row.id);
     }
     campaignsStore.fetchCampaigns();
@@ -303,7 +295,8 @@ const filteredData = computed(() => {
       (searchQuery.value === "" ||
         normalizedName.includes(normalizedQuery) ||
         normalizedType.includes(normalizedQuery)) &&
-      (selectedStatus.value === "" || row.status === Number(selectedStatus.value)) &&
+      (selectedStatus.value === "" ||
+        row.status === Number(selectedStatus.value)) &&
       (selectedType.value === "" || row.type === selectedType.value)
     );
   });
@@ -352,5 +345,4 @@ const updatePaymentData = (row: any) => {
   selectedRow.value = row;
   isEditModalOpen.value = true;
 };
-
 </script>

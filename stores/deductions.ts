@@ -33,5 +33,6 @@ export const useDeductionsStore = defineStore("deductions", {
                 this.loading = false;
             }
         },
+    
     },
 });
