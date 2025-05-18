@@ -9,6 +9,7 @@ interface User {
 
 export const useRegisterStore = defineStore("register", {
   state: () => ({
+    mode: "login" as "login" | "register",
     step: 0 as number,
     phone: "" as string,
     name: "" as string,
@@ -43,7 +44,8 @@ export const useRegisterStore = defineStore("register", {
         const response = await api.post("/api/register", payload);
         // console.log("Submitted user successfully:", response.data);
         this.errors.name = "";
-        this.nextStep(false);
+        this.mode = "register";
+        this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.name) {
           this.errors.name = error.response.data.errors.name[0];
@@ -54,6 +56,7 @@ export const useRegisterStore = defineStore("register", {
         }
       }
     },
+
     async Login() {
       const api = useApi();
 
@@ -62,9 +65,9 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/login", payload);
-      
         this.errors.phone = "";
-        this.nextStep(true);
+        this.mode = "login";
+        this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.phone) {
           this.errors.phone = error.response.data.errors.phone[0];
@@ -85,12 +88,9 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/valid/otp", payload);
-        // console.log("Submitted otp successfully:", response.data);
         const { token, user } = response.data;
-          authStore.setUser(user, token);
-          // console.log(authStore.user);
-          // console.log(authStore.token);
-        this.nextStep(); 
+        authStore.setUser(user, token);
+        this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.otp) {
           this.errors.otp = error.response.data.errors.otp[0];
@@ -99,6 +99,7 @@ export const useRegisterStore = defineStore("register", {
         }
       }
     },
+    
 
     async ResendOTP() {
       const api = useApi();
@@ -107,7 +108,6 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/resend/otp", payload);
-        // console.log("Resend OTP successfully:", response.data);
       } catch (error: any) {
         if (error.response?.data?.errors?.phone) {
           this.errors.phone = error.response.data.errors.phone[0];
@@ -117,9 +117,9 @@ export const useRegisterStore = defineStore("register", {
       }
     },
 
-    nextStep(isLogin?: boolean ) {
+    nextStep() {
       let isValid = false;
-      if(!isLogin){
+      if (this.mode === "register") {
         if (this.step === 0) {
           isValid = !this.errors.phone && !!this.phone.trim();
         } else if (this.step === 1) {
@@ -131,7 +131,7 @@ export const useRegisterStore = defineStore("register", {
           this.transitionDirection = "slide-left";
           this.step++;
         }
-      }else{
+      } else if (this.mode === "login") {
         if (this.step === 0) {
           isValid = !this.errors.phone && !!this.phone.trim();
         } else if (this.step === 1) {
@@ -143,6 +143,7 @@ export const useRegisterStore = defineStore("register", {
         }
       }
     },
+    
     prevStep() {
       if (this.step > 0) {
         this.transitionDirection = "slide-right";

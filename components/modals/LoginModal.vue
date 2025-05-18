@@ -67,7 +67,7 @@
                 <span
                   @click="HandleUserRegister"
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
-                  :class="store.step>1 ? 'hidden' : ''"
+                  :class="store.step>0 ? 'hidden' : ''"
                 >
                   {{ isLogin ? "مستخدم جديد" : "تسجيل الدخول" }}
               </span>
@@ -87,7 +87,7 @@ import { useRegisterStore } from "@/stores/register";
 const store = useRegisterStore();
 const isLogin = ref(true);
 const LoginSteps = [
-  defineAsyncComponent(() => import("@/components/login/LoginForm.vue")),
+  defineAsyncComponent(() => import("@/components/login/LoginPhone.vue")),
   defineAsyncComponent(() => import("@/components/register/RegisterOTP.vue")),
   defineAsyncComponent(
     () => import("@/components/register/RegisterSuccess.vue")

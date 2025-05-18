@@ -35,6 +35,7 @@
       variant="solid"
       class="mt-6"
       :disabled="!meta.valid || !otp.trim()"
+      :loading="loading"
     >
       تأكيد
     </UButton>
@@ -50,6 +51,7 @@ import * as yup from "yup";
 const store = useRegisterStore();
 const countdown = ref(60);
 let interval: ReturnType<typeof setInterval> | null = null;
+const loading = ref(false);
 
 
 const schema = yup.object({
@@ -70,16 +72,16 @@ const { errors, meta, handleSubmit } = useForm({
 
 const { value: otp } = useField<string>("otp");
 
-
 const validateField = () => {
   store.otp = otp.value; 
 };
 
-
 const onSubmit = handleSubmit(async () => {
-  store.nextStep(); 
-   await store.ValidateOTP(); 
+  loading.value = true;
+  await store.ValidateOTP(); 
+  loading.value = false;
 });
+
 
 
 onMounted(() => {

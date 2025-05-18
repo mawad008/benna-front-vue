@@ -32,7 +32,8 @@
         color="primary"
         variant="solid"
         :disabled="!phone"
-      >
+        :loading="loading"
+              >
         متابعة التسجيل
       </UButton>
     </div>
@@ -44,8 +45,10 @@
   import "vue-tel-input/dist/vue-tel-input.css";
   import { useForm, useField } from "vee-validate";
   import * as yup from "yup";
+  import { ref } from "vue";
   
   const store = useRegisterStore();
+  const loading = ref(false);
   
   const schema = yup.object({
     phone: yup
@@ -73,10 +76,11 @@
   };
   
   
-  const onSubmit = handleSubmit(() => {
+  const onSubmit = handleSubmit(async () => {
     store.phone = phone.value.replace(/\D/g, "");
-    store.Login();
-    store.nextStep();
+    loading.value = true;
+    await store.Login();
+    loading.value = false;
   });
   </script>
   
