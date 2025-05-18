@@ -39,9 +39,9 @@
                 <DatePicker v-model="date" is-required @close="close" @click="HandleDate" />
               </template>
             </UPopover>
-            <!-- <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
+            <p v-if="donorStore.errors.startDate" class="text-red-500 text-xs mt-1">
               {{ donorStore.errors.startDate }}
-            </p> -->
+            </p>
           </div>
 
           <!-- Recurring Donation Type -->

@@ -36,9 +36,9 @@ export const useDonorStore = defineStore("donor", {
       this.errors.recurringType = this.recurringType
         ? ""
         : "يرجى اختيار نوع الاستقطاع الدوري";
-      // this.errors.startDate = this.validateStartDate()
-      //   ? ""
-      //   : "لا يمكن اختيار تاريخ في الماضي";
+      this.errors.startDate = this.validateStartDate()
+        ? ""
+        : "لا يمكن اختيار تاريخ في الماضي";
 
       return !Object.values(this.errors).some((error) => error);
     },
@@ -58,6 +58,9 @@ export const useDonorStore = defineStore("donor", {
       const selectedDate = new Date(year, month - 1, day);
       selectedDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
+      // console.log("validate Start Date ",selectedDate >= today);
+      // console.log("selectedDate",selectedDate);
+      // console.log("today",today);
       return selectedDate >= today;
     }
     
