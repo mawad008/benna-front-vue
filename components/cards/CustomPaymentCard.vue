@@ -93,7 +93,7 @@
         </div>
 
         <!-- Loading State -->
-        <div v-if="isSubmitting" class="mt-4 flex justify-center">
+        <!-- <div v-if="isSubmitting" class="mt-4 flex justify-center">
           <div class="flex items-center gap-2">
             <svg
               class="animate-spin h-5 w-5 text-[#138B96]"
@@ -117,7 +117,7 @@
             </svg>
             <span class="text-[#138B96]">جاري المعالجة...</span>
           </div>
-        </div>
+        </div> -->
 
         <!-- Submit Button -->
         <div class="mt-6 text-center">
@@ -128,6 +128,7 @@
             variant="solid"
             block
             :disabled="isSubmitting"
+            :loading="isSubmitting"
           >
             تبرع الآن
           </UButton>
