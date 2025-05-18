@@ -43,13 +43,15 @@
         v-model="contactStore.phone"
         mode="national"
         :defaultCountry="'SA'"
+         :enabledCountryCode="true"
+        :countryCode="'SA'"
         :disabledFetchingCountry="true"
-        :enabledCountryCode="false"
         :onlyCountries="['SA']"
         :inputOptions="{ styleClasses: 'custom-input' }"
         :dropdownOptions="{ styleClasses: 'custom-dropdown' }"
-        @input="handlePhoneInput" 
+        @input="handlePhoneInput"
         class="w-full custom-tel-input"
+       
       />
       <p v-if="contactStore.errors.phone" class="text-red-500 text-sm mt-2">
         {{ contactStore.errors.phone }}
@@ -104,7 +106,6 @@ import { useContactStore } from "@/stores/contact";
 import { VueTelInput } from "vue-tel-input";
 import "vue-tel-input/dist/vue-tel-input.css";
 
-
 const contactStore = useContactStore();
 const successMessage = ref("");
 
@@ -113,7 +114,6 @@ const handlePhoneInput = (phoneObject: { valid: boolean; number: string }) => {
     contactStore.phone = phoneObject.number.replace(/\D/g, "");
   }
 };
-
 
 const options = [
   { label: "رسالة", value: "message" },

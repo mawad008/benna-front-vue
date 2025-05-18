@@ -4,6 +4,8 @@
   
       <!-- Phone Input -->
       <div class="text-right mb-2 text-dark font-medium">رقم الجوال</div>
+
+
       <VueTelInput
         v-model="phone"
         mode="national"
@@ -15,6 +17,7 @@
         :dropdownOptions="{ styleClasses: 'custom-dropdown' }"
         @validate="handlePhoneValidation"
         class="w-full custom-tel-input"
+        :countryCode="'SA'"
       />
   
       <p v-if="errors.phone" class="text-red-500 text-xs mt-1 text-right">
