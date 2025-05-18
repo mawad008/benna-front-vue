@@ -43,7 +43,7 @@ export const useRegisterStore = defineStore("register", {
         const response = await api.post("/api/register", payload);
         // console.log("Submitted user successfully:", response.data);
         this.errors.name = "";
-        this.nextStep();
+        this.nextStep(false);
       } catch (error: any) {
         if (error.response?.data?.errors?.name) {
           this.errors.name = error.response.data.errors.name[0];
@@ -56,16 +56,15 @@ export const useRegisterStore = defineStore("register", {
     },
     async Login() {
       const api = useApi();
-      const authStore = useAuthStore();
+
       try {
         const payload = {
           phone: this.phone,
         };
         const response = await api.post("/api/login", payload);
-        const { token, user } = response.data;
-        authStore.setUser(user, token);
+      
         this.errors.phone = "";
-        this.nextStep();
+        this.nextStep(true);
       } catch (error: any) {
         if (error.response?.data?.errors?.phone) {
           this.errors.phone = error.response.data.errors.phone[0];
@@ -91,7 +90,7 @@ export const useRegisterStore = defineStore("register", {
           authStore.setUser(user, token);
           // console.log(authStore.user);
           // console.log(authStore.token);
-        this.nextStep();
+        this.nextStep(); 
       } catch (error: any) {
         if (error.response?.data?.errors?.otp) {
           this.errors.otp = error.response.data.errors.otp[0];
@@ -118,22 +117,32 @@ export const useRegisterStore = defineStore("register", {
       }
     },
 
-    nextStep() {
+    nextStep(isLogin?: boolean ) {
       let isValid = false;
-      if (this.step === 0) {
-        isValid = !this.errors.phone && !!this.phone.trim();
-      } else if (this.step === 1) {
-        isValid = this.validateName();
-      } else if (this.step === 2) {
-        isValid = !this.errors.otp && !!this.otp.trim();
-      }
-
-      if (isValid && this.step < 3) {
-        this.transitionDirection = "slide-left";
-        this.step++;
+      if(!isLogin){
+        if (this.step === 0) {
+          isValid = !this.errors.phone && !!this.phone.trim();
+        } else if (this.step === 1) {
+          isValid = this.validateName();
+        } else if (this.step === 2) {
+          isValid = !this.errors.otp && !!this.otp.trim();
+        }
+        if (isValid && this.step < 3) {
+          this.transitionDirection = "slide-left";
+          this.step++;
+        }
+      }else{
+        if (this.step === 0) {
+          isValid = !this.errors.phone && !!this.phone.trim();
+        } else if (this.step === 1) {
+          isValid = !this.errors.otp && !!this.otp.trim();
+        }
+        if (isValid && this.step < 2) {
+          this.transitionDirection = "slide-left";
+          this.step++;
+        }
       }
     },
-
     prevStep() {
       if (this.step > 0) {
         this.transitionDirection = "slide-right";

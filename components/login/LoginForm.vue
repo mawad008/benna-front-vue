@@ -36,13 +36,13 @@
   </template>
   
   <script setup lang="ts">
-  import { useLoginStore } from "@/stores/login";
+  import { useRegisterStore } from "@/stores/register";
   import { VueTelInput } from "vue-tel-input";
   import "vue-tel-input/dist/vue-tel-input.css";
   import { useForm, useField } from "vee-validate";
   import * as yup from "yup";
   
-  const store = useLoginStore();
+  const store = useRegisterStore();
   
   const schema = yup.object({
     phone: yup
@@ -73,6 +73,7 @@
   const onSubmit = handleSubmit(() => {
     store.phone = phone.value.replace(/\D/g, "");
     store.Login();
+    store.nextStep();
   });
   </script>
   

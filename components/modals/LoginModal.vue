@@ -50,17 +50,33 @@
               </p>
 
               <Transition :name="store.transitionDirection" mode="out-in">
+                <component
+                  v-if="isLogin"
+                  :is="LoginSteps[store.step]"
+                  @close="closeModal"
+                ></component>
 
                 <component
-                  :is="currentStepComponent"
+                  v-else
+                  :is="RegisterSteps[store.step]"
                   @close="closeModal"
                 ></component>
               </Transition>
+
+              <div class="flex justify-center">
+                <span
+                  @click="HandleUserRegister"
+                  class="mt-6 text-primary font-bold cursor-pointer hover:underline"
+                  :class="store.step>1 ? 'hidden' : ''"
+                >
+                  {{ isLogin ? "مستخدم جديد" : "تسجيل الدخول" }}
+              </span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div>  
   </Transition>
 </template>
 
@@ -69,8 +85,15 @@ import { ref, computed, defineAsyncComponent, watch } from "vue";
 import { useRegisterStore } from "@/stores/register";
 
 const store = useRegisterStore();
-
-const steps = [
+const isLogin = ref(true);
+const LoginSteps = [
+  defineAsyncComponent(() => import("@/components/login/LoginForm.vue")),
+  defineAsyncComponent(() => import("@/components/register/RegisterOTP.vue")),
+  defineAsyncComponent(
+    () => import("@/components/register/RegisterSuccess.vue")
+  ),
+];
+const RegisterSteps = [
   defineAsyncComponent(() => import("@/components/register/RegisterPhone.vue")),
   defineAsyncComponent(() => import("@/components/register/RegisterName.vue")),
   defineAsyncComponent(() => import("@/components/register/RegisterOTP.vue")),
@@ -78,8 +101,11 @@ const steps = [
     () => import("@/components/register/RegisterSuccess.vue")
   ),
 ];
-
-const currentStepComponent = computed(() => steps[store.step]);
+const HandleUserRegister = () => {
+  isLogin.value = !isLogin.value;
+  store.step = 0;
+  store.reset();
+};
 
 const isOpen = ref(true);
 
