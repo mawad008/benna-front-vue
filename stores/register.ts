@@ -19,6 +19,8 @@ export const useRegisterStore = defineStore("register", {
       phone: "" as string,
       name: "" as string,
       otp: "" as string,
+      loginPhone:"" as string,
+      loginOtp  :"" as string
     },
   }),
 
@@ -65,16 +67,16 @@ export const useRegisterStore = defineStore("register", {
           phone: this.phone,
         };
         const response = await api.post("/api/login", payload);
-        this.errors.phone = "";
+        this.errors.loginPhone = "";
         this.mode = "login";
         this.nextStep();
       } catch (error: any) {
         if (error.response?.data?.errors?.phone) {
-          this.errors.phone = error.response.data.errors.phone[0];
+          this.errors.loginPhone = error.response.data.errors.phone[0];
         } else if (error.response?.data?.message) {
-          this.errors.phone = error.response.data.message;
+          this.errors.loginPhone = error.response.data.message;
         } else {
-          this.errors.phone = "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.";
+          this.errors.loginPhone = "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.";
         }
       }
     },
@@ -159,6 +161,8 @@ export const useRegisterStore = defineStore("register", {
       this.errors.phone = "";
       this.errors.name = "";
       this.errors.otp = "";
+      this.errors.loginPhone="";
+      this.errors.loginOtp="";
       this.transitionDirection = "slide-left";
     },
     resetErrors() {

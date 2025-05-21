@@ -15,13 +15,13 @@
    
         <div class="relative hidden md:flex items-center" ref="dropdownRef">
           <div @click="toggleDropdown" class="cursor-pointer">
-            <template v-if="userName">
+            <template v-if="userName" >
               <UTooltip :text="userName">
-            <UAvatar  :alt=userName size="sm" variant="basic"  class="dark:bg-white bg-white"/>
+            <UAvatar  :alt=userName size="sm" class="dark:bg-white bg-white"/>
             </UTooltip>
             </template>
             <template v-else>
-              <UAvatar icon="i-lucide-user" size="sm" variant="basic"  class="dark:bg-white bg-white"/>
+              <UAvatar icon="i-lucide-user" size="sm" class="dark:bg-white bg-white"/>
             </template>
 
           </div>

@@ -2,17 +2,6 @@ export default defineAppConfig({
   ui: {
     primary: "blue",
     gray: "state",
-    avatar: {
-      slots: {
-        root: "inline-flex items-center justify-center shrink-0 select-none overflow-hidden rounded-full align-middle bg-white",
-        image: "h-full w-full rounded-[inherit] object-cover",
-        fallback: "font-medium leading-none text-white truncate",
-        icon: "text-white shrink-0",
-      },
-      variant: {
-        basic: "bg-white !bg-white dark:!bg-white text-white dark:text-white",
-      },
-    },
     Ubadge: {
       base: "inline-flex items-center",
       rounded: "rounded-md",
