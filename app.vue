@@ -1,9 +1,7 @@
 <template>
-<NuxtLoadingIndicator />
     <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
-
+      <NuxtPage />
+    </NuxtLayout>
 </template>
 
 <script setup>
@@ -13,7 +11,7 @@ onMounted(() => {
   if (!langCookie.value) {
     const userLang = navigator.language.startsWith("ar") ? "ar" : "en";
     i18n.locale.value = userLang;
-    langCookie.value = userLang; 
+    langCookie.value = userLang;
   }
   useHead({
     htmlAttrs: {

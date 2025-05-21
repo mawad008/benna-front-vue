@@ -6,6 +6,13 @@
   >
     جاري تحميل سجل الاستقطاعات...
   </div>
+  <div
+    v-else-if="deductionsStore.deductions.length === 0"
+    class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center text-2xl font-medium"
+  >
+    لا يوجد سجلات حاليا
+ 
+  </div>
   <div v-else class="container lg:mt-10 md:mt-20">
     <div>
       <UBreadcrumb :links="links" />
@@ -27,6 +34,7 @@
     <br />
     <DeductionsTable :deductions="deductionsStore.deductions" />
   </div>
+  
 </template>
 
 <script setup lang="ts">

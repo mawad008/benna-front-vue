@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     primary: "blue",
-    gray: "stone",
+    gray: "state",
     Ubadge: {
       base: "inline-flex items-center",
       rounded: "rounded-md",
@@ -392,13 +392,6 @@ export default defineAppConfig({
     skeleton: {
          base: 'animate-pulse rounded-md bg-primary-20 dark:bg-primary-20 '
     },
-    avatar: {
-      slots: {
-        root: 'inline-flex items-center justify-center shrink-0 select-none overflow-hidden rounded-full align-middle bg-white dark:bg-white',
-        image: 'h-full w-full rounded-[inherit] object-cover',
-        fallback: 'font-base leading-none text-muted truncate bg-white',
-        icon: 'text-muted shrink-0'
-      },
-    },
+    
   },
 });

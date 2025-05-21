@@ -15,7 +15,6 @@
    
         <div class="relative hidden md:flex items-center" ref="dropdownRef">
           <div @click="toggleDropdown" class="cursor-pointer">
-           
             <template v-if="userName">
               <UTooltip :text="userName">
             <UAvatar  :alt=userName size="sm"/>
@@ -50,6 +49,9 @@
                 :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
               >
                 <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
+<!-- 
+                <LoginModal v-if="isLoginOpen" ref="loginModalRef" /> -->
+
               </button>
             </template>
           </div>
@@ -190,19 +192,7 @@ onMounted(() => {
 
 const localePath = useLocalePath();
 const { locale } = useI18n();
-const switchLocalePath = useSwitchLocalePath();
 
-const changeLanguage = () =>
-  switchLocalePath(locale.value === "ar" ? "en" : "ar");
-
-watch(locale, (val) => {
-  useHead({
-    htmlAttrs: {
-      lang: val === "en" ? "en" : "ar",
-      dir: val === "en" ? "ltr" : "rtl",
-    },
-  });
-});
 
 const routes = [
   { path: "/", name: "home" },

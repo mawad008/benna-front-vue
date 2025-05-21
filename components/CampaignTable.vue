@@ -215,11 +215,7 @@ const items = (row: any) => [
     {
       label: "تحديث بيانات الدفع",
       icon: "i-heroicons-pencil-square-20-solid",
-      class: "text-blue-600 hover:bg-blue-50",
       color: "success",
-      ui: {
-        color: "success",
-      },
       click: () => updatePaymentData(row),
     },
     {
@@ -235,18 +231,18 @@ const items = (row: any) => [
           : row.status === 1
           ? "i-heroicons-pause-20-solid"
           : "i-heroicons-x-circle-20-solid",
-      class:
+      color:
         row.status === 0
-          ? "text-green-600 hover:bg-green-50"
+          ? "green"
           : row.status === 1
-          ? "text-red-600 hover:bg-red-50"
-          : "text-red-600 hover:bg-red-50",
+          ? "red"
+          : "red",
       click: () => toggleDonationStatus(row),
     },
     {
       label: "عرض سجل الاستقطاعات",
       icon: "i-heroicons-eye-20-solid",
-      class: "text-blue-600 hover:bg-blue-50",
+      color: "success",
       click: () => showTransactions(row),
     },
   ],
