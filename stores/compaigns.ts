@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useApi } from "@/composables/api";
+import { createGlobalState } from "@vueuse/core";
 interface Campaign {
   id: number;
   amount: number;
@@ -57,8 +58,6 @@ export const useCampaignsStore = defineStore("campaigns", {
         this.loading = false;
       }
     },
-    getCampaignName(id: number) {
-      return this.campaigns.find((campaign) => campaign.id === id)?.name;
-    },
+  
   },
 });

@@ -12,9 +12,19 @@
         </NuxtLink> -->
 
         <!-- User Avatar with Dropdown -->
+   
         <div class="relative hidden md:flex items-center" ref="dropdownRef">
-          <div @click="toggleDropdown" class="cursor-pointer bg-white rounded-full p-1 border-2 border-white">
-            <img src="/user-avatar.png" alt="User Avatar" class="h-4 w-4 object-contain" />
+          <div @click="toggleDropdown" class="cursor-pointer">
+           
+            <template v-if="userName">
+              <UTooltip :text="userName">
+            <UAvatar  :alt=userName size="sm"/>
+            </UTooltip>
+            </template>
+            <template v-else>
+              <UAvatar icon="i-lucide-user" size="sm" />
+            </template>
+
           </div>
 
           <!-- Logout Dropdown Menu -->
@@ -120,11 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
 import { onClickOutside } from "@vueuse/core";
-import { useI18n } from "vue-i18n";
-import { useLocalePath, useSwitchLocalePath } from "#i18n";
-import { useHead } from "#app";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
 import LoginModal from "@/components/modals/LoginModal.vue";
@@ -137,6 +143,14 @@ const isMenuOpen = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
 const isDropdownOpen = ref(false);
 const isLoginOpen = ref(false);
+const userName = ref("" as string);
+const getUser = computed(() => authStore.user);
+
+watch(getUser, (val) => {
+    userName.value = val?.name!;
+  })
+
+
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -192,7 +206,7 @@ watch(locale, (val) => {
 
 const routes = [
   { path: "/", name: "home" },
-  { path: "/campaign", name: "campaign" },
+  { path: "/campaigns", name: "campaigns" },
   { path: "/contact", name: "contact" },
   { path: "/terms", name: "terms" },
 ];

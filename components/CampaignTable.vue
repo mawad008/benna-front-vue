@@ -264,7 +264,7 @@ const toggleDonationStatus = async (row: any) => {
   }
 };
 const showTransactions = (row: any) => {
-  router.push(`/deduction/${row.id}`);
+  router.push(`/deductions/${row.id}`);
 };
 const getStatusLabel = (status: number) => {
   return status === 1 ? "مستمر" : status === 2 ? "قيد الانتظار" : "متوقف";

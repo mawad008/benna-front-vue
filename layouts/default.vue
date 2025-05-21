@@ -8,8 +8,6 @@
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
-import { useHead } from "#app";
 import LayoutNavbar from "@/components/layout/LayoutNavbar.vue";
 import LayoutFooter from "@/components/layout/LayoutFooter.vue";
 // import Loader from "@/components/ui/Loader.vue";
@@ -25,8 +23,8 @@ useHead({
       {
         "/": "Home",
         "/contact": "Contact",
-        "/campaign": "Campaigns",
-        "/deduction": "Deductions",
+        "/campaigns": "Campaigns",
+        "/deductions/:id": "Deductions",
         "/terms": "Terms",
         "/thanks": "Thanks",
       }[route.path] || "";

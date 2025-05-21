@@ -1,21 +1,27 @@
 <template>
   <Hero />
-  <div class="container lg:mt-10 md:mt-20">
+  <div
+    v-if="deductionsStore.loading"
+    class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
+  >
+    جاري تحميل سجل الاستقطاعات...
+  </div>
+  <div v-else class="container lg:mt-10 md:mt-20">
     <div>
       <UBreadcrumb :links="links" />
     </div>
     <br />
-    <br />
+    <br /> 
     <div class="flex items-center gap-2">
       <UButton
         color="primary"
         variant="solid"
         icon="i-heroicons-arrow-right"
-        @click="router.push('/campaign')"
+        @click="router.push('/campaigns')"
       >
       </UButton>
       <h1 class="font-janna font-bold text-dark text-[20px] leading-[37.2px]">
-        {{ campaignName.value }}
+        {{ deductionsStore.getCampaignName() }}
       </h1>
     </div>
     <br />
@@ -27,24 +33,22 @@
 import Hero from "@/components/ui/Hero.vue";
 import DeductionsTable from "@/components/DeductionsTable.vue";
 import { useRoute } from "vue-router";
-import { useCampaignsStore } from "@/stores/compaigns";
 import { useDeductionsStore } from "@/stores/deductions";
-import { onMounted ,ref} from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 definePageMeta({ layout: "default" });
 const router = useRouter();
 const route = useRoute();
-const deductionsStore = useDeductionsStore();
-const campaignsStore = useCampaignsStore();
-const campaign_id = route.params.id;
-const campaignName = ref("");
 
-onMounted(async () => {
-  await deductionsStore.fetchDeductions(campaign_id);
-  campaignName.value = deductionsStore.deductions?.[0].campaign_name;
+const campaign_id = route.params.id;
+const deductionsStore = useDeductionsStore();
+
+onMounted( () => {
+   deductionsStore.fetchDeductions(Number(campaign_id));
+
 });
-console.log(campaignName.value);
+
 
 const links = [
   {

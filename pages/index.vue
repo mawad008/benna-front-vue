@@ -73,22 +73,24 @@ const isLoginOpen = ref(false);
 authStore.init();
 onMounted(() => {
   if (route.query.id) {
-const campaignId = route.query.id.split("?")[0];
+    const campaignId = route.query.id.split("?")[0];
     donationStore.campaign_id = campaignId;
     // updateUrlParams({ campaign_id: null });
     console.log(donationStore.campaign_id);
   }
 });
-// http://localhost:3000/?id=104?name=Zain%20campaign
 console.log(donationStore.campaign_id);
+
+// http://localhost:3000/?id=104?name=Zain%20campaign
+
 const handleDonation = async () => {
   await donationStore.submitDonation();
+  if (donationStore.submissionError) {
+    showPayment.value = false;
+    isLoginOpen.value = false;
+    return;
+  }
   showPayment.value = true;
-
-  // if (!donationStore.submissionError) {
-  //   showPayment.value = false;
-  //  isLoginOpen.value = true;
-  // }
 };
 
 const openLoginModal = () => {
