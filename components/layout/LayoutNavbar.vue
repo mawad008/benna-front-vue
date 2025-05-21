@@ -17,11 +17,11 @@
           <div @click="toggleDropdown" class="cursor-pointer">
             <template v-if="userName">
               <UTooltip :text="userName">
-            <UAvatar  :alt=userName size="sm"/>
+            <UAvatar  :alt=userName size="sm" variant="basic"  class="dark:bg-white bg-white"/>
             </UTooltip>
             </template>
             <template v-else>
-              <UAvatar icon="i-lucide-user" size="sm" />
+              <UAvatar icon="i-lucide-user" size="sm" variant="basic"  class="dark:bg-white bg-white"/>
             </template>
 
           </div>
@@ -49,9 +49,6 @@
                 :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
               >
                 <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
-<!-- 
-                <LoginModal v-if="isLoginOpen" ref="loginModalRef" /> -->
-
               </button>
             </template>
           </div>

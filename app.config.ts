@@ -2,6 +2,17 @@ export default defineAppConfig({
   ui: {
     primary: "blue",
     gray: "state",
+    avatar: {
+      slots: {
+        root: "inline-flex items-center justify-center shrink-0 select-none overflow-hidden rounded-full align-middle bg-white",
+        image: "h-full w-full rounded-[inherit] object-cover",
+        fallback: "font-medium leading-none text-white truncate",
+        icon: "text-white shrink-0",
+      },
+      variant: {
+        basic: "bg-white !bg-white dark:!bg-white text-white dark:text-white",
+      },
+    },
     Ubadge: {
       base: "inline-flex items-center",
       rounded: "rounded-md",
@@ -31,18 +42,21 @@ export default defineAppConfig({
           solid: "text-white dark:text-gray-900 bg-gray-900 dark:bg-white ",
         },
         green: {
-          solid: "bg-green-500 dark:bg-green-400 text-white dark:text-gray-900 ring-1 ring-inset ring-green-500 dark:ring-green-400",
+          solid:
+            "bg-green-500 dark:bg-green-400 text-white dark:text-gray-900 ring-1 ring-inset ring-green-500 dark:ring-green-400",
         },
         red: {
-          solid: "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900 ring-1 ring-inset ring-red-500 dark:ring-red-400",
+          solid:
+            "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900 ring-1 ring-inset ring-red-500 dark:ring-red-400",
         },
         yellow: {
-          solid: "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900 ring-1 ring-inset ring-yellow-500 dark:ring-yellow-400",
+          solid:
+            "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900 ring-1 ring-inset ring-yellow-500 dark:ring-yellow-400",
         },
-      blue:{
-        solid: "bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900 ring-1 ring-inset ring-blue-500 dark:ring-blue-400",
-
-      }
+        blue: {
+          solid:
+            "bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900 ring-1 ring-inset ring-blue-500 dark:ring-blue-400",
+        },
       },
       variant: {
         solid:
@@ -354,7 +368,8 @@ export default defineAppConfig({
         rounded: "rounded-md",
         padding: "px-1.5 py-1.5",
         size: "text-sm",
-        active: "bg-primary-20 dark:bg-primary-20 text-primary dark:text-primary",
+        active:
+          "bg-primary-20 dark:bg-primary-20 text-primary dark:text-primary",
         inactive: "text-[#111928] dark:text-[#111928]",
         disabled: "cursor-not-allowed opacity-50",
         icon: {
@@ -390,8 +405,7 @@ export default defineAppConfig({
       },
     },
     skeleton: {
-         base: 'animate-pulse rounded-md bg-primary-20 dark:bg-primary-20 '
+      base: "animate-pulse rounded-md bg-primary-20 dark:bg-primary-20 ",
     },
-    
   },
 });

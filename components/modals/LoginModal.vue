@@ -63,20 +63,23 @@
                 ></component>
               </Transition>
 
+              <div class="text-red-600 text-center font-medium mt-2">
+                {{ error }}
+              </div>
               <div class="flex justify-center">
                 <span
                   @click="HandleUserRegister"
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
-                  :class="store.step>0 ? 'hidden' : ''"
+                  :class="store.step > 0 ? 'hidden' : ''"
                 >
                   {{ isLogin ? "مستخدم جديد" : "تسجيل الدخول" }}
-              </span>
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>  
+    </div>
   </Transition>
 </template>
 
@@ -107,6 +110,7 @@ const HandleUserRegister = () => {
   store.reset();
 };
 
+const error = ref("" as string);
 const isOpen = ref(true);
 
 const emit = defineEmits(["close"]);
@@ -120,6 +124,10 @@ const closeModal = () => {
 watch(isOpen, (val) => {
   document.body.classList.toggle("modal-open", val);
 });
+
+watch(() => store.errors, (val) => {
+  error.value = val.phone || val.name || val.otp;
+}); 
 </script>
 
 <style scoped>
