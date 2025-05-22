@@ -7,17 +7,18 @@ import type {
   InternalAxiosRequestConfig,
 } from "axios";
 import { useAuthStore } from "@/stores/auth";
-export function useApi() {
+
+export function useApi(locale?: string) {
+
   const config = useRuntimeConfig();
   const apiClient: AxiosInstance = axios.create({
     baseURL: "https://ws.donate.benaa.org.sa",
     headers: {
       "Content-Type": "application/json",
-      // "Content-Language": "ar",
     },
     timeout: 10000,
   });
-  
+
   apiClient.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       let token;
@@ -27,6 +28,7 @@ export function useApi() {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
+      config.headers['Content-Language'] = locale || 'ar';
       return config;
     },
     (error) => {
@@ -40,7 +42,7 @@ export function useApi() {
       if (error.response?.status === 401) {
         const authStore = useAuthStore();
         authStore.clearAuth();
-        navigateTo("/");
+        navigateTo("/" + locale);
       }
 
       if (error.response) {

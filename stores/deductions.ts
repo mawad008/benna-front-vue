@@ -10,10 +10,6 @@ interface Deduction {
     status: number;
 }
 
-// interface DeductionCampaign {
-//     name: string;
-// }
-
 export const useDeductionsStore = defineStore("deductions", {
     state: () => ({
         deductions: [] as Deduction[],
@@ -23,7 +19,8 @@ export const useDeductionsStore = defineStore("deductions", {
     }),
     actions: {
         async fetchDeductions(campaign_id: number) {
-            const { get } = useApi();
+            const { locale } = useI18n();
+            const { get } = useApi(locale.value);
             try {
                 this.loading = true;
                 const response = await get<{ data: Deduction[] }>(`/api/deductions/${campaign_id}`);

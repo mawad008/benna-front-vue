@@ -58,9 +58,10 @@ export const useOfficeStore = defineStore('office', {
   }),
   actions: {
     async fetchOffices() {
+      const { locale } = useI18n();
+      const { get } = useApi(locale.value);
       try {
-        const api = useApi();
-        const response = await api.get<{ data: Office[] }>('/api/Branches');
+        const response = await get<{ data: Office[] }>('/api/Branches');
         this.offices = response.data.data;
      
       } catch (error) {
