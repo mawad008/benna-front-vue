@@ -1,5 +1,7 @@
 <template>
-  <div class="p-6 bg-white rounded-lg shadow-md w-full mx-auto max-w-5xl flex flex-col">
+  <div
+    class="p-6 bg-white rounded-lg shadow-md w-full mx-auto max-w-5xl flex flex-col"
+  >
     <!-- Title -->
     <div class="flex items-center gap-2 mb-6">
       <Title title="الفروع والمكاتب" badge="i-heroicons-map-pin" />
@@ -7,14 +9,24 @@
 
     <div class="flex flex-col lg:flex-row items-start gap-6">
       <!-- Office Selection Buttons  -->
-      <div class="w-full lg:w-1/4 flex flex-col gap-3 overflow-y-auto h-[300px] scrollable-list">
-
-        <UButton v-for="(office, key) in officeStore.offices" :key="key" @click="selectedOfficeId = key"
-          color="primary" block :variant="selectedOfficeId === key ? 'solid' : 'outline'"
-          class="text-sm py-2">
+      <div
+        class="w-full lg:w-1/4 flex flex-col gap-3 overflow-y-auto h-[300px] scrollable-list"
+      >
+        <UButton
+          v-for="(office, key) in officeStore.offices"
+          :key="key"
+          @click="selectedOfficeId = key"
+          color="primary"
+          block
+          :variant="selectedOfficeId === key ? 'solid' : 'outline'"
+          class="text-sm py-2"
+        >
           {{ office.name }}
         </UButton>
-        <USkeleton v-if="loading || error" class="h-full w-full bg-primary-20" />
+        <USkeleton
+          v-if="loading || error"
+          class="h-full w-full bg-primary-20"
+        />
       </div>
 
       <!-- Office Details-->
@@ -47,18 +59,28 @@
             <p class="text-gray-700">{{ selectedOfficeDetails?.email }}</p>
             <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
           </div>
-
         </div>
       </div>
 
       <!-- Map Section -->
+
       <div class="w-full lg:w-1/3 flex justify-center">
-        <USkeleton v-if="loading || error" class="h-[300px] w-full rounded-lg shadow-sm bg-primary-20" />
+        <USkeleton
+          v-if="loading || error"
+          class="h-[300px] w-full rounded-lg shadow-sm bg-primary-20"
+        />
         <div v-else-if="loading">
-          <img src="/map-placeholder.png" alt="Loading" class="w-full h-[300px] rounded-lg shadow-sm" />
+          <img
+            src="/map-placeholder.png"
+            alt="Loading"
+            class="w-full h-[300px] rounded-lg shadow-sm"
+          />
         </div>
-        <div v-else>
-          <iframe :src="selectedOfficeDetails?.ifram" class="w-full h-[300px] rounded-lg shadow-sm" />
+        <div
+          v-else
+          class="w-full h-[300px] rounded-lg shadow-sm overflow-hidden"
+        >
+          <div class="w-full h-full" v-html="selectedOfficeDetails?.ifram" />
         </div>
       </div>
     </div>
@@ -75,17 +97,18 @@ const error = ref(false);
 const officeStore = useOfficeStore();
 onMounted(() => {
   loading.value = true;
-  officeStore.fetchOffices().then(() => {
-    loading.value = false;
-  }).catch(() => {
-    error.value = true;
-  });
+  officeStore
+    .fetchOffices()
+    .then(() => {
+      loading.value = false;
+    })
+    .catch(() => {
+      error.value = true;
+    });
 });
 const selectedOfficeDetails = computed(
   () => officeStore.offices[selectedOfficeId.value]
 );
-
-
 </script>
 
 <style scoped>
@@ -99,17 +122,26 @@ const selectedOfficeDetails = computed(
 }
 
 .scrollable-list::-webkit-scrollbar-thumb {
-  background: #138B96;
+  background: #138b96;
   border-radius: 4px;
 }
 
 .scrollable-list::-webkit-scrollbar-thumb:hover {
-  background: #138B96; 
+  background: #138b96;
 }
 
 .scrollable-list {
   scrollbar-width: thin;
-  scrollbar-color: #138B96 #f1f1f1;
+  scrollbar-color: #138b96 #f1f1f1;
   direction: ltr;
 }
+
+::v-deep iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 </style>

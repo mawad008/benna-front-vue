@@ -52,7 +52,8 @@
       </template>
 
       <template v-if="showPayment" class="justify-center items-center">
-        <MoyasarPayment class="animate-in zoom-in-95 duration-300 justify-center items-center card-width" />
+        <!-- <MoyasarPayment class="animate-in zoom-in-95 duration-300 justify-center items-center card-width" /> -->
+        <CustomPaymentCard class="animate-in zoom-in-95 duration-300 justify-center items-center card-width" />
       </template>
     </div>
   </UModal>
@@ -64,6 +65,7 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
 import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
+import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
 
 const donationStore = useDonationStore();
 
@@ -95,7 +97,11 @@ const closeModal = () => {
 const showPayment = ref(false);
 const handleDonation = async () => {
   await donationStore.submitDonation();
-  showPayment.value = true;
+  if (donationStore.submissionError) {
+  showPayment.value = false;
+  return;
+}
+showPayment.value = true;
 };
 const editedRow = ref({ ...props.row });
 </script>
@@ -103,7 +109,7 @@ const editedRow = ref({ ...props.row });
 <style scoped>
 .card-width {
   width: 100%;
-  max-width: 65rem; /* Adjust to desired width, e.g., 512px */
+  max-width: 65rem; 
   margin-left: auto;
   margin-right: auto;
 }
