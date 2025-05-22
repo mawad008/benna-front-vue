@@ -124,7 +124,8 @@
         </li>
       </ul>
     </div>
-    <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
+    <LoginModal v-if="isLoginOpen" @close="isLoginOpen = false" />
+
   </header>
 </template>
 
@@ -162,13 +163,17 @@ const toggleDropdown = () => {
 const isLogged = computed(() => authStore.isLoggedIn);
 
 const openLoginModal = () => {
-  isLoginOpen.value = true;
-  registerStore.step = 0;
+  isLoginOpen.value = false;
+  nextTick(() => {
+    registerStore.step = 0;
+    isLoginOpen.value = true;
+  });
 };
 
 const handleLogout = () => {
   authStore.logout();
   registerStore.reset();
+  isLoginOpen.value = false;
   isDropdownOpen.value = false;
   isMenuOpen.value = false;
   toast.add({
