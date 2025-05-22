@@ -136,7 +136,7 @@ const selectedOfficeDetails = computed(
   direction: ltr;
 }
 
-::v-deep iframe {
+:deep iframe {
   width: 100% !important;
   height: 100% !important;
   border: 0;
