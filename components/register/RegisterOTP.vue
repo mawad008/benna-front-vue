@@ -13,8 +13,8 @@
       @blur="validateField"
       @input="validateField"
     />
-    <p v-if="errors.otp" class="text-red-500 text-xs mt-1 text-right">
-      {{ errors.otp }}
+    <p v-if="displayedError" class="text-red-500 text-sm mt-1 text-start">
+      {{ displayedError }}
     </p>
 
     <p
@@ -53,7 +53,6 @@ const countdown = ref(60);
 let interval: ReturnType<typeof setInterval> | null = null;
 const loading = ref(false);
 
-
 const schema = yup.object({
   otp: yup
     .string()
@@ -61,28 +60,42 @@ const schema = yup.object({
     .matches(/^\d{4}$/, "رمز التحقق يجب أن يكون 4 أرقام"),
 });
 
-
 const { errors, meta, handleSubmit } = useForm({
   validationSchema: schema,
   initialValues: {
-    otp: store.otp, 
+    otp: store.otp,
   },
 });
-
-
 const { value: otp } = useField<string>("otp");
 
+const semanticOTPError = ref("");
+
+const displayedError = computed(() => {
+  return errors.value.otp || semanticOTPError.value;
+});
+
 const validateField = () => {
-  store.otp = otp.value; 
+  store.otp = otp.value;
 };
+
+watch(otp, () => {
+  if (errors.value.otp) errors.value.otp = undefined;
+  if (semanticOTPError.value) semanticOTPError.value = "";
+});
 
 const onSubmit = handleSubmit(async () => {
   loading.value = true;
-  await store.ValidateOTP(); 
+  semanticOTPError.value = "";
+  
+  await store.ValidateOTP();
+  if (store.errors.otp == "OTP is incorrect") {
+    semanticOTPError.value = "رمز التحقق غير صحيح";
+  } else {
+    semanticOTPError.value = store.errors.otp;
+  }
+  store.errors.otp="";
   loading.value = false;
 });
-
-
 
 onMounted(() => {
   startCountdown();
@@ -102,7 +115,7 @@ const startCountdown = () => {
 const resendOtp = async () => {
   if (countdown.value === 0) {
     console.log("Resending OTP...");
-     await store.ResendOTP();
+    await store.ResendOTP();
     startCountdown();
   }
 };

@@ -19,12 +19,9 @@
       :countryCode="'SA'"
     />
 
-    <p
-      v-if="errors.phone || semanticPhoneError"
-      class="text-red-500 text-sm mt-1 text-start"
-    >
-      {{ errors.phone || semanticPhoneError }}
-    </p>
+    <p v-if="displayedError" class="text-red-500 text-sm mt-1 text-start">
+  {{ displayedError }}
+</p>
 
     <!-- Submit Button -->
     <UButton
@@ -40,18 +37,16 @@
     </UButton>
   </div>
 </template>
-
 <script setup lang="ts">
 import { useRegisterStore } from "@/stores/register";
 import { VueTelInput } from "vue-tel-input";
 import "vue-tel-input/dist/vue-tel-input.css";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
 
 const store = useRegisterStore();
 const loading = ref(false);
-const  semanticPhoneError = ref("");
 
 const schema = yup.object({
   phone: yup
@@ -61,11 +56,19 @@ const schema = yup.object({
     .matches(/^05\d{8}$/, "رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام"),
 });
 
-const { errors, handleSubmit } = useForm({
+const { errors, handleSubmit, resetForm } = useForm({
   validationSchema: schema,
 });
-
 const { value: phone } = useField<string>("phone");
+
+const semanticPhoneError = ref("");
+
+
+const displayedError = computed(() => {
+  return errors.value.phone || semanticPhoneError.value;
+});
+
+
 const handlePhoneValidation = (phoneObject: {
   valid: boolean;
   number: string;
@@ -78,16 +81,25 @@ const handlePhoneValidation = (phoneObject: {
 };
 
 
+watch(phone, () => {
+  if (errors.value.phone) errors.value.phone = undefined;
+  if (semanticPhoneError.value) semanticPhoneError.value = "";
+});
+
 
 const onSubmit = handleSubmit(async () => {
-  store.phone = phone.value.replace(/\D/g, "");
   loading.value = true;
+  semanticPhoneError.value = "";
+
+  store.phone = phone.value.replace(/\D/g, "");
   await store.Login();
-  if (store.errors.loginPhone == "User not found") {
+
+  if (store.errors.loginPhone === "User not found") {
     semanticPhoneError.value = "رقم الجوال غير صحيح الرجاء إدخال رقم صحيح او انشاء مستخدم جديد";
   } else {
     semanticPhoneError.value = store.errors.loginPhone;
   }
+
   loading.value = false;
 });
 </script>
