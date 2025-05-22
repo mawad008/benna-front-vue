@@ -11,7 +11,7 @@ export const useDonationStore = defineStore("donation", {
   }),
 
   actions: {
-    async submitDonation() {
+    async submitDonation(campaign_id?: number) {
       const donorStore = useDonorStore();
       const isValidDonor = donorStore.validateDonor();
       let payload: any;
@@ -20,14 +20,13 @@ export const useDonationStore = defineStore("donation", {
         this.submissionError = "يرجى ملء جميع الحقول المطلوبة بشكل صحيح.";
         return;
       }
-
-      if (this.campaign_id) {
+      if (campaign_id) {
       payload = {
           name: donorStore.donorName,
           amount: donorStore.selectedAmount || donorStore.customAmount,
           type: donorStore.recurringType,
           date: donorStore.startDate,
-          campaign_id: this?.campaign_id,
+          campaign_id: campaign_id,
         };
       } else {
      payload = {
@@ -43,8 +42,9 @@ export const useDonationStore = defineStore("donation", {
       this.submissionError = "";
 
       try {
+        console.log(payload);
         const response = await api.post("/api/create/deduction", payload);
-        console.log("Donation submitted:", response.data);
+        // console.log("Donation submitted:", response.data);
 
         // Reset donor form
         // donorStore.donorName = "";

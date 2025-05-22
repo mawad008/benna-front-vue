@@ -76,15 +76,16 @@ onMounted(() => {
     const campaignId = route.query.id.split("?")[0];
     donationStore.campaign_id = campaignId;
     // updateUrlParams({ campaign_id: null });
-    console.log(donationStore.campaign_id);
+    // console.log(donationStore.campaign_id);
   }
 });
 console.log(donationStore.campaign_id);
 
-// http://localhost:3000/?id=104?name=Zain%20campaign
+//https://donate.benaa.org.sa/?id=104?name=zain
 
 const handleDonation = async () => {
-  await donationStore.submitDonation();
+  console.log(donationStore.campaign_id);
+  await donationStore.submitDonation(donationStore.campaign_id);
   if (donationStore.submissionError) {
     showPayment.value = false;
     isLoginOpen.value = false;

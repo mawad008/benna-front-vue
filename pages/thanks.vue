@@ -12,13 +12,21 @@
       </div>
 
       <!-- Success State -->
-      <div v-else-if="isSuccess" class="max-w-2xl">
+      <div v-else-if="isSuccess" class="max-w-2xl flex flex-col items-center justify-center gap-4">
         <h1 class="text-5xl md:text-5xl font-bold text-white mb-4">
           شكراً لتبرعك
         </h1>
         <p class="text-2xl lg:text-4xl text-white">
           نحن نقدر دعمك ومساهمتك في عملنا الخيري.
         </p>
+        <button
+          @click="router.push('/campaigns')"
+        class="bg-white text-[#138B96] font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
+          icon="i-heroicons-arrow-left-20-solid"
+          icon-position="end"
+          
+          >الذهاب الى سجل الاستقطاعات</button
+        >
       </div>
 
       <!-- Error State -->

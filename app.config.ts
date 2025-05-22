@@ -1,7 +1,7 @@
 export default defineAppConfig({
   ui: {
     primary: "blue",
-    gray: "state",
+    gray: "stone",
     avatar:{
       slots: {
         root: 'inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated',
