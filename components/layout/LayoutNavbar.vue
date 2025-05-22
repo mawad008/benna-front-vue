@@ -77,7 +77,7 @@
         :class="{ 'order-first': locale === 'ar' }"
         @click="$router.push(localePath('/'))"
       >
-        <img src="/nav-logo.png" alt="Logo" class="h-12 w-auto" />
+        <img src="@/assets/svg/logo.svg" alt="Logo" class="h-12 w-auto" />
       </div>
 
       <!-- Mobile Menu Button -->
@@ -134,6 +134,7 @@ import { onClickOutside } from "@vueuse/core";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
 import LoginModal from "@/components/modals/LoginModal.vue";
+import logo from "@/assets/svg/logo.svg";
 
 const toast = useToast();
 const authStore = useAuthStore(); 

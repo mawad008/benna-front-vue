@@ -63,6 +63,9 @@
 
     <!-- Table -->
     <UTable
+      :loading="campaignsStore.loading"
+      loading-color="primary"
+      loading-animation="carousel"
       :rows="paginatedData"
       :columns="columns"
       class="w-full"
@@ -169,7 +172,11 @@ import { ref, computed } from "vue";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useRouter } from "vue-router";
-
+import edit from "@/assets/svg/edit.svg";
+import play from "@/assets/svg/play.svg";
+import pause from "@/assets/svg/pause.svg";
+import stop from "@/assets/svg/stop.svg";
+import eye from "@/assets/svg/eye.svg";
 const router = useRouter();
 
 const campaignsStore = useCampaignsStore();
@@ -214,8 +221,9 @@ const items = (row: any) => [
   [
     {
       label: "تحديث بيانات الدفع",
-      icon: "i-heroicons-pencil-square-20-solid",
-      color: "success",
+      icon: "i-heroicons-pencil",
+      color: "info",
+      class: "dark:text-[#138B96] text-[#138B96]",
       click: () => updatePaymentData(row),
     },
     {
@@ -224,25 +232,28 @@ const items = (row: any) => [
           ? "تفعيل التبرع"
           : row.status === 1
           ? "ايقاف التبرع"
-          : "الغاء التبرع",
+          : "ايقاف التبرع",
       icon:
         row.status === 0
-          ? "i-heroicons-play-20-solid"
+          ? "i-heroicons-play"
           : row.status === 1
-          ? "i-heroicons-pause-20-solid"
-          : "i-heroicons-x-circle-20-solid",
+          ? "i-heroicons-pause"
+          : "i-heroicons-pause",
       color:
+        row.status === 0 ? "success" : row.status === 1 ? "warning" : "danger",
+      class:
         row.status === 0
-          ? "green"
+          ? "text-[#22AD5C] dark:text-[#22AD5C] "
           : row.status === 1
-          ? "red"
-          : "red",
+          ? "text-[#F23030] dark:text-[#F23030] "
+          : "text-[#F23030] dark:text-[#F23030] ",
       click: () => toggleDonationStatus(row),
     },
     {
       label: "عرض سجل الاستقطاعات",
-      icon: "i-heroicons-eye-20-solid",
-      color: "success",
+      icon: "i-heroicons-eye",
+      color: "neutral",
+      class: "dark:text-[#111928] text-[#111928]",
       click: () => showTransactions(row),
     },
   ],

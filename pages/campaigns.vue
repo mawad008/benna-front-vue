@@ -63,7 +63,7 @@
 
   <!-- Show Campaigns -->
   <div v-else>
-    <div>
+    <div class="mt-10 md:mt-0 lg:mt-0">
       <UBreadcrumb :links="links" />
     </div>
     <br />

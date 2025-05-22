@@ -14,7 +14,7 @@
  
   </div>
   <div v-else class="container lg:mt-10 md:mt-20">
-    <div>
+    <div class="mt-10 md:mt-0 lg:mt-0">
       <UBreadcrumb :links="links" />
     </div>
     <br />
