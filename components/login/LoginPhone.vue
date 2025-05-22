@@ -20,10 +20,10 @@
     />
 
     <p
-      v-if="errors.phone || store.errors.loginPhone"
+      v-if="errors.phone || semanticPhoneError"
       class="text-red-500 text-sm mt-1 text-start"
     >
-      {{ errors.phone || store.errors.loginPhone }}
+      {{ errors.phone || semanticPhoneError }}
     </p>
 
     <!-- Submit Button -->
@@ -51,6 +51,7 @@ import { ref } from "vue";
 
 const store = useRegisterStore();
 const loading = ref(false);
+const  semanticPhoneError = ref("");
 
 const schema = yup.object({
   phone: yup
@@ -76,10 +77,17 @@ const handlePhoneValidation = (phoneObject: {
   }
 };
 
+
+
 const onSubmit = handleSubmit(async () => {
   store.phone = phone.value.replace(/\D/g, "");
   loading.value = true;
   await store.Login();
+  if (store.errors.loginPhone == "User not found") {
+    semanticPhoneError.value = "رقم الجوال غير صحيح الرجاء إدخال رقم صحيح او انشاء مستخدم جديد";
+  } else {
+    semanticPhoneError.value = store.errors.loginPhone;
+  }
   loading.value = false;
 });
 </script>
