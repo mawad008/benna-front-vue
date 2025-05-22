@@ -90,6 +90,12 @@
       <template #type-data="{ row }">
         {{ getTypeLabel(row.type) }}
       </template>
+      <template #amount-data="{ row }">
+        <div class="flex items-center gap-1">
+          {{ row.amount }}
+          <img src="/unit.svg" alt="unit" class="w-4 h-4"> 
+        </div>
+      </template>
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
@@ -172,11 +178,7 @@ import { ref, computed } from "vue";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useRouter } from "vue-router";
-import edit from "@/assets/svg/edit.svg";
-import play from "@/assets/svg/play.svg";
-import pause from "@/assets/svg/pause.svg";
-import stop from "@/assets/svg/stop.svg";
-import eye from "@/assets/svg/eye.svg";
+
 const router = useRouter();
 
 const campaignsStore = useCampaignsStore();

@@ -28,7 +28,7 @@ useHead({
         "/terms": "Terms",
         "/thanks": "Thanks",
       }[route.path] || "";
-    return `${websiteName} - ${pageTitle}`;
+    return `${websiteName}${pageTitle ? " - " + pageTitle : ""}`;
   }),
 });
 </script>

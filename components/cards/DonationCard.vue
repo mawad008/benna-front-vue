@@ -9,11 +9,14 @@
       <label class="block text-dark font-bold text-sm mb-3">اختر مبلغ المتبرع</label>
       <div class="mt-6 flex flex-col lg:flex-row">
         <div class="flex  lg:flex-row gap-3 flex-wrap items-center">
-          <UButton v-for="amount in amounts" :key="amount" :label="amount + ' ر.س'"
+          <UButton v-for="amount in amounts" :key="amount" :label="amount + ' '"
             @click="donorStore.setAmount(amount)" variant="outline" color="selector"
             class="px-5 py-2.5 rounded-lg min-w-[80px]" :class="{
               'bg-[#138B96] text-white': donorStore.selectedAmount === amount,
-            }" />
+            }" >
+          {{amount}} <img src="/unit.svg" alt="unit" class="w-4 h-4">
+          </UButton>
+           
           <div class="flex flex-col items-end lg:flex-1 sm:flex-none ">
             <UInput v-model="donorStore.customAmount" placeholder="مبلغ آخر" class="w-full border-gray-300 px-5 py-2.5"
               color="white" varient="solid" @input="donorStore.setCustomAmount($event.target.value)" />
@@ -68,7 +71,7 @@
 <script setup>
 import Title from "@/components/ui/Title.vue";
 import { useDonorStore } from "@/stores/donation/donorStore";
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 
 const date = ref(new Date());
 const donorStore = useDonorStore();
