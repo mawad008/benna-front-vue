@@ -101,14 +101,12 @@ const openLoginModal = () => {
   registerStore.step = 0;
 };
 // console.log(campaignsStore.campaigns);
-onMounted(async () => {
-  await authStore.init();
+onMounted(() => {
+  authStore.init();
   if (authStore.isLoggedIn) {
-    await campaignsStore.fetchCampaigns();
+    campaignsStore.fetchCampaigns();
   }
 });
-
-
 
 const links = [
   {

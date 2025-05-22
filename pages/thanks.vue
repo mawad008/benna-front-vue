@@ -21,7 +21,7 @@
         </p>
         <button
           @click="router.push('/campaigns')"
-        class="bg-white text-[#138B96] font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
+        class="bg-white text-[#138B96] font-bold py-4 px-4 rounded-lg hover:bg-gray-200 transition-colors mt-4"
           icon="i-heroicons-arrow-left-20-solid"
           icon-position="end"
           

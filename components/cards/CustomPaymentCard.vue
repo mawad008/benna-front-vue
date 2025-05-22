@@ -5,7 +5,7 @@
     >
       <!-- Title with Badge -->
       <Title title="إتمام عملية الدفع" badge="3" class="mb-4 text-end" />
-      
+
       <p v-if="errors.amount" class="text-red-500 text-sm mb-4 text-center">
         {{ errors.amount }}
       </p>
@@ -17,11 +17,9 @@
           <label class="block text-dark font-bold text-sm mb-2"
             >اسم حامل البطاقة</label
           >
-          <UInput
+          <input
             v-model="form.cardholderName"
             class="w-full border-gray-300 p-2 rounded-lg"
-            color="white"
-            variant="outline"
             placeholder="اسم حامل البطاقة"
             :disabled="isSubmitting"
           />
@@ -35,17 +33,13 @@
           <label class="block text-dark font-bold text-sm mb-2"
             >رقم البطاقة</label
           >
-          <UInput
+          <input
             v-model="form.cardNumber"
-            class="w-full border-gray-300 p-2 rounded-lg"
-            color="white"
-            variant="outline"
-            placeholder="1234 5678 9012 3456"
-            inputmode="numeric"
             @input="formatCardNumber"
-            :maxlength="16"
-            :disabled="isSubmitting"
+            maxlength="19"
+            placeholder="1234 5678 9012 3456"
           />
+
           <p v-if="errors.cardNumber" class="text-red-500 text-sm">
             {{ errors.cardNumber }}
           </p>
@@ -57,15 +51,11 @@
             <label class="block text-dark font-bold text-sm mb-2"
               >تاريخ الانتهاء</label
             >
-            <UInput
+            <input
               v-model="form.expiryDate"
-              placeholder="MM/YY"
-              class="w-full border-gray-300 p-2 rounded-lg"
-              color="white"
-              variant="outline"
-              inputmode="numeric"
               @input="handleExpiryDateInput"
-              :maxlength="5"
+              maxlength="5"
+              placeholder="MM/YY"
             />
             <p v-if="errors.expiryDate" class="text-red-500 text-sm">
               {{ errors.expiryDate }}
@@ -75,14 +65,10 @@
             <label class="block text-dark font-bold text-sm mb-2"
               >رمز التحقق (CVV)</label
             >
-            <UInput
+            <input
               v-model="form.cvv"
               placeholder="CVV"
-              class="w-full border-gray-300 p-2 rounded-lg"
-              color="white"
-              variant="outline"
-              inputmode="numeric"
-              maxlength="4"
+              maxlength="3"
               @input="form.cvv = form.cvv.replace(/\D/g, '')"
               :disabled="isSubmitting"
             />
@@ -91,34 +77,6 @@
             </p>
           </div>
         </div>
-
-        <!-- Loading State -->
-        <!-- <div v-if="isSubmitting" class="mt-4 flex justify-center">
-          <div class="flex items-center gap-2">
-            <svg
-              class="animate-spin h-5 w-5 text-[#138B96]"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            <span class="text-[#138B96]">جاري المعالجة...</span>
-          </div>
-        </div> -->
-
         <!-- Submit Button -->
         <div class="mt-6 text-center">
           <UButton
@@ -165,18 +123,16 @@ const errors = reactive({
 const isSubmitting = ref(false);
 const selectedAmount = ref(donorStore.selectedAmount);
 
-const formatCardNumber = () => {
-  let value = form.cardNumber.replace(/\D/g, "").slice(0, 16);
-  if (value.length <= 16) {
-    form.cardNumber =
-      value
-        .match(/.{1,4}/g)
-        ?.join(" ")
-        .trim() || value;
-  }
-  if (value.length === 16) {
-    form.cardNumber = value.match(/.{1,4}/g)!.join(" ");
-    errors.cardNumber = luhnCheck(value) ? "" : "رقم البطاقة غير صالح";
+const formatCardNumber = (event: Event) => {
+  const inputEl = event.target as HTMLInputElement;
+  let raw = inputEl.value.replace(/\D/g, "").slice(0, 16);
+
+  const formatted = raw.replace(/(.{4})/g, "$1 ").trim();
+
+  form.cardNumber = formatted;
+
+  if (raw.length === 16) {
+    errors.cardNumber = luhnCheck(raw) ? "" : "رقم البطاقة غير صالح";
   } else {
     errors.cardNumber = "";
   }
@@ -198,14 +154,23 @@ const luhnCheck = (cardNumber: string): boolean => {
 };
 
 const handleExpiryDateInput = (event: Event) => {
-  let input = (event.target as HTMLInputElement).value;
-  let cleaned = input.replace(/\D/g, "");
+  const inputEl = event.target as HTMLInputElement;
+  let input = inputEl.value;
+
+  // Remove non-digit and slash characters
+  let cleaned = input.replace(/[^\d]/g, "");
+
+  // Limit to max 4 digits (MMYY)
+  if (cleaned.length > 4) cleaned = cleaned.slice(0, 4);
+
+  // Insert "/" after 2 digits
   if (cleaned.length > 2) {
-    cleaned = cleaned.slice(0, 2) + "/" + cleaned.slice(2, 4);
+    cleaned = cleaned.slice(0, 2) + "/" + cleaned.slice(2);
   }
 
   form.expiryDate = cleaned;
 
+  // Validation logic
   if (cleaned.length === 5) {
     const [month, year] = cleaned.split("/");
     form.month = month;
@@ -215,8 +180,9 @@ const handleExpiryDateInput = (event: Event) => {
     errors.expiryDate = "";
   }
 
-  if (cleaned.length === 2) {
-    const month = parseInt(cleaned);
+  // Validate month immediately
+  if (cleaned.length >= 2) {
+    const month = parseInt(cleaned.slice(0, 2));
     if (month < 1 || month > 12) {
       errors.expiryDate = "الشهر غير صالح";
     }
@@ -344,7 +310,7 @@ input {
   font-size: 16px;
   background-color: #f9fafb;
   width: 100%;
-  direction: ltr; 
+  direction: ltr;
 }
 
 input:focus {
