@@ -60,6 +60,8 @@
             <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
           </div>
         </div>
+
+
       </div>
 
       <!-- Map Section -->
@@ -92,13 +94,14 @@ import Title from "@/components/ui/Title.vue";
 import { useOfficeStore } from "@/stores/officeStore";
 import { computed, onMounted, ref } from "vue";
 const selectedOfficeId = ref(0);
+const social = ref({});
 const loading = ref(false);
 const error = ref(false);
 const officeStore = useOfficeStore();
 onMounted(() => {
   loading.value = true;
-  officeStore
-    .fetchOffices()
+  officeStore.fetchOffices()
+  officeStore.fetchSocial()
     .then(() => {
       loading.value = false;
     })
@@ -106,9 +109,12 @@ onMounted(() => {
       error.value = true;
     });
 });
+
 const selectedOfficeDetails = computed(
   () => officeStore.offices[selectedOfficeId.value]
 );
+social.value = officeStore.social;
+
 </script>
 
 <style scoped>
