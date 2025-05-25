@@ -205,6 +205,22 @@ export default defineAppConfig({
         leaveFrom: "opacity-100 scale-100",
         leaveTo: "opacity-0 scale-95",
       },
+      variants: {
+        transition: {
+          true: {
+            overlay: 'data-[state=open]:animate-[fade-in_200ms_ease-out] data-[state=closed]:animate-[fade-out_200ms_ease-in]',
+            content: 'data-[state=open]:animate-[scale-in_200ms_ease-out] data-[state=closed]:animate-[scale-out_200ms_ease-in]'
+          }
+        },
+        fullscreen: {
+          true: {
+            content: 'inset-0'
+          },
+          false: {
+            content: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-4rem)] rounded-lg shadow-lg ring ring-default'
+          }
+        }
+      }
     },
     radio: {
       wrapper: "relative flex items-start",

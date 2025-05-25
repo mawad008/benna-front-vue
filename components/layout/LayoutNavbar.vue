@@ -172,7 +172,6 @@ const availableLocales = computed(() => {
   );
 });
 
-const toast = useToast();
 const authStore = useAuthStore();
 const registerStore = useRegisterStore();
 
@@ -210,10 +209,6 @@ const handleLogout = () => {
   isLoginOpen.value = false;
   isDropdownOpen.value = false;
   isMenuOpen.value = false;
-  toast.add({
-    title: "لقد تم تسجيل الخروج من بناء",
-    description: "شكرا لك على تبرعك",
-  });
 };
 
 onMounted(() => {

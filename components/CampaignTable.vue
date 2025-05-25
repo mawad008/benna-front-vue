@@ -12,9 +12,9 @@
           <div class="flex gap-4">
             <!-- Status Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium"
-                >{{ $t("campaignTable.labels.status") }}</label
-              >
+              <label class="text-sm text-gray-600 font-medium">{{
+                $t("campaignTable.labels.status")
+              }}</label>
               <USelect
                 v-model="selectedStatus"
                 :options="statusOptions"
@@ -28,9 +28,9 @@
 
             <!-- Type Filter -->
             <div class="flex flex-col gap-1">
-              <label class="text-sm text-gray-600 font-medium"
-                >{{ $t("campaignTable.labels.type") }}</label
-              >
+              <label class="text-sm text-gray-600 font-medium">{{
+                $t("campaignTable.labels.type")
+              }}</label>
               <USelect
                 v-model="selectedType"
                 :options="typeOptions"
@@ -63,7 +63,7 @@
 
     <!-- Table -->
     <UTable
-    sticky
+      sticky
       :loading="isLoading"
       loading-color="primary"
       loading-animation="carousel"
@@ -88,15 +88,14 @@
         </UBadge>
       </template>
 
-<!-- Start Date -->
-<template #next_time-data="{ row }">
-  <div class="flex items-center justify-center gap-1"> 
-    <span v-if="row.next_time">  {{ row.next_time }}</span>    
-    <span v-else> - </span>
-  </div>
-  
+      <!-- Start Date -->
+      <template #next_time-data="{ row }">
+        <div class="flex items-center justify-center gap-1">
+          <span v-if="row.next_time"> {{ row.next_time }}</span>
+          <span v-else> - </span>
+        </div>
       </template>
-<!-- Label -->
+      <!-- Label -->
       <template #type-data="{ row }">
         {{ getTypeLabel(row.type) }}
       </template>
@@ -105,7 +104,7 @@
       <template #amount-data="{ row }">
         <div class="flex items-center gap-1 justify-center">
           {{ row.amount }}
-          <img src="/unit.svg" alt="unit" class="w-4 h-4"> 
+          <img src="/unit.svg" alt="unit" class="w-4 h-4" />
         </div>
       </template>
 
@@ -182,8 +181,11 @@
       </div>
     </div>
   </div>
-  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
-
+  <EditPayment
+    v-model:open="isEditModalOpen"
+    :row="selectedRow"
+    @updated="handleUpdatedPayment"
+  />
 </template>
 
 <script setup lang="ts">
@@ -191,22 +193,24 @@ import { ref, computed } from "vue";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useRouter } from "vue-router";
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
+const toast = useToast();
 
-
-const props = defineProps<{campaigns: any}>();
+const props = defineProps<{ campaigns: any }>();
 const campaigns = ref(props.campaigns);
-watch(() => props.campaigns, (newCampaigns) => {
-  campaigns.value = newCampaigns;
-}, { deep: true });
+watch(
+  () => props.campaigns,
+  (newCampaigns) => {
+    campaigns.value = newCampaigns;
+  },
+  { deep: true }
+);
 
 const router = useRouter();
 const campaignsStore = useCampaignsStore();
 const isLoading = ref(false);
-
-
 
 // Pagination
 const page = ref(1);
@@ -235,9 +239,21 @@ const getGlobalIndex = (rowIndex: number) => {
 const columns = ref([
   { key: "index", label: "#" },
   { key: "campaign_name", label: t("campaignTable.columns.campaignName") },
-  { key: "amount", label: t("campaignTable.columns.campaignAmount"), sortable: true },
-  { key: "date", label: t("campaignTable.columns.campaignStartDate"), sortable: true },
-  { key: "next_time", label: t("campaignTable.columns.deductionNextTime"), sortable: true },
+  {
+    key: "amount",
+    label: t("campaignTable.columns.campaignAmount"),
+    sortable: true,
+  },
+  {
+    key: "date",
+    label: t("campaignTable.columns.campaignStartDate"),
+    sortable: true,
+  },
+  {
+    key: "next_time",
+    label: t("campaignTable.columns.deductionNextTime"),
+    sortable: true,
+  },
   { key: "type", label: t("campaignTable.columns.campaignType") },
   { key: "status", label: t("campaignTable.columns.campaignStatus") },
   { key: "actions", label: t("campaignTable.columns.campaignActions") },
@@ -247,7 +263,7 @@ const items = (row: any) => [
   [
     {
       label: t("campaignTable.actions.update"),
-      icon: "i-heroicons-pencil",
+      icon: "i-heroicons-pencil-square",
       color: "info",
       class: "dark:text-[#138B96] text-[#138B96]",
       click: () => updatePaymentData(row),
@@ -261,7 +277,7 @@ const items = (row: any) => [
           : t("campaignTable.actions.resume"),
       icon:
         row.status === 1
-          ? "i-heroicons-pause" 
+          ? "i-heroicons-pause"
           : row.status === 2
           ? "i-heroicons-pause"
           : "i-heroicons-play",
@@ -294,15 +310,17 @@ const toggleDonationStatus = async (row: any) => {
     } else {
       updatedCampaign = await campaignsStore.activePayment(row.campaign_id);
     }
-    const index = campaigns.value.findIndex(c => c.campaign_id === row.campaign_id);
+    const index = campaigns.value.findIndex(
+      (c) => c.campaign_id === row.campaign_id
+    );
     if (index !== -1) {
       campaigns.value[index] = {
         ...campaigns.value[index],
         status: updatedCampaign.data.status,
-        next_time: updatedCampaign.data.next_time
+        next_time: updatedCampaign.data.next_time,
       };
     }
- 
+
     isLoading.value = false;
   } catch (error) {
     console.error("Failed to update status:", error);
@@ -310,16 +328,23 @@ const toggleDonationStatus = async (row: any) => {
   }
 };
 
-
 const showTransactions = (row: any) => {
   router.push(`/deductions/${row.campaign_id}`);
 };
 const getStatusLabel = (status: number) => {
-  return status === 1 ? t("campaignTable.status.1") : status === 2 ? t("campaignTable.status.2") : t("campaignTable.status.0");
+  return status === 1
+    ? t("campaignTable.status.1")
+    : status === 2
+    ? t("campaignTable.status.2")
+    : t("campaignTable.status.0");
 };
 
 const getTypeLabel = (type: string) => {
-  return type === "day" ? t("campaignTable.type.day") : type === "week" ? t("campaignTable.type.week") : t("campaignTable.type.month");
+  return type === "day"
+    ? t("campaignTable.type.day")
+    : type === "week"
+    ? t("campaignTable.type.week")
+    : t("campaignTable.type.month");
 };
 
 const getStatusColor = (status: number) => {
@@ -393,8 +418,9 @@ const updatePaymentData = (row: any) => {
   isEditModalOpen.value = true;
 };
 const handleUpdatedPayment = (updatedRow: any) => {
-  const index = campaigns.value.findIndex((c) => c.campaign_id === updatedRow.campaign_id);
+  const index = campaigns.value.findIndex(
+    (c) => c.campaign_id === updatedRow.campaign_id
+  );
   if (index !== -1) campaigns.value[index] = { ...updatedRow };
 };
-
 </script>

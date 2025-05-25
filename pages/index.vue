@@ -2,7 +2,7 @@
   <Hero />
   <div class="flex flex-col items-center bg-gray-50 py-12">
     <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[50%] lg:w-[48%]">
-      <template v-if="!showPayment">
+      <template v-if="!donationStore.showPayment">
         <DonationCard />
         <DonorNameCard />
 
@@ -84,11 +84,11 @@ onMounted(() => {
 const handleDonation = async () => {
   await donationStore.submitDonation(donationStore.campaign_id);
   if (donationStore.submissionError) {
-    showPayment.value = false;
+    donationStore.showPayment = false;
     isLoginOpen.value = false;
     return;
   }
-  showPayment.value = true;
+  donationStore.showPayment = true;
 };
 
 const openLoginModal = () => {

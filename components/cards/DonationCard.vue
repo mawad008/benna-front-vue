@@ -83,6 +83,19 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+
+const props = defineProps({
+  row: Object,
+});
+
+// const editRow = () => {
+//   donorStore.setAmount(props.row.amount);
+//   donorStore.setRecurringType(props.row.type);
+
+// }
+
+
+
 const types = [
   { label: t('cards.donationCard.monthly'), value: "month" },
   { label: t('cards.donationCard.weekly'), value: "week" },

@@ -14,12 +14,12 @@
 
   >
     <div
-      class="p-4 sm:p-6 space-y-4 bg-transparent rounded-lg shadow-xl justify-center items-center"
+      class="p-1 py-4 space-y-4 rounded-lg shadow-xl"
       ref="modalContent"
     >
-      <template v-if="!donationStore.showPayment" class="justify-center items-center">
-        <div class="flex flex-col gap-4 animate-in fade-in duration-500 justify-center items-center">
-          <DonationCard :row="row" />
+      <template v-if="!donationStore.showPayment">
+        <div class="flex flex-col gap-4 animate-in fade-in duration-500">
+          <DonationCard :row="props?.row" />
           <DonorNameCard />
         </div>
 
@@ -48,8 +48,8 @@
         </div>
       </template>
 
-      <template v-if="donationStore.showPayment" class="justify-center items-center">
-        <CustomPaymentCard class="animate-in zoom-in-95 duration-300 justify-center items-center" />
+      <template v-if="donationStore.showPayment">
+        <CustomPaymentCard class="animate-in zoom-in-95 duration-300" />
       </template>
     </div>
   </UModal>

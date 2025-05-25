@@ -28,7 +28,7 @@
           >
           <input
             v-model="form.cardholderName"
-            class="w-full border-gray-300 p-2 rounded-lg text-start"
+            class="w-full border-gray-300 p-2 rounded-lg text-start placeholder:text-start"
             :placeholder="$t('cards.customPaymentCard.cardholderName')"
             :disabled="isSubmitting"
           />
@@ -47,7 +47,7 @@
             @input="formatCardNumber"
             maxlength="19"
             placeholder="1234 5678 9012 3456"
-            class="w-full border-gray-300 p-2 rounded-lg text-start"
+            class="w-full border-gray-300 p-2 rounded-lg text-start placeholder:text-start"
           />
 
           <p v-if="errors.cardNumber" class="text-red-500 text-sm">
@@ -66,7 +66,7 @@
               @input="handleExpiryDateInput"
               maxlength="5"
               placeholder="MM/YY"
-              class="w-full border-gray-300 p-2 rounded-lg text-start"
+              class="w-full border-gray-300 p-2 rounded-lg text-start placeholder:text-start"
             />
             <p v-if="errors.expiryDate" class="text-red-500 text-sm">
               {{ errors.expiryDate }}
@@ -82,7 +82,7 @@
               maxlength="3"
               @input="form.cvv = form.cvv.replace(/\D/g, '')"
               :disabled="isSubmitting"
-              class="w-full border-gray-300 p-2 rounded-lg text-start"
+              class="w-full border-gray-300 p-2 rounded-lg text-start placeholder:text-start"
             />
             <p v-if="errors.cvv" class="text-red-500 text-sm">
               {{ errors.cvv }}
