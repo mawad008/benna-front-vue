@@ -182,6 +182,9 @@
       }
     }
   },
+  "termsPage":{
+    "title":"Terms and Conditions"
+  },
   "errorPage":{
     "title":" Go to Home ",
     "message":"An unexpected error occurred"

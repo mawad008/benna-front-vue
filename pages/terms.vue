@@ -1,14 +1,10 @@
 <template>
   <Hero />
   <div class="lg:my-10 md:my-20 my-10 container px-4 mx-auto">
-    <h1 class="text-2xl font-bold mb-4 text-primary">الشروط والأحكام</h1>
+    <h1 class="text-2xl font-bold mb-4 text-primary">{{ $t("termsPage.title") }}</h1>
 
     <div class="space-y-4">
-      <div
-        v-if="termsHtml"
-        v-html="termsHtml"
-        class="prose max-w-none text-gray-800"
-      />
+      <div v-if="termsHtml" v-html="termsHtml" />
 
       <div v-else>
         <section>
@@ -114,18 +110,17 @@ const { locale } = useI18n();
 const { get } = useApi(locale.value);
 const termsHtml = ref<string | null>(null);
 
-// onMounted(async () => {
-//   try {
-//     const res = await get("/terms");
-//     if (res?.data) {
-//       termsHtml.value = res.data;
-//     }
-//   } catch (error) {
-//     console.warn(
-//       "Failed to load terms from API, falling back to static content."
-//     );
-//   }
-// });
+onMounted(async () => {
+  try {
+    const res = await get("/api/terms");
+    const { terms } = res.data.data;
+    termsHtml.value = terms;
+  } catch (error) {
+    console.warn(
+      "Failed to load terms from API, falling back to static content."
+    );
+  }
+});
 </script>
 
 <style scoped>

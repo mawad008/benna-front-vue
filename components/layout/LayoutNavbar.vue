@@ -71,7 +71,7 @@
                 to="/"
                 @click="handleLogout"
                 class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-                icon="i-lucide-log-out"
+                icon="i-lucide-arrow-left-start-on-rectangle"
               > 
                 <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
             
@@ -130,7 +130,7 @@
             to="/"
             @click="handleLogout"
             class="block py-2 text-red-800 space-x-2"
-            icon="i-lucide-log-out"
+            icon="i-lucide-arrow-left-start-on-rectangle"
           >
             <span class="px-2">{{
               locale === "ar" ? "تسجيل الخروج" : "Logout"
