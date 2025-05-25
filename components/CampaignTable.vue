@@ -7,18 +7,18 @@
         <div class="flex flex-col gap-2">
           <div class="flex items-center gap-2 text-gray-700 font-semibold">
             <i class="i-lucide-filter"></i>
-            <span>تصفية النتائج</span>
+            <span>{{ $t("campaignTable.filterResult") }}</span>
           </div>
           <div class="flex gap-4">
             <!-- Status Filter -->
             <div class="flex flex-col gap-1">
               <label class="text-sm text-gray-600 font-medium"
-                >حالة البيع</label
+                >{{ $t("campaignTable.labels.status") }}</label
               >
               <USelect
                 v-model="selectedStatus"
                 :options="statusOptions"
-                placeholder="اختر حالة البيع"
+                :placeholder="$t('campaignTable.placeholder.chooseSatatus')"
                 color="white"
                 variant="outline"
                 option-attribute="label"
@@ -29,12 +29,12 @@
             <!-- Type Filter -->
             <div class="flex flex-col gap-1">
               <label class="text-sm text-gray-600 font-medium"
-                >نوع الاستقطاع</label
+                >{{ $t("campaignTable.labels.type") }}</label
               >
               <USelect
                 v-model="selectedType"
                 :options="typeOptions"
-                placeholder="اختر نوع الاستقطاع"
+                :placeholder="$t('campaignTable.placeholder.chooseType')"
                 color="white"
                 variant="outline"
                 option-attribute="label"
@@ -48,11 +48,11 @@
         <div class="flex flex-col gap-2 w-full md:w-auto">
           <div class="flex items-center gap-2 text-gray-700 font-semibold">
             <i class="i-lucide-search"></i>
-            <span>البحث</span>
+            <span>{{ $t("campaignTable.search") }}</span>
           </div>
           <UInput
             v-model="searchQuery"
-            placeholder="بحث..."
+            :placeholder="$t('campaignTable.placeholder.search')"
             class="w-full max-w-md"
             color="white"
             variant="outline"
@@ -63,7 +63,8 @@
 
     <!-- Table -->
     <UTable
-      :loading="campaignsStore.loading"
+    sticky
+      :loading="isLoading"
       loading-color="primary"
       loading-animation="carousel"
       :rows="paginatedData"
@@ -87,11 +88,22 @@
         </UBadge>
       </template>
 
+<!-- Start Date -->
+<template #next_time-data="{ row }">
+  <div class="flex items-center justify-center gap-1"> 
+    <span v-if="row.next_time">  {{ row.next_time }}</span>    
+    <span v-else> - </span>
+  </div>
+  
+      </template>
+<!-- Label -->
       <template #type-data="{ row }">
         {{ getTypeLabel(row.type) }}
       </template>
+
+      <!-- amount -->
       <template #amount-data="{ row }">
-        <div class="flex items-center gap-1">
+        <div class="flex items-center gap-1 justify-center">
           {{ row.amount }}
           <img src="/unit.svg" alt="unit" class="w-4 h-4"> 
         </div>
@@ -170,7 +182,8 @@
       </div>
     </div>
   </div>
-  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" />
+  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
+
 </template>
 
 <script setup lang="ts">
@@ -178,12 +191,22 @@ import { ref, computed } from "vue";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useRouter } from "vue-router";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
+
+const props = defineProps<{campaigns: any}>();
+const campaigns = ref(props.campaigns);
+watch(() => props.campaigns, (newCampaigns) => {
+  campaigns.value = newCampaigns;
+}, { deep: true });
 
 const router = useRouter();
-
 const campaignsStore = useCampaignsStore();
+const isLoading = ref(false);
 
-const campaigns = ref(campaignsStore.campaigns);
+
 
 // Pagination
 const page = ref(1);
@@ -195,14 +218,14 @@ const selectedStatus = ref("");
 const selectedType = ref("");
 
 const statusOptions = [
-  { label: "مستمر", value: 1 },
-  { label: "متوقف", value: 0 },
-  { label: "قيد الانتظار", value: 2 },
+  { label: t("campaignTable.status.1"), value: 1 },
+  { label: t("campaignTable.status.0"), value: 0 },
+  { label: t("campaignTable.status.2"), value: 2 },
 ];
 const typeOptions = [
-  { label: "يومي", value: "day" },
-  { label: "أسبوعي", value: "week" },
-  { label: "شهري", value: "month" },
+  { label: t("campaignTable.type.day"), value: "day" },
+  { label: t("campaignTable.type.week"), value: "week" },
+  { label: t("campaignTable.type.month"), value: "month" },
 ];
 const getGlobalIndex = (rowIndex: number) => {
   return (page.value - 1) * pageSize.value + rowIndex + 1;
@@ -211,18 +234,19 @@ const getGlobalIndex = (rowIndex: number) => {
 // Table Columns
 const columns = ref([
   { key: "index", label: "#" },
-  { key: "name", label: "اسم الحملة" },
-  { key: "amount", label: "مبلغ الاستقطاع", sortable: true },
-  { key: "date", label: "تاريخ البدء", sortable: true },
-  { key: "type", label: "نوع الاستقطاع" },
-  { key: "status", label: "حالة البيع" },
-  { key: "actions", label: "الإجراءات" },
+  { key: "campaign_name", label: t("campaignTable.columns.campaignName") },
+  { key: "amount", label: t("campaignTable.columns.campaignAmount"), sortable: true },
+  { key: "date", label: t("campaignTable.columns.campaignStartDate"), sortable: true },
+  { key: "next_time", label: t("campaignTable.columns.deductionNextTime"), sortable: true },
+  { key: "type", label: t("campaignTable.columns.campaignType") },
+  { key: "status", label: t("campaignTable.columns.campaignStatus") },
+  { key: "actions", label: t("campaignTable.columns.campaignActions") },
 ]);
 
 const items = (row: any) => [
   [
     {
-      label: "تحديث بيانات الدفع",
+      label: t("campaignTable.actions.update"),
       icon: "i-heroicons-pencil",
       color: "info",
       class: "dark:text-[#138B96] text-[#138B96]",
@@ -230,29 +254,29 @@ const items = (row: any) => [
     },
     {
       label:
-        row.status === 0
-          ? "تفعيل التبرع"
-          : row.status === 1
-          ? "ايقاف التبرع"
-          : "ايقاف التبرع",
+        row.status === 1
+          ? t("campaignTable.actions.pause")
+          : row.status === 2
+          ? t("campaignTable.actions.pause")
+          : t("campaignTable.actions.resume"),
       icon:
-        row.status === 0
-          ? "i-heroicons-play"
-          : row.status === 1
+        row.status === 1
+          ? "i-heroicons-pause" 
+          : row.status === 2
           ? "i-heroicons-pause"
-          : "i-heroicons-pause",
+          : "i-heroicons-play",
       color:
-        row.status === 0 ? "success" : row.status === 1 ? "warning" : "danger",
+        row.status === 1 ? "danger" : row.status === 2 ? "warning" : "success",
       class:
-        row.status === 0
-          ? "text-[#22AD5C] dark:text-[#22AD5C] "
-          : row.status === 1
+        row.status === 1
           ? "text-[#F23030] dark:text-[#F23030] "
-          : "text-[#F23030] dark:text-[#F23030] ",
+          : row.status === 2
+          ? "text-[#F23030] dark:text-[#F23030] "
+          : "text-[#22AD5C] dark:text-[#22AD5C] ",
       click: () => toggleDonationStatus(row),
     },
     {
-      label: "عرض سجل الاستقطاعات",
+      label: t("campaignTable.actions.showTransactions"),
       icon: "i-heroicons-eye",
       color: "neutral",
       class: "dark:text-[#111928] text-[#111928]",
@@ -260,27 +284,42 @@ const items = (row: any) => [
     },
   ],
 ];
+
 const toggleDonationStatus = async (row: any) => {
+  isLoading.value = true;
   try {
-    if (row.status === 0) {
-      await campaignsStore.activePayment(row.id);
-    } else if (row.status === 2 || row.status === 1) {
-      await campaignsStore.cancelPayment(row.id);
+    let updatedCampaign;
+    if (row.status === 1 || row.status === 2) {
+      updatedCampaign = await campaignsStore.cancelPayment(row.campaign_id);
+    } else {
+      updatedCampaign = await campaignsStore.activePayment(row.campaign_id);
     }
-    campaignsStore.fetchCampaigns();
+    const index = campaigns.value.findIndex(c => c.campaign_id === row.campaign_id);
+    if (index !== -1) {
+      campaigns.value[index] = {
+        ...campaigns.value[index],
+        status: updatedCampaign.data.status,
+        next_time: updatedCampaign.data.next_time
+      };
+    }
+ 
+    isLoading.value = false;
   } catch (error) {
     console.error("Failed to update status:", error);
+    isLoading.value = false;
   }
 };
+
+
 const showTransactions = (row: any) => {
-  router.push(`/deductions/${row.id}`);
+  router.push(`/deductions/${row.campaign_id}`);
 };
 const getStatusLabel = (status: number) => {
-  return status === 1 ? "مستمر" : status === 2 ? "قيد الانتظار" : "متوقف";
+  return status === 1 ? t("campaignTable.status.1") : status === 2 ? t("campaignTable.status.2") : t("campaignTable.status.0");
 };
 
 const getTypeLabel = (type: string) => {
-  return type === "day" ? "يومي" : type === "week" ? "أسبوعي" : "شهري";
+  return type === "day" ? t("campaignTable.type.day") : type === "week" ? t("campaignTable.type.week") : t("campaignTable.type.month");
 };
 
 const getStatusColor = (status: number) => {
@@ -298,7 +337,7 @@ const normalizeArabic = (text: string) => {
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
   return campaigns?.value?.filter((row: any) => {
-    const normalizedName = normalizeArabic(row.name.toLowerCase());
+    const normalizedName = normalizeArabic(row.campaign_name.toLowerCase());
     const normalizedType = normalizeArabic(row.type.toLowerCase());
     return (
       (searchQuery.value === "" ||
@@ -314,7 +353,6 @@ const filteredData = computed(() => {
 // Sorted Data
 const sortedData = computed(() => {
   if (!sorting.value) return filteredData.value;
-
   const { key, order } = sorting.value;
   return [...filteredData.value].sort((a, b) => {
     const valueA = a[key as keyof typeof a];
@@ -354,4 +392,9 @@ const updatePaymentData = (row: any) => {
   selectedRow.value = row;
   isEditModalOpen.value = true;
 };
+const handleUpdatedPayment = (updatedRow: any) => {
+  const index = campaigns.value.findIndex((c) => c.campaign_id === updatedRow.campaign_id);
+  if (index !== -1) campaigns.value[index] = { ...updatedRow };
+};
+
 </script>

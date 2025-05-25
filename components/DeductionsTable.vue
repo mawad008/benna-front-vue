@@ -7,18 +7,18 @@
           <div class="flex flex-col gap-2">
             <div class="flex items-center gap-2 text-gray-700 font-semibold">
               <i class="i-lucide-filter"></i>
-              <span>تصفية النتائج</span>
+              <span>{{ t("deductionTable.filterResult") }}</span>
             </div>
             <div class="flex gap-4">
               <!-- Status Filter -->
               <div class="flex flex-col gap-1">
                 <label class="text-sm text-gray-600 font-medium"
-                  >حالة الدفع</label
+                  >{{ t("deductionTable.labels.status") }}</label
                 >
                 <USelect
                   v-model="selectedStatus"
                   :options="statusOptions"
-                  placeholder="اختر حالة الدفع"
+                  :placeholder="t('deductionTable.placeholder.chooseSatatus')"
                   color="white"
                   variant="outline"
                   option-attribute="label"
@@ -32,11 +32,11 @@
           <div class="flex flex-col gap-2 w-full md:w-auto">
             <div class="flex items-center gap-2 text-gray-700 font-semibold">
               <i class="i-lucide-search"></i>
-              <span>البحث</span>
+              <span>{{ t("deductionTable.search") }}</span>
             </div>
             <UInput
               v-model="searchQuery"
-              placeholder="بحث..."
+              :placeholder="t('deductionTable.placeholder.search')"
               class="w-full max-w-md"
               color="white"
               variant="outline"
@@ -60,6 +60,12 @@
         <template #index-data="{ index }">
           <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
         </template>
+        <template #amount-data="{ row }">
+        <div class="flex items-center gap-1 justify-center">
+          {{ row.amount }}
+          <img src="/unit.svg" alt="unit" class="w-4 h-4"> 
+        </div>
+      </template>
   
         <!-- Status Badge -->
         <template #status-data="{ row }">
@@ -134,6 +140,10 @@
   
   <script setup lang="ts">
  import { ref, computed, watch } from "vue";
+ import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
   const props = defineProps<{deductions: any}>();
   const deductions = ref(props.deductions);
   
@@ -155,21 +165,21 @@
   // Table Columns
   const columns = ref([
     { key: "index", label: "#" },
-    { key: "name", label: "اسم المستقطع" },
-    { key: "campaign_name", label: "اسم الحملة" },
-    { key: "amount", label: "مبلغ المستقطع", sortable: true },
-    { key: "deduction_date", label: "تاريخ الاستقطاع", sortable: true },
-    { key: "status", label: "حالة الاستقطاع" },
+    { key: "name", label: t("deductionTable.columns.name") },
+    { key: "campaign_name", label: t("deductionTable.columns.campaignName") },
+    { key: "amount", label: t("deductionTable.columns.amount"), sortable: true },
+    { key: "deduction_date", label: t("deductionTable.columns.deductionDate"), sortable: true },
+    { key: "status", label: t("deductionTable.columns.status") },
   ]);
   
   const selectedStatus = ref("");
   const statusOptions = [
-    { label: "تم الدفع", value: 1 },
-    { label: "فشل الدفع", value: 0 },
+    { label: t("deductionTable.status.1"), value: 1 },
+    { label: t("deductionTable.status.0"), value: 0 },
   ];
 
   const getStatusLabel = (status: number) => {
-    return status === 1 ? "تم الدفع" : "فشل الدفع";
+    return status === 1 ? t("deductionTable.status.1") : t("deductionTable.status.0");
   };
 
   const getStatusColor = (status: number) => {

@@ -2,11 +2,11 @@
   <div class="flex justify-center md:w-[80%] lg:w-[60%] sm:w-[100%] h-fit  mb-4" >
     <div class="w-full lg:w-4/5 p-8 border border-gray-300 rounded-lg shadow-sm bg-white">
       <!-- Title with Badge -->
-      <Title title="تفعيل استقطاع جديد" badge="1" class="mb-6" />
+      <Title :title="$t('cards.donationCard.title')" badge="1" class="mb-6" />
 
       <!-- Donation Amount Selection -->
       
-      <label class="block text-dark font-bold text-sm mb-3">اختر مبلغ المتبرع</label>
+      <label class="block text-dark font-bold text-sm mb-3">{{ $t('cards.donationCard.amount') }}</label>
       <div class="mt-6 flex flex-col lg:flex-row">
         <div class="flex  lg:flex-row gap-3 flex-wrap items-center">
           <UButton v-for="amount in amounts" :key="amount" :label="amount + ' '"
@@ -18,7 +18,7 @@
           </UButton>
            
           <div class="flex flex-col items-end lg:flex-1 sm:flex-none ">
-            <UInput v-model="donorStore.customAmount" placeholder="مبلغ آخر" class="w-full border-gray-300 px-5 py-2.5"
+            <UInput v-model="donorStore.customAmount" :placeholder="$t('cards.donationCard.customAmount')" class="w-full border-gray-300 px-5 py-2.5"
               color="white" varient="solid" @input="donorStore.setCustomAmount($event.target.value)" />
 
           </div>
@@ -34,7 +34,7 @@
         <div class="flex flex-col lg:flex-row justify-between items-start gap-6 ">
           <!-- Start Date -->
           <div class="flex-1">
-            <label class="block text-dark font-bold text-sm mb-5">تاريخ بدء الاستقطاع الدوري</label>
+            <label class="block text-dark font-bold text-sm mb-5">{{ $t('cards.donationCard.startDate') }}</label>
             <UPopover :popper="{ placement: 'bottom-start' }">
               <UButton icon="i-heroicons-calendar-days-20-solid" :label="donorStore.startDate"
                 class="w-full px-5 py-2.5" color="icon" />
@@ -49,7 +49,7 @@
 
           <!-- Recurring Donation Type -->
           <div class="flex-1">
-            <label class="block text-dark font-bold text-sm mb-5">نوع الاستقطاع الدوري</label>
+            <label class="block text-dark font-bold text-sm mb-5">{{ $t('cards.donationCard.recurringType') }}</label>
             <div class="flex gap-3">
               <UButton v-for="type in types" :key="type.label" :label="type.label"
                 @click="donorStore.setRecurringType(type.value)" variant="outline" color="selector"
@@ -76,12 +76,16 @@ import { format } from 'date-fns';
 const date = ref(new Date());
 const donorStore = useDonorStore();
 const amounts = [5, 10, 50, 100];
-const types = [
-  { label: "شهري", value: "month" },
-  { label: "اسبوعي", value: "week" },
-  { label: "يومي", value: "day" },
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
+
+const types = [
+  { label: t('cards.donationCard.monthly'), value: "month" },
+  { label: t('cards.donationCard.weekly'), value: "week" },
+  { label: t('cards.donationCard.daily'), value: "day" },
 ];
+
 const formatDate = (date) => {
   const day = date.getDate();
   const month = date.getMonth() + 1;

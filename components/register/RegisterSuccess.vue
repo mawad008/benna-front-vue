@@ -3,10 +3,10 @@
     <div class="flex justify-center items-center mb-3">
     <img src="/congrats.png" alt="Success" class="w-35 h-35 " />
   </div>
-    <h2 class="text-xl text-dark font-bold mb-4">{{ store.mode === 'login' ? ' تم تسجيل دخولك بنجاح' : 'تم انشاء الحساب بنجاح' }}</h2>
-    <p class="text-dark mb-4">مرحبًا بك في منصتنا</p>
+    <h2 class="text-xl text-dark font-bold mb-4">{{ store.mode === 'login' ? $t('loginModel.success.LoginMessage') : $t('loginModel.success.RegisterMessage') }}</h2>
+    <p class="text-dark mb-4">  {{$t('loginModel.success.title')}} </p>
     <UButton @click="closeModal" block color="primary" variant="solid">
-  دخول
+  {{$t('loginModel.success.enter')}}
 </UButton>
   </div>
 </template>

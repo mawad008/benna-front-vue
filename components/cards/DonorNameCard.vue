@@ -4,12 +4,12 @@
       class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
     >
       <!-- Title with Badge -->
-      <Title title="اسم المتبرع" badge="2" class="mb-4" />
+      <Title :title="$t('cards.donorCard.title')" badge="2" class="mb-4" />
 
       <!-- Donor Name Input -->
       <div class="mt-4">
         <label class="block text-dark font-bold text-sm mb-2"
-          >اسم الاستقطاع</label
+          >{{ $t("cards.donorCard.label") }}</label
         >
         <input
           v-model="donorStore.donorName"

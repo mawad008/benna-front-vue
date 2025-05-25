@@ -79,7 +79,7 @@ const props = defineProps({
 const emit = defineEmits(["update:open"]);
 
 const isOpen = ref(props.open);
-
+console.log(props.row)
 watch(
   () => props.open,
   (newVal) => {
@@ -96,7 +96,7 @@ const closeModal = () => {
 
 const showPayment = ref(false);
 const handleDonation = async () => {
-  await donationStore.submitDonation();
+  await donationStore.submitDonation(props.row.id);
   if (donationStore.submissionError) {
   showPayment.value = false;
   return;

@@ -4,13 +4,13 @@
   >
     <!-- Title -->
     <div class="flex items-center gap-2 mb-6">
-      <Title title="الفروع والمكاتب" badge="i-heroicons-map-pin" />
+      <Title :title="$t('contactPage.branshsandOffices')" badge="i-heroicons-map-pin" />
     </div>
 
-    <div class="flex flex-col lg:flex-row items-start gap-6">
+    <div class="flex flex-wrap gap-6">
       <!-- Office Selection Buttons  -->
       <div
-        class="w-full lg:w-1/4 flex flex-col gap-3 overflow-y-auto h-[300px] scrollable-list"
+        class="w-full md:w-1/2 lg:w-1/4 flex flex-col gap-3 overflow-y-auto max-h-[300px] scrollable-list"
       >
         <UButton
           v-for="(office, key) in officeStore.offices"
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Office Details-->
-      <div class="flex-1 px-6 space-y-5">
+      <div class="w-full flex-1 px-2 sm:px-4 lg:px-6 space-y-5 min-w-0">
         <!-- Address -->
         <div class="flex items-center gap-4">
           <img src="/address.png" alt="Address Icon" class="w-5 h-5" />
@@ -64,12 +64,12 @@
 
       <!-- Map Section -->
 
-      <div class="w-full lg:w-1/3 flex justify-center">
-        <USkeleton
+      <div class="w-full md:w-1/2 lg:w-1/3 flex justify-center">
+        <!-- <USkeleton
           v-if="loading || error"
           class="h-[300px] w-full rounded-lg shadow-sm bg-primary-20"
-        />
-        <div v-else-if="loading">
+        /> -->
+        <div v-if="loading">
           <img
             src="/map-placeholder.png"
             alt="Loading"
@@ -143,5 +143,4 @@ const selectedOfficeDetails = computed(
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 </style>

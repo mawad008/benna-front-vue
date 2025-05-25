@@ -34,23 +34,21 @@ export default defineNuxtConfig({
   },
   app:{
     head:{
+      title: 'Benna | بناء',
       htmlAttrs: {
         lang: "ar",
         dir: "rtl",
       },
       link:[
-        // { rel: "icon", type: "image/svg", href: "/fav.svg" },
         { rel: "stylesheet", href: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.css" },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ],
       script: [
         { src: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js" , type: "text/javascript" },
       ],
     },
   },
-  // router: {
-  //   middleware: ['loading.global'],
-  // },
   css: [
     "@/assets/main.css"
   ]
-})
+});

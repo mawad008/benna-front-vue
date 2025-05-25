@@ -45,8 +45,7 @@
 
               <!-- Organization Title -->
               <p class="text-dark mb-6 font-bold text-center">
-                جمعية بناء لرعاية الأيتام ترخيص 568
-              </p>
+{{$t("loginModel.title")}}              </p>
 
               <!-- Dynamic Step Component -->
               <Transition :name="store.transitionDirection" mode="out-in">
@@ -70,7 +69,7 @@
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
                   :class="{ hidden: store.step > 0 }"
                 >
-                  {{ isLogin ? "مستخدم جديد" : "تسجيل الدخول" }}
+                  {{ isLogin ? $t("loginModel.newUser") : $t("loginModel.login") }}
                 </span>
               </div>
             </div>

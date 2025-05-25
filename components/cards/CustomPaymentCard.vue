@@ -4,7 +4,7 @@
       class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
     >
       <!-- Title with Badge -->
-      <Title title="إتمام عملية الدفع" badge="3" class="mb-4 text-end" />
+      <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="mb-4 text-end" />
 
       <p v-if="errors.amount" class="text-red-500 text-sm mb-4 text-center">
         {{ errors.amount }}
@@ -15,12 +15,12 @@
         <!-- Cardholder Name -->
         <div class="mt-4">
           <label class="block text-dark font-bold text-sm mb-2"
-            >اسم حامل البطاقة</label
+            >{{ $t('cards.customPaymentCard.cardholderName') }}</label
           >
           <input
             v-model="form.cardholderName"
             class="w-full border-gray-300 p-2 rounded-lg"
-            placeholder="اسم حامل البطاقة"
+            :placeholder="$t('cards.customPaymentCard.cardholderName')"
             :disabled="isSubmitting"
           />
           <p v-if="errors.cardholderName" class="text-red-500 text-sm">
@@ -31,7 +31,7 @@
         <!-- Card Number -->
         <div class="mt-4">
           <label class="block text-dark font-bold text-sm mb-2"
-            >رقم البطاقة</label
+            >{{ $t('cards.customPaymentCard.cardNumber') }}</label
           >
           <input
             v-model="form.cardNumber"
@@ -49,7 +49,7 @@
         <div class="mt-4 flex gap-4">
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-2"
-              >تاريخ الانتهاء</label
+              >{{ $t('cards.customPaymentCard.expiryDate') }}</label
             >
             <input
               v-model="form.expiryDate"
@@ -63,7 +63,7 @@
           </div>
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-2"
-              >رمز التحقق (CVV)</label
+              >{{ $t('cards.customPaymentCard.cvv') }}</label
             >
             <input
               v-model="form.cvv"
@@ -88,7 +88,7 @@
             :disabled="isSubmitting"
             :loading="isSubmitting"
           >
-            تبرع الآن
+            {{ $t('cards.customPaymentCard.button') }}
           </UButton>
         </div>
       </form>
@@ -121,7 +121,9 @@ const errors = reactive({
 });
 
 const isSubmitting = ref(false);
-const selectedAmount = ref(donorStore.selectedAmount);
+const paymentAmount = computed(() => {
+  return Number(donorStore.selectedAmount) || Number(donorStore.customAmount);
+});
 
 const formatCardNumber = (event: Event) => {
   const inputEl = event.target as HTMLInputElement;
@@ -156,21 +158,14 @@ const luhnCheck = (cardNumber: string): boolean => {
 const handleExpiryDateInput = (event: Event) => {
   const inputEl = event.target as HTMLInputElement;
   let input = inputEl.value;
-
-  // Remove non-digit and slash characters
   let cleaned = input.replace(/[^\d]/g, "");
-
-  // Limit to max 4 digits (MMYY)
   if (cleaned.length > 4) cleaned = cleaned.slice(0, 4);
-
-  // Insert "/" after 2 digits
   if (cleaned.length > 2) {
     cleaned = cleaned.slice(0, 2) + "/" + cleaned.slice(2);
   }
 
   form.expiryDate = cleaned;
 
-  // Validation logic
   if (cleaned.length === 5) {
     const [month, year] = cleaned.split("/");
     form.month = month;
@@ -180,7 +175,6 @@ const handleExpiryDateInput = (event: Event) => {
     errors.expiryDate = "";
   }
 
-  // Validate month immediately
   if (cleaned.length >= 2) {
     const month = parseInt(cleaned.slice(0, 2));
     if (month < 1 || month > 12) {
@@ -227,7 +221,7 @@ const handlePayment = async () => {
   } else {
     validateExpiryDate(form.month, form.year);
   }
-  if (!selectedAmount.value || selectedAmount.value <= 0) {
+  if (!paymentAmount.value || paymentAmount.value <= 0) {
     errors.amount = "يرجى تحديد مبلغ تبرع صالح";
   }
 
@@ -286,7 +280,7 @@ const handlePayment = async () => {
 
 const initiatePayment = async (token: string) => {
   try {
-    const amount = Math.round(selectedAmount.value * 100);
+    const amount = Number(paymentAmount.value * 100);
     const params = new URLSearchParams({
       token,
       amount: amount.toString(),

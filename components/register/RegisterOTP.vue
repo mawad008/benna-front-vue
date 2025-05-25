@@ -1,10 +1,10 @@
 <template>
   <div class="w-full max-w-sm">
     <h2 class="text-xl font-bold mb-6 text-dark">
-      تم ارسال رمز التحقق الى جوالك
+      {{ $t("loginModel.register.OTPStep.title") }}
     </h2>
 
-    <p class="text-dark mb-4">ادخل رمز التحقق (OTP) إلى هاتفك</p>
+    <p class="text-dark mb-4">{{ $t("loginModel.register.OTPStep.instruction") }}</p>
     <UInput
       type="text"
       v-model="otp"
@@ -25,7 +25,7 @@
       }"
       @click="resendOtp"
     >
-      إعادة ارسال رمز التحقق {{ countdown > 0 ? `بعد ${countdown} ث` : "" }}
+      {{ $t("loginModel.register.OTPStep.resend") }} {{ countdown > 0 ? ` ${countdown} ${$t("loginModel.register.OTPStep.sec")}` : "" }}
     </p>
 
     <UButton
@@ -37,7 +37,7 @@
       :disabled="!meta.valid || !otp.trim()"
       :loading="loading"
     >
-      تأكيد
+      {{ $t("loginModel.register.OTPStep.next") }}
     </UButton>
   </div>
 </template>
@@ -47,6 +47,8 @@ import { ref, onMounted } from "vue";
 import { useRegisterStore } from "@/stores/register";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import { useI18n } from "vue-i18n";
+const {t} =useI18n();
 
 const store = useRegisterStore();
 const countdown = ref(60);
@@ -56,8 +58,8 @@ const loading = ref(false);
 const schema = yup.object({
   otp: yup
     .string()
-    .required("رمز التحقق مطلوب")
-    .matches(/^\d{4}$/, "رمز التحقق يجب أن يكون 4 أرقام"),
+    .required(t("loginModel.register.OTPStep.otpError"))
+    .matches(/^\d{4}$/, t("loginModel.register.OTPStep.otpError2")),
 });
 
 const { errors, meta, handleSubmit } = useForm({

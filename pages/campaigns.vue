@@ -3,20 +3,20 @@
   <div class="container lg:mt-10 md:mt-20">
     <!-- Loading State -->
     <div v-if="authStore.loading" class="text-center text-gray-500 my-4">
-      جاري التحقق من تسجيل الدخول...
+      {{ $t('general.authLoading') }}
     </div>
 
 
     <!-- Not Logged In -->
-    <div v-else-if="!authStore.isLoggedIn" class="flex justify-center h-[calc(50vh-100px)] items-center">
+    <div v-else-if="!authStore.isLoggedIn" class="flex justify-center h-[calc(100vh-200px)] items-center">
       <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
       <div v-else class="text-center my-4">
-        <p class="text-gray-600">يرجى تسجيل الدخول لعرض الاستقطاعات.</p>
+        <p class="text-gray-600">{{ $t('general.notLoggedIn') }}</p>
         <button
           @click="openLoginModal"
           class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          تسجيل الدخول
+          {{ $t('general.login') }}
         </button> 
       </div>
     </div>
@@ -26,15 +26,15 @@
   <!-- Campaigns Loading -->
   <div
     v-if="campaignsStore.loading"
-    class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
+    class="text-center text-gray-500 my-4 h-[calc(100vh-200px)] flex items-center justify-center font-medium"
   >
-    جاري تحميل سجل الحملات...
+    {{ $t('campaignsPage.loading') }}
   </div>
 
   <!-- Campaigns Error -->
   <div
     v-else-if="campaignsStore.error"
-    class="text-center my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
+    class="text-center my-4 h-[calc(100vh-200px)] flex items-center justify-center font-medium"
   >
     <div class="bg-red-50 border-l-4 border-red-500 p-4 max-w-md mx-auto flex">
       <div class="flex-shrink-0">
@@ -55,9 +55,9 @@
   <!-- No Campaigns -->
   <div
     v-else-if="campaignsStore.campaigns.length === 0"
-    class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center text-2xl font-medium"
+    class="text-center text-gray-500 my-4 h-[calc(100vh-200px)] flex items-center justify-center text-2xl font-medium"
   >
-    لا يوجد سجلات حاليا
+    {{ $t('campaignsPage.noCampaigns') }}
  
   </div>
 
@@ -68,10 +68,10 @@
     </div>
     <br />
     <p class="text-2xl font-bold mb-4 text-dark">
-    سجل الحملات
+    {{ $t('campaignsPage.campaigns') }}
     </p>
     <br />
-    <CampaignTable />
+    <CampaignTable :campaigns="campaignsStore.campaigns"/>
   </div>
 </div>
 </div>
@@ -86,6 +86,9 @@ import LoginModal from "@/components/modals/LoginModal.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 definePageMeta({ layout: "default" });
 
@@ -110,7 +113,7 @@ onMounted(() => {
 
 const links = [
   {
-    label: "الرئيسية",
+    label: t("campaignsPage.links.home"),
     href: "/",
     link: true,
     onClick: () => {
@@ -119,7 +122,7 @@ const links = [
   },
   {
 
-    label: "سجل الحملات",
+    label: t("campaignsPage.links.campaigns"),
     href: "/campaigns",
     link: true,
     onClick: () => {

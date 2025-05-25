@@ -4,13 +4,12 @@
     v-if="deductionsStore.loading"
     class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
   >
-    جاري تحميل سجل الاستقطاعات...
-  </div>
+{{t('deductionPage.loading')}}  </div>
   <div
     v-else-if="deductionsStore.deductions.length === 0"
     class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center text-2xl font-medium"
   >
-    لا يوجد سجلات حاليا
+{{t('deductionPage.noDeductions')}}
  
   </div>
   <div v-else class="container lg:mt-10 md:mt-20">
@@ -44,6 +43,7 @@ import { useRoute } from "vue-router";
 import { useDeductionsStore } from "@/stores/deductions";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 
 definePageMeta({ layout: "default" });
 const router = useRouter();
@@ -56,11 +56,11 @@ onMounted( () => {
    deductionsStore.fetchDeductions(Number(campaign_id));
 
 });
-
+const t = useI18n();
 
 const links = [
   {
-    label: "الرئيسية",
+    label: t("deductionPage.links.home"),
     href: "/",
     link: true,
     onClick: () => {
@@ -68,7 +68,7 @@ const links = [
     },
   },
   {
-    label: "سجل الحملات",
+    label:t("deductionPage.links.campaigns"),
     href: "/campaigns",
     link: true,
     onClick: () => {
@@ -76,7 +76,7 @@ const links = [
     },
   },
   {
-    label: "عرض الاستقطاعات",
+    label:t("deductionPage.links.deductions"),
     href: `/deduction/${campaign_id}`,
     link: true,
     onClick: () => {

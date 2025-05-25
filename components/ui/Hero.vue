@@ -1,52 +1,32 @@
 <template>
   <section
-    class="relative min-h-[60vh] md:min-h-[70vh] hidden md:flex items-center justify-center bg-cover bg-center px-4 md:px-8"
-    :class="{
-      'pt-[9vw] md:pt-[9vw] pb-[5vw]': locale === 'en',
-      'pt-[9vw] md:pt-[9vw] pb-[5vw]': locale === 'ar',
-    }"
+    class="relative h-[60vh] md:h-[70vh] hidden md:flex items-center justify-center bg-cover bg-center px-4 md:px-8 h-[70vh]"
     style="background-image: url('/hero-bg.png')"
   >
     <div
-      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white w-full max-w-[90vw]"
-      :class="{ 'md:grid-cols-2-reverse': locale === 'ar' }"
+      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white w-full w-[90vw]"
     >
       <div
-        class="w-full px-4 md:px-6 lg:px-8"
-        :class="{
-          'text-right md:pr-4 lg:pr-8': locale === 'ar',
-          'text-left md:pl-4 lg:pl-8': locale === 'en',
-        }"
+        class="w-full px-4 md:px-6 lg:px-8 text-start mt-10"
+ 
       >
         <h1
-          class="font-bold text-[clamp(16px,0.08*50vw,30px)] leading-[clamp(24px,0.1*50vw,45px)] text-justify"
-          :class="{
-            'text-right': locale === 'ar',
-            'text-left': locale === 'en',
-          }"
+          class="font-semibold text-[19px] text-start mb-2"
+ 
         >
           {{
-            locale === "ar"
-              ? "جمعية بناء لرعاية الأيتام تأسست الجمعية عام 2010 م ، تحت إشراف المركز الوطني لتنمية القطاع الغير ربحي بترخيص رقم 568 تساهم الجمعية برعاية وكفالة أكثر من 4500 يتيم ويتيمة"
-              : "Bina Association for Orphan Care was established in 2010 under the supervision of the National Center for Non-Profit Sector Development with license number 568. The association contributes to the care and sponsorship of over 4,500 orphans."
+            $t('hero.title')
           }}
         </h1>
         <p
-          class="font-normal text-[clamp(14px,0.06*50vw,24px)] leading-[clamp(20px,0.08*50vw,36px)] mt-[2vw] text-justify"
-          :class="{
-            'text-right': locale === 'ar',
-            'text-left': locale === 'en',
-          }"
+          class="font-normal text-[16px] text-justify p-2 text-start mb-2"
+ 
         >
-          {{
-            locale === "ar"
-              ? "قالَ رَسُول اللَّه ﷺ: (مَا مِنْ يَوْمٍ يُصبِحُ العِبادُ فِيهِ إِلَّا مَلَكَانِ يَنْزِلانِ، فَيَقُولُ أَحَدُهُمَا: اللَّهُمَّ أَعْطِ مُنْفِقًا خَلَفًا، وَيَقُولُ الآخَرُ: اللَّهُمَّ أَعْطِ مُمْسِكًا تَلَفًا)"
-              : "The Messenger of Allah (peace be upon him) said: 'There is no day on which the servants wake up but that two angels descend. One of them says: O Allah, grant a successor to the one who spends, and the other says: O Allah, grant ruin to the one who withholds.'"
-          }}
+          {{ $t('hero.quote') }}
         </p>
       </div>
 
-      <div class="flex justify-center relative w-full px-4 md:px-6 lg:px-8">
+      <div class="flex justify-center relative w-full px-4 md:px-6 lg:px-8 p-10">
         <div class="hero-image relative w-[clamp(200px,50vw,500px)]">
           <div
             v-for="(ball, index) in balls"
@@ -67,7 +47,7 @@
             v-if="heroImage"
             :src="heroImage"
             alt="Hero Image"
-            class="masked-image relative z-[5] w-full h-auto"
+            class="masked-image relative z-[5] w-[70vw] h-[70vh]"
           />
         </div>
       </div>
@@ -77,17 +57,8 @@
 
 <script setup>
 import { ref } from "vue";
-import { useAsyncData, useRuntimeConfig } from "#imports";
-import { useI18n } from "vue-i18n";
 
-const config = useRuntimeConfig();
-const { locale } = useI18n();
-
-const { data: baseURL } = await useAsyncData("baseURL", () => {
-  return config.public.baseURL ?? "";
-});
-
-const heroImage = ref(`${baseURL.value}/hero-image2.png`);
+const heroImage = ref("/hero-image2.png");
 
 const balls = ref([
   { size: 12, color: "#2753AC", top: 5, left: 5, speed: 4, delay: 0 },
@@ -106,7 +77,7 @@ const balls = ref([
 <style scoped>
 .hero-image {
   position: relative;
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,7 +85,7 @@ const balls = ref([
 }
 
 .masked-image {
-  width: 100%;
+  width: 90%;
   height: auto;
   object-fit: contain;
   -webkit-mask-image: url("/mask-image.png");
@@ -144,7 +115,4 @@ const balls = ref([
   z-index: 10;
 }
 
-.grid-cols-2-reverse {
-  direction: rtl;
-}
 </style>

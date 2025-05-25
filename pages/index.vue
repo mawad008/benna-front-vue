@@ -30,7 +30,7 @@
             variant="solid"
             block
           >
-            ادفع الان
+            {{ $t('homePayButton') }}
           </UButton>
         </div>
       </template>

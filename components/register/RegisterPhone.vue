@@ -1,9 +1,9 @@
 <template>
   <div class="w-full max-w-sm">
-    <h2 class="text-xl font-bold mb-6 text-dark">تسجيل دخول</h2>
+    <h2 class="text-xl font-bold mb-6 text-dark">{{$t("loginModel.register.phoneStep.title")}} </h2>
 
     <!-- Phone Input -->
-    <div class="text-right mb-2 text-dark font-medium">رقم الجوال</div>
+    <div class="text-start mb-2 text-dark font-medium">{{$t("loginModel.register.phoneStep.phone")}}</div>
     <VueTelInput
       v-model="phone"
       mode="national"
@@ -17,7 +17,7 @@
       class="w-full custom-tel-input"
     />
 
-    <p v-if="errors.phone" class="text-red-500 text-xs mt-1 text-right">
+    <p v-if="errors.phone" class="text-red-500 text-xs mt-1 text-start">
       {{ errors.phone }}
     </p>
 
@@ -30,7 +30,7 @@
       variant="solid"
       :disabled="!phone"
     >
-      متابعة التسجيل
+      {{ $t("loginModel.register.phoneStep.next") }}
     </UButton>
   </div>
 </template>
@@ -41,15 +41,19 @@ import { VueTelInput } from "vue-tel-input";
 import "vue-tel-input/dist/vue-tel-input.css";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
+import { useI18n } from "vue-i18n";
+
+
+const {t} =useI18n();
 
 const store = useRegisterStore();
 
 const schema = yup.object({
   phone: yup
     .string()
-    .required("يرجى إدخال رقم الجوال")
+    .required(t("loginModel.register.phoneStep.phoneError"))
     .transform((value) => value.replace(/\D/g, ""))
-    .matches(/^05\d{8}$/, "رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام"),
+    .matches(/^05\d{8}$/, t("loginModel.register.phoneStep.phoneError2")),
 });
 
 

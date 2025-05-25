@@ -1,15 +1,35 @@
 <template>
   <!-- <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent "> -->
-    <header class="relative md:absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent">
+    <header class="relative md:absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent h-[60px]">
 
-    <nav class="flex items-center justify-between px-8 py-4 text-white">
-      <div class="flex items-center space-x-6" :class="{ 'flex-row-reverse': locale === 'ar' }">
+    <nav class="flex items-center justify-between px-8 py-4 text-white sticky top-0 mb-8">
+            <!-- Logo -->
+            <div
+        class="cursor-pointer"
+        @click="$router.push(localePath('/'))"
+      >
+        <img src="@/assets/svg/logo.svg" alt="Logo" class="h-12 w-auto" />
+      </div>
+      <div class="flex items-center space-x-6 gap-4 " >
+        <!-- Desktop Navbar -->
+        <ul
+          class="hidden md:flex space-x-6 justify-between items-center w-full "
+        >
+          <li v-for="route in routes" :key="route.path" class="px-1">
+            <NuxtLink
+              :to="localePath(route.path)"
+              class="nav-link"
+              exact-active-class="active-link"
+            >
+              {{ $t(route.name) }}
+            </NuxtLink>
+          </li>
+        </ul>
+
         <!-- Language Switcher (Desktop) -->
-        <!-- <NuxtLink :to="changeLanguage()" class="hidden md:block">
-          <button class="lang-btn">
-            {{ locale === "ar" ? "EN" : "عربي" }}
-          </button>
-        </NuxtLink> -->
+        <NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)" class="nav-link hidden md:block ">
+    {{ locale.name }}
+  </NuxtLink>
 
         <!-- User Avatar with Dropdown -->
    
@@ -28,15 +48,18 @@
 
           <!-- Logout Dropdown Menu -->
           <div
-            v-if="isDropdownOpen"
-            class="absolute left-2 top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg"
-          >
+  v-if="isDropdownOpen"
+  :class="[
+    'absolute top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg',
+    locale === 'ar' ? 'left-0' : 'right-0'
+  ]"
+>
             <template v-if="isLogged">
             <NuxtLink
               to="/"
               @click="handleLogout"
               class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-              :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
+       
             >
               <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
               <img src="/logout.png" alt="Logout" class="h-4 w-4" />
@@ -46,7 +69,7 @@
               <button
                 @click="openLoginModal"
                 class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-                :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
+
               >
                 <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
               </button>
@@ -54,31 +77,10 @@
           </div>
         </div>
 
-        <!-- Desktop Navbar -->
-        <ul
-          class="hidden md:flex space-x-6"
-          :class="{ 'space-x-reverse': locale === 'ar' }"
-        >
-          <li v-for="route in routes" :key="route.path">
-            <NuxtLink
-              :to="localePath(route.path)"
-              class="nav-link"
-              exact-active-class="active-link"
-            >
-              {{ $t(route.name) }}
-            </NuxtLink>
-          </li>
-        </ul>
+
       </div>
 
-      <!-- Logo -->
-      <div
-        class="cursor-pointer"
-        :class="{ 'order-first': locale === 'ar' }"
-        @click="$router.push(localePath('/'))"
-      >
-        <img src="@/assets/svg/logo.svg" alt="Logo" class="h-12 w-auto" />
-      </div>
+
 
       <!-- Mobile Menu Button -->
       <button @click="toggleMenu" class="md:hidden text-white">
@@ -103,25 +105,42 @@
           </NuxtLink>
         </li>
         <!-- Language Switcher (Mobile) -->
-        <!-- <li>
-          <NuxtLink :to="changeLanguage()" class="block py-2">
-            {{ locale === "ar" ? "English" : "عربي" }}
-          </NuxtLink>
-        </li> -->
-        <!-- Logout (Mobile) -->
-        <li>
-          <NuxtLink
-            to="/"
-            @click="handleLogout"
-            class="block py-2 text-red-800 flex items-center justify-center space-x-2"
-            :class="{ 'flex-row-reverse space-x-reverse': locale === 'ar' }"
-          >
-            <span class="px-2">{{
-              locale === "ar" ? "تسجيل الخروج" : "Logout"
-            }}</span>
-            <img src="/logout.png" alt="Logout" class="h-4 w-4" />
-          </NuxtLink>
-        </li>
+  
+        <li v-for="locale in availableLocales" :key="locale.code">
+        <NuxtLink
+    :to="switchLocalePath(locale.code)"
+    class="block py-2 transition-colors "
+    exact-active-class="active-mobile-link"
+  >
+    {{ locale.name }}
+  </NuxtLink>
+</li>
+
+<!-- Auth (Mobile) -->
+<li v-if="isLogged" class="flex items-center justify-center space-x-2">
+  <NuxtLink
+    to="/"
+    @click="handleLogout"
+    class="block py-2 text-red-800 space-x-2"
+  >
+    <span class="px-2">{{
+      locale === "ar" ? "تسجيل الخروج" : "Logout"
+    }}</span>
+    <img src="/logout.png" alt="Logout" class="h-4 w-4" />
+  </NuxtLink>
+</li>
+<li v-else>
+  <button
+    @click="openLoginModal"
+    class="block py-2 text-white space-x-2 hover:bg-red-50"
+  >
+    <span class="px-2">{{
+      locale === "ar" ? "تسجيل الدخول" : "Login"
+    }}</span>
+    <Icon name="i-lucide-log-in" class="h-4 w-4" />
+  </button>
+</li>
+
       </ul>
     </div>
     <LoginModal v-if="isLoginOpen" @close="isLoginOpen = false" />
@@ -130,11 +149,21 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch, onMounted, nextTick } from 'vue'
 import { onClickOutside } from "@vueuse/core";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
 import LoginModal from "@/components/modals/LoginModal.vue";
 import logo from "@/assets/svg/logo.svg";
+
+const localePath = useLocalePath();
+const switchLocalePath = useSwitchLocalePath();
+const { locale, locales } = useI18n();
+
+const availableLocales = computed(() => {
+  return (locales.value as { code: string; name: string }[]).filter(l => l.code !== locale.value)
+});
+
 
 const toast = useToast();
 const authStore = useAuthStore(); 
@@ -149,10 +178,7 @@ const getUser = computed(() => authStore.user);
 
 watch(getUser, (val) => {
     userName.value = val?.name!;
-  })
-
-
-
+  });
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
@@ -186,16 +212,10 @@ const handleLogout = () => {
 };
 
 onMounted(() => {
-  if (dropdownRef.value) {
-    onClickOutside(dropdownRef, () => {
-      isDropdownOpen.value = false;
-    });
-  }
+  onClickOutside(dropdownRef, () => {
+    isDropdownOpen.value = false;
+  });
 });
-
-const localePath = useLocalePath();
-const { locale } = useI18n();
-
 
 const routes = [
   { path: "/", name: "home" },
