@@ -4,12 +4,12 @@
     v-if="deductionsStore.loading"
     class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center font-medium"
   >
-{{t('deductionPage.loading')}}  </div>
+{{$t('deductionPage.loading')}}    </div>
   <div
     v-else-if="deductionsStore.deductions.length === 0"
     class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center text-2xl font-medium"
   >
-{{t('deductionPage.noDeductions')}}
+{{$t('deductionPage.noDeductions')}}
  
   </div>
   <div v-else class="container lg:mt-10 md:mt-20">
@@ -56,11 +56,11 @@ onMounted( () => {
    deductionsStore.fetchDeductions(Number(campaign_id));
 
 });
-const t = useI18n();
+const { t } = useI18n();
 
 const links = [
   {
-    label: t("deductionPage.links.home"),
+    label: t("campaignsPage.links.home"),
     href: "/",
     link: true,
     onClick: () => {
@@ -68,7 +68,7 @@ const links = [
     },
   },
   {
-    label:t("deductionPage.links.campaigns"),
+    label:t("campaignsPage.links.campaigns"),
     href: "/campaigns",
     link: true,
     onClick: () => {
@@ -76,7 +76,7 @@ const links = [
     },
   },
   {
-    label:t("deductionPage.links.deductions"),
+    label:t("campaignsPage.links.deductions"),
     href: `/deduction/${campaign_id}`,
     link: true,
     onClick: () => {

@@ -48,6 +48,8 @@ import { useRegisterStore } from "@/stores/register";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { useI18n } from "vue-i18n";
+
+
 const {t} =useI18n();
 
 const store = useRegisterStore();
@@ -58,7 +60,7 @@ const loading = ref(false);
 const schema = yup.object({
   otp: yup
     .string()
-    .required(t("loginModel.register.OTPStep.otpError"))
+    .required( t("loginModel.register.OTPStep.otpError"))
     .matches(/^\d{4}$/, t("loginModel.register.OTPStep.otpError2")),
 });
 

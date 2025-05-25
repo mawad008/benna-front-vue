@@ -3,10 +3,10 @@
     <div class="flex justify-center items-center mb-3">
     <img src="/congrats.png" alt="Success" class="w-35 h-35 " />
   </div>
-    <h2 class="text-xl text-dark font-bold mb-4">{{ store.mode === 'login' ? $t('loginModel.success.LoginMessage') : $t('loginModel.success.RegisterMessage') }}</h2>
-    <p class="text-dark mb-4">  {{$t('loginModel.success.title')}} </p>
+    <h2 class="text-xl text-dark font-bold mb-4">{{ store.mode === 'login' ? $t('loginModel.register.success.LoginMessage') : $t('loginModel.register.success.RegisterMessage') }}</h2>
+    <p class="text-dark mb-4">  {{$t('loginModel.register.success.title')}} </p>
     <UButton @click="closeModal" block color="primary" variant="solid">
-  {{$t('loginModel.success.enter')}}
+  {{$t('loginModel.register.success.enter')}}
 </UButton>
   </div>
 </template>
