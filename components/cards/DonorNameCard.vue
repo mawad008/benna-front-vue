@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center md:w-[80%] lg:w-[60%] w-full h-fit">
+  <div class="flex justify-center md:w-[100%] lg:w-[100%] w-full h-fit">
     <div
       class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
     >

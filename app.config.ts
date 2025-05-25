@@ -174,7 +174,7 @@ export default defineAppConfig({
     modal: {
       wrapper: "relative z-50",
       inner: "fixed inset-0 overflow-y-auto",
-      container: "flex min-h-full items-center justify-center text-center",
+      container: "flex min-h-full items-center justify-center text-center ",
       padding: "p-6 sm:p-8",
       margin: "sm:my-10",
       base: "relative text-left rtl:text-right flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl",
@@ -194,7 +194,7 @@ export default defineAppConfig({
       ring: "ring-1 ring-gray-300 dark:ring-gray-700",
       rounded: "rounded-2xl",
       shadow: "shadow-xl dark:shadow-gray-800",
-      width: "w-full sm:max-w-md",
+      width: "w-full ",
       height: "",
       fullscreen: "w-screen h-screen",
       transition: {

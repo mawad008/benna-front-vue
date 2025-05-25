@@ -4,29 +4,20 @@
     style="background-image: url('/hero-bg.png')"
   >
     <div
-      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white w-full w-[90vw]"
+      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white w-full m-auto"
     >
-      <div
-        class="w-full px-4 md:px-6 lg:px-8 text-start mt-10"
- 
-      >
-        <h1
-          class="font-semibold text-[19px] text-start mb-2"
- 
-        >
-          {{
-            $t('hero.title')
-          }}
+      <div class="w-full px-4 md:px-6 lg:px-8 text-start mt-10">
+        <h1 class="font-semibold text-[19px] text-start mb-2">
+          {{ $t("hero.title") }}
         </h1>
-        <p
-          class="font-normal text-[16px] text-justify p-2 text-start mb-2"
- 
-        >
-          {{ $t('hero.quote') }}
+        <p class="font-normal text-[16px] text-justify p-2 text-start mb-2">
+          {{ $t("hero.quote") }}
         </p>
       </div>
 
-      <div class="flex justify-center relative w-full px-4 md:px-6 lg:px-8 p-10">
+      <div
+        class="flex justify-center relative w-full px-4 md:px-6 lg:px-8 p-10 mt-10 h-[70vh]"
+      >
         <div class="hero-image relative w-[clamp(200px,50vw,500px)]">
           <div
             v-for="(ball, index) in balls"
@@ -47,7 +38,7 @@
             v-if="heroImage"
             :src="heroImage"
             alt="Hero Image"
-            class="masked-image relative z-[5] w-[70vw] h-[70vh]"
+            class="masked-image relative z-[5] "
           />
         </div>
       </div>
@@ -57,7 +48,6 @@
 
 <script setup>
 import { ref } from "vue";
-
 const heroImage = ref("/hero-image2.png");
 
 const balls = ref([
@@ -78,6 +68,7 @@ const balls = ref([
 .hero-image {
   position: relative;
   width: 90%;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,5 +105,4 @@ const balls = ref([
   animation: float infinite ease-in-out alternate;
   z-index: 10;
 }
-
 </style>

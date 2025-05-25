@@ -1,7 +1,7 @@
 <template>
   <Hero />
   <div class="flex flex-col items-center bg-gray-50 py-12">
-    <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8">
+    <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[50%] lg:w-[48%]">
       <template v-if="!showPayment">
         <DonationCard />
         <DonorNameCard />

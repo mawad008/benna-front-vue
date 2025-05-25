@@ -6,14 +6,17 @@
       class="fixed inset-0 z-50 flex overflow-y-auto w-full h-screen bg-black/50"
     >
       <div
-        class="relative z-50 m-auto w-[95%] h-[95vh] flex border border-gray-200 rounded-lg bg-white overflow-hidden"
+        class="relative z-50 m-auto w-[95%] h-[95vh] flex border border-gray-200 rounded-lg bg-white overflow-hidden overflow-y-auto"
       >
         <!-- Left Image Section -->
         <div
           class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative"
         >
           <!-- Close Button -->
-          <button @click="closeModal" class="absolute top-5 right-5 z-60">
+          <button
+            @click="closeModal"
+            class="absolute top-5 right-5 z-60"
+          >
             <UButton
               color="gray"
               variant="ghost"
@@ -45,7 +48,8 @@
 
               <!-- Organization Title -->
               <p class="text-dark mb-6 font-bold text-center">
-{{$t("loginModel.title")}}              </p>
+                {{ $t("loginModel.title") }}
+              </p>
 
               <!-- Dynamic Step Component -->
               <Transition :name="store.transitionDirection" mode="out-in">
@@ -69,7 +73,9 @@
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
                   :class="{ hidden: store.step > 0 }"
                 >
-                  {{ isLogin ? $t("loginModel.newUser") : $t("loginModel.login") }}
+                  {{
+                    isLogin ? $t("loginModel.newUser") : $t("loginModel.login")
+                  }}
                 </span>
               </div>
             </div>
@@ -102,7 +108,7 @@ const closeModal = () => {
 };
 
 onClickOutside(modalRef, () => {
-  isOpen.value = false;
+ closeModal();
 });
 
 watch(isOpen, (val) => {

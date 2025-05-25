@@ -8,6 +8,7 @@ export const useDonationStore = defineStore("donation", {
     loading: false,
     submissionError: "",
     campaign_id: null,
+    showPayment: false,
   }),
 
   actions: {

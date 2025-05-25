@@ -1,11 +1,20 @@
 <template>
-  <div class="flex justify-center md:w-[80%] lg:w-[60%] w-full h-fit mb-4">
+  <div class="flex justify-center w-full h-fit mb-4">
     <div
       class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
     >
+    <div class="flex items-center gap-2">
+      <UButton
+        color="primary"
+        variant="solid"
+        icon="i-heroicons-arrow-right"
+        @click="donationStore.showPayment = false"
+      >
+      </UButton>
+      <br/>
       <!-- Title with Badge -->
-      <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="mb-4 text-end" />
-
+      <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
+    </div>
       <p v-if="errors.amount" class="text-red-500 text-sm mb-4 text-center">
         {{ errors.amount }}
       </p>
@@ -19,7 +28,7 @@
           >
           <input
             v-model="form.cardholderName"
-            class="w-full border-gray-300 p-2 rounded-lg"
+            class="w-full border-gray-300 p-2 rounded-lg text-start"
             :placeholder="$t('cards.customPaymentCard.cardholderName')"
             :disabled="isSubmitting"
           />
@@ -38,6 +47,7 @@
             @input="formatCardNumber"
             maxlength="19"
             placeholder="1234 5678 9012 3456"
+            class="w-full border-gray-300 p-2 rounded-lg text-start"
           />
 
           <p v-if="errors.cardNumber" class="text-red-500 text-sm">
@@ -56,6 +66,7 @@
               @input="handleExpiryDateInput"
               maxlength="5"
               placeholder="MM/YY"
+              class="w-full border-gray-300 p-2 rounded-lg text-start"
             />
             <p v-if="errors.expiryDate" class="text-red-500 text-sm">
               {{ errors.expiryDate }}
@@ -71,6 +82,7 @@
               maxlength="3"
               @input="form.cvv = form.cvv.replace(/\D/g, '')"
               :disabled="isSubmitting"
+              class="w-full border-gray-300 p-2 rounded-lg text-start"
             />
             <p v-if="errors.cvv" class="text-red-500 text-sm">
               {{ errors.cvv }}
@@ -99,9 +111,12 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { useDonorStore } from "@/stores/donation/donorStore";
+import { useDonationStore } from "@/stores/donation/donationStore";
 import Title from "@/components/ui/Title.vue";
 
+const donationStore = useDonationStore();
 const donorStore = useDonorStore();
+
 
 const form = reactive({
   cardholderName: "",

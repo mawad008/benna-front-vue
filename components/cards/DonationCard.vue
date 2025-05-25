@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center md:w-[80%] lg:w-[60%] sm:w-[100%] h-fit  mb-4" >
+  <div class="flex justify-center md:w-[100%] lg:w-[100%] sm:w-[100%] h-fit  mb-4" >
     <div class="w-full lg:w-4/5 p-8 border border-gray-300 rounded-lg shadow-sm bg-white">
       <!-- Title with Badge -->
       <Title :title="$t('cards.donationCard.title')" badge="1" class="mb-6" />
@@ -12,7 +12,7 @@
           <UButton v-for="amount in amounts" :key="amount" :label="amount + ' '"
             @click="donorStore.setAmount(amount)" variant="outline" color="selector"
             class="px-5 py-2.5 rounded-lg min-w-[80px]" :class="{
-              'bg-[#138B96] text-white': donorStore.selectedAmount === amount,
+              'bg-[#138B96] text-white hover:bg-[#138B96] hover:text-white': donorStore.selectedAmount === amount,
             }" >
           {{amount}} <img src="/unit.svg" alt="unit" class="w-4 h-4">
           </UButton>
@@ -31,7 +31,7 @@
 
       <!-- Start Date and Recurring Donation Type -->
       <div class="mt-6 ">
-        <div class="flex flex-col lg:flex-row justify-between items-start gap-6 ">
+        <div class="flex flex-col lg:flex-row justify-between items-start gap-6 flex-wrap">
           <!-- Start Date -->
           <div class="flex-1">
             <label class="block text-dark font-bold text-sm mb-5">{{ $t('cards.donationCard.startDate') }}</label>
@@ -54,7 +54,7 @@
               <UButton v-for="type in types" :key="type.label" :label="type.label"
                 @click="donorStore.setRecurringType(type.value)" variant="outline" color="selector"
                 class="px-5 py-2.5 rounded-lg min-w-[80px]" :class="{
-                  'bg-[#138B96] text-white':
+                  'bg-[#138B96] text-white hover:bg-[#138B96] hover:text-white':
                     donorStore.recurringType === type.value,
                 }" />
             </div>
@@ -70,11 +70,14 @@
 
 <script setup>
 import Title from "@/components/ui/Title.vue";
-import { useDonorStore } from "@/stores/donation/donorStore";
+import  {useDonorStore}  from "@/stores/donation/donorStore";
 import { format } from 'date-fns';
 
-const date = ref(new Date());
+
+
 const donorStore = useDonorStore();
+const date = ref(new Date());
+
 const amounts = [5, 10, 50, 100];
 import { useI18n } from 'vue-i18n';
 

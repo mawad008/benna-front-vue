@@ -1,19 +1,19 @@
 <template>
   <!-- <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent "> -->
-    <header class="relative md:absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent h-[60px]">
-
-    <nav class="flex items-center justify-between px-8 py-4 text-white sticky top-0 mb-8">
-            <!-- Logo -->
-            <div
-        class="cursor-pointer"
-        @click="$router.push(localePath('/'))"
-      >
+  <header
+    class="relative md:absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent h-[60px]"
+  >
+    <nav
+      class="flex items-center justify-between px-8 py-4 text-white sticky top-0 mb-8"
+    >
+      <!-- Logo -->
+      <div class="cursor-pointer" @click="$router.push(localePath('/'))">
         <img src="@/assets/svg/logo.svg" alt="Logo" class="h-12 w-auto" />
       </div>
-      <div class="flex items-center space-x-6 gap-4 " >
+      <div class="flex items-center space-x-6 gap-4">
         <!-- Desktop Navbar -->
         <ul
-          class="hidden md:flex space-x-6 justify-between items-center w-full "
+          class="hidden md:flex space-x-6 justify-between items-center w-full"
         >
           <li v-for="route in routes" :key="route.path" class="px-1">
             <NuxtLink
@@ -27,60 +27,68 @@
         </ul>
 
         <!-- Language Switcher (Desktop) -->
-        <NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)" class="nav-link hidden md:block ">
-    {{ locale.name }}
-  </NuxtLink>
+        <NuxtLink
+          v-for="locale in availableLocales"
+          :key="locale.code"
+          :to="switchLocalePath(locale.code)"
+          class="nav-link hidden md:block"
+        >
+          {{ locale.name }}
+        </NuxtLink>
 
         <!-- User Avatar with Dropdown -->
-   
+
         <div class="relative hidden md:flex items-center" ref="dropdownRef">
           <div @click="toggleDropdown" class="cursor-pointer">
-            <template v-if="userName" >
+            <template v-if="userName">
               <UTooltip :text="userName">
-            <UAvatar  :alt=userName size="sm" class="dark:bg-white bg-white "/>
-            </UTooltip>
+                <UAvatar
+                  :alt="userName"
+                  size="sm"
+                  class="dark:bg-white bg-white"
+                />
+              </UTooltip>
             </template>
             <template v-else>
-              <UAvatar icon="i-lucide-user" size="sm" class="dark:bg-white bg-white"/>
+              <UAvatar
+                icon="i-lucide-user"
+                size="sm"
+                class="dark:bg-white bg-white"
+              />
             </template>
-
           </div>
 
           <!-- Logout Dropdown Menu -->
           <div
-  v-if="isDropdownOpen"
-  :class="[
-    'absolute top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg',
-    locale === 'ar' ? 'left-0' : 'right-0'
-  ]"
->
+            v-if="isDropdownOpen"
+            :class="[
+              'absolute top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg',
+              locale === 'ar' ? 'left-0' : 'right-0',
+            ]"
+          >
             <template v-if="isLogged">
-            <NuxtLink
-              to="/"
-              @click="handleLogout"
-              class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-       
-            >
-              <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
-              <img src="/logout.png" alt="Logout" class="h-4 w-4" />
-            </NuxtLink>
+              <NuxtLink
+                to="/"
+                @click="handleLogout"
+                class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
+                icon="i-lucide-log-out"
+              > 
+                <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
+            
+              </NuxtLink>
             </template>
             <template v-else>
               <button
                 @click="openLoginModal"
                 class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-
+                icon="i-lucide-log-in"
               >
                 <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
               </button>
             </template>
           </div>
         </div>
-
-
       </div>
-
-
 
       <!-- Mobile Menu Button -->
       <button @click="toggleMenu" class="md:hidden text-white">
@@ -105,51 +113,49 @@
           </NuxtLink>
         </li>
         <!-- Language Switcher (Mobile) -->
-  
+
         <li v-for="locale in availableLocales" :key="locale.code">
-        <NuxtLink
-    :to="switchLocalePath(locale.code)"
-    class="block py-2 transition-colors "
-    exact-active-class="active-mobile-link"
-  >
-    {{ locale.name }}
-  </NuxtLink>
-</li>
+          <NuxtLink
+            :to="switchLocalePath(locale.code)"
+            class="block py-2 transition-colors"
+            exact-active-class="active-mobile-link"
+          >
+            {{ locale.name }}
+          </NuxtLink>
+        </li>
 
-<!-- Auth (Mobile) -->
-<li v-if="isLogged" class="flex items-center justify-center space-x-2">
-  <NuxtLink
-    to="/"
-    @click="handleLogout"
-    class="block py-2 text-red-800 space-x-2"
-  >
-    <span class="px-2">{{
-      locale === "ar" ? "تسجيل الخروج" : "Logout"
-    }}</span>
-    <img src="/logout.png" alt="Logout" class="h-4 w-4" />
-  </NuxtLink>
-</li>
-<li v-else>
-  <button
-    @click="openLoginModal"
-    class="block py-2 text-white space-x-2 hover:bg-red-50"
-  >
-    <span class="px-2">{{
-      locale === "ar" ? "تسجيل الدخول" : "Login"
-    }}</span>
-    <Icon name="i-lucide-log-in" class="h-4 w-4" />
-  </button>
-</li>
-
+        <!-- Auth (Mobile) -->
+        <li v-if="isLogged" class="flex items-center justify-center space-x-2">
+          <NuxtLink
+            to="/"
+            @click="handleLogout"
+            class="block py-2 text-red-800 space-x-2"
+            icon="i-lucide-log-out"
+          >
+            <span class="px-2">{{
+              locale === "ar" ? "تسجيل الخروج" : "Logout"
+            }}</span>
+          </NuxtLink>
+        </li>
+        <li v-else>
+          <button
+            @click="openLoginModal"
+            class="block py-2 text-white space-x-2 hover:bg-red-50"
+            icon="i-lucide-log-in"
+          >
+            <span class="px-2">{{
+              locale === "ar" ? "تسجيل الدخول" : "Login"
+            }}</span>
+          </button>
+        </li>
       </ul>
     </div>
     <LoginModal v-if="isLoginOpen" @close="isLoginOpen = false" />
-
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, nextTick } from 'vue'
+import { computed, ref, watch, onMounted, nextTick } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
@@ -161,12 +167,13 @@ const switchLocalePath = useSwitchLocalePath();
 const { locale, locales } = useI18n();
 
 const availableLocales = computed(() => {
-  return (locales.value as { code: string; name: string }[]).filter(l => l.code !== locale.value)
+  return (locales.value as { code: string; name: string }[]).filter(
+    (l) => l.code !== locale.value
+  );
 });
 
-
 const toast = useToast();
-const authStore = useAuthStore(); 
+const authStore = useAuthStore();
 const registerStore = useRegisterStore();
 
 const isMenuOpen = ref(false);
@@ -177,8 +184,8 @@ const userName = ref("" as string);
 const getUser = computed(() => authStore.user);
 
 watch(getUser, (val) => {
-    userName.value = val?.name!;
-  });
+  userName.value = val?.name!;
+});
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
@@ -204,11 +211,9 @@ const handleLogout = () => {
   isDropdownOpen.value = false;
   isMenuOpen.value = false;
   toast.add({
-    title: 'لقد تم تسجيل الخروج من بناء',
-    description: 'شكرا لك على تبرعك',
-   
-  })
-
+    title: "لقد تم تسجيل الخروج من بناء",
+    description: "شكرا لك على تبرعك",
+  });
 };
 
 onMounted(() => {
@@ -226,14 +231,13 @@ const routes = [
 </script>
 
 <style scoped>
-
 header {
-  height: 64px; 
+  height: 64px;
 }
 
 @media (min-width: 768px) {
   header {
-    height: 80px; 
+    height: 80px;
   }
 }
 .nav-link {
@@ -263,7 +267,6 @@ header {
   font-weight: bold;
 }
 
-
 .mobile-nav-link {
   position: relative;
   display: inline-block;
@@ -285,7 +288,6 @@ header {
   width: 100%;
   left: 0;
 }
-
 
 .lang-btn {
   background: rgba(255, 255, 255, 0.2);

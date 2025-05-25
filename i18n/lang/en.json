@@ -181,5 +181,9 @@
         "enter": "Enter"
       }
     }
+  },
+  "errorPage":{
+    "title":" Go to Home ",
+    "message":"An unexpected error occurred"
   }
 }
