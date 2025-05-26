@@ -65,7 +65,7 @@
         </div>
 
         <!-- Social Media Icons -->
-        <div class="flex items-center gap-4 mt-4">
+        <div class="flex items-center gap-6 space-between mt-4">
           <a
             v-if="social?.facebook"
             :href="
@@ -81,23 +81,6 @@
               name="mdi:facebook"
               size="24"
               class="text-blue-600 hover:text-blue-800"
-            />
-          </a>
-          <a
-            v-if="social?.twitter"
-            :href="
-              social.twitter.startsWith('http')
-                ? social.twitter
-                : 'https://' + social.twitter
-            "
-            target="_blank"
-            rel="noopener"
-            title="Twitter"
-          >
-            <Icon
-              name="mdi:twitter"
-              size="24"
-              class="text-blue-400 hover:text-blue-600"
             />
           </a>
           <a
@@ -133,6 +116,19 @@
               size="24"
               class="text-red-600 hover:text-red-800"
             />
+          </a>
+          <a
+            v-if="social?.twitter"
+            :href="
+              social.twitter.startsWith('http')
+                ? social.twitter
+                : 'https://' + social.twitter
+            "
+            target="_blank"
+            rel="noopener"
+            title="X (formerly Twitter)"
+          >
+            <Icon name="lucide:x" size="24" />
           </a>
         </div>
       </div>
@@ -191,7 +187,6 @@ const selectedOfficeDetails = computed(
   () => officeStore.offices[selectedOfficeId.value]
 );
 </script>
-
 
 <style scoped>
 .scrollable-list::-webkit-scrollbar {
