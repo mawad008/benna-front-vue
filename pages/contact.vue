@@ -1,5 +1,5 @@
 <template>
-       <Hero />
+    <Hero />
     <div class="lg:my-10 md:my-20">
      <ContactForm />
      <br>

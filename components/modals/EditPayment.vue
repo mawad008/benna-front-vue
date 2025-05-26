@@ -9,14 +9,10 @@
       enterToClass: 'opacity-100 scale-100',
       leaveActiveClass: 'transition ease-in duration-200 transform',
       leaveFromClass: 'opacity-100 scale-100',
-      leaveToClass: 'opacity-0 scale-95'
+      leaveToClass: 'opacity-0 scale-95',
     }"
-
   >
-    <div
-      class="p-1 py-4 space-y-4 rounded-lg shadow-xl"
-      ref="modalContent"
-    >
+    <div class="p-4 space-y-4 rounded-lg shadow-xl" ref="modalContent">
       <template v-if="!donationStore.showPayment">
         <div class="flex flex-col gap-4 animate-in fade-in duration-500">
           <DonationCard :row="props?.row" />
@@ -38,7 +34,9 @@
             :loading="donationStore.loading"
             :disabled="donationStore.loading"
             @click="handleDonation"
-            :loading-text="donationStore.loading ? 'جاري التحقق ...' : 'جاري التحميل...'"
+            :loading-text="
+              donationStore.loading ? 'جاري التحقق ...' : 'جاري التحميل...'
+            "
             color="primary"
             variant="solid"
             block
@@ -92,14 +90,12 @@ const handleDonation = async () => {
   if (!props.row?.id) return;
   await donationStore.submitDonation(props.row.id);
   if (donationStore.submissionError) {
-  donationStore.showPayment = false;
-  return;
-}
-donationStore.showPayment = true;
+    donationStore.showPayment = false;
+    return;
+  }
+  donationStore.showPayment = true;
 };
-
 </script>
 
 <style scoped>
-
 </style>

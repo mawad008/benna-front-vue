@@ -1,20 +1,24 @@
 <template>
   <div class="flex justify-center w-full h-fit mb-4">
     <div
-      class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
+      class="w-full p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
     >
-    <div class="flex items-center gap-2">
-      <UButton
-        color="primary"
-        variant="solid"
-        icon="i-heroicons-arrow-right"
-        @click="donationStore.showPayment = false"
-      >
-      </UButton>
-      <br/>
-      <!-- Title with Badge -->
-      <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
-    </div>
+      <div class="flex items-center gap-2">
+        <UButton
+          color="primary"
+          variant="solid"
+          icon="i-heroicons-arrow-right"
+          @click="donationStore.showPayment = false"
+        >
+        </UButton>
+        <br />
+        <!-- Title with Badge -->
+        <Title
+          :title="$t('cards.customPaymentCard.title')"
+          badge="3"
+          class="text-end"
+        />
+      </div>
       <p v-if="errors.amount" class="text-red-500 text-sm mb-4 text-center">
         {{ errors.amount }}
       </p>
@@ -23,9 +27,9 @@
       <form @submit.prevent="handlePayment" id="moyasar-token-form">
         <!-- Cardholder Name -->
         <div class="mt-4">
-          <label class="block text-dark font-bold text-sm mb-2"
-            >{{ $t('cards.customPaymentCard.cardholderName') }}</label
-          >
+          <label class="block text-dark font-bold text-sm mb-2">{{
+            $t("cards.customPaymentCard.cardholderName")
+          }}</label>
           <input
             v-model="form.cardholderName"
             class="w-full border-gray-300 p-2 rounded-lg text-start placeholder:text-start"
@@ -39,9 +43,9 @@
 
         <!-- Card Number -->
         <div class="mt-4">
-          <label class="block text-dark font-bold text-sm mb-2"
-            >{{ $t('cards.customPaymentCard.cardNumber') }}</label
-          >
+          <label class="block text-dark font-bold text-sm mb-2">{{
+            $t("cards.customPaymentCard.cardNumber")
+          }}</label>
           <input
             v-model="form.cardNumber"
             @input="formatCardNumber"
@@ -58,9 +62,9 @@
         <!-- Expiry Date & CVV -->
         <div class="mt-4 flex gap-4">
           <div class="flex-1">
-            <label class="block text-dark font-bold text-sm mb-2"
-              >{{ $t('cards.customPaymentCard.expiryDate') }}</label
-            >
+            <label class="block text-dark font-bold text-sm mb-2">{{
+              $t("cards.customPaymentCard.expiryDate")
+            }}</label>
             <input
               v-model="form.expiryDate"
               @input="handleExpiryDateInput"
@@ -73,9 +77,9 @@
             </p>
           </div>
           <div class="flex-1">
-            <label class="block text-dark font-bold text-sm mb-2"
-              >{{ $t('cards.customPaymentCard.cvv') }}</label
-            >
+            <label class="block text-dark font-bold text-sm mb-2">{{
+              $t("cards.customPaymentCard.cvv")
+            }}</label>
             <input
               v-model="form.cvv"
               placeholder="CVV"
@@ -100,7 +104,7 @@
             :disabled="isSubmitting"
             :loading="isSubmitting"
           >
-            {{ $t('cards.customPaymentCard.button') }}
+            {{ $t("cards.customPaymentCard.button") }}
           </UButton>
         </div>
       </form>
@@ -116,7 +120,6 @@ import Title from "@/components/ui/Title.vue";
 
 const donationStore = useDonationStore();
 const donorStore = useDonorStore();
-
 
 const form = reactive({
   cardholderName: "",

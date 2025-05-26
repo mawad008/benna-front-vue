@@ -1,16 +1,16 @@
 <template>
   <div class="flex justify-center md:w-[100%] lg:w-[100%] w-full h-fit">
     <div
-      class="w-full lg:w-4/5 p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
+      class="w-full p-6 border border-gray-300 rounded-lg shadow-sm bg-white"
     >
       <!-- Title with Badge -->
       <Title :title="$t('cards.donorCard.title')" badge="2" class="mb-4" />
 
       <!-- Donor Name Input -->
       <div class="mt-4">
-        <label class="block text-dark font-bold text-sm mb-2"
-          >{{ $t("cards.donorCard.label") }}</label
-        >
+        <label class="block text-dark font-bold text-sm mb-2">{{
+          $t("cards.donorCard.label")
+        }}</label>
         <input
           v-model="donorStore.donorName"
           class="w-full border-gray-300 p-2 rounded-lg"

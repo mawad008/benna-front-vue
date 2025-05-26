@@ -12,9 +12,7 @@
       </div>
       <div class="flex items-center space-x-6 gap-4">
         <!-- Desktop Navbar -->
-        <ul
-          class="hidden md:flex space-x-6 justify-between items-center w-full"
-        >
+        <ul class="hidden md:flex gap-4 justify-between items-center w-full">
           <li v-for="route in routes" :key="route.path" class="px-1">
             <NuxtLink
               :to="localePath(route.path)"
@@ -72,9 +70,8 @@
                 @click="handleLogout"
                 class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
                 icon="i-lucide-arrow-left-start-on-rectangle"
-              > 
+              >
                 <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
-            
               </NuxtLink>
             </template>
             <template v-else>

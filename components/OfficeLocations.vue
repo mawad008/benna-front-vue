@@ -4,7 +4,10 @@
   >
     <!-- Title -->
     <div class="flex items-center gap-2 mb-6">
-      <Title :title="$t('contactPage.branshsandOffices')" badge="i-heroicons-map-pin" />
+      <Title
+        :title="$t('contactPage.branshsandOffices')"
+        badge="i-heroicons-map-pin"
+      />
     </div>
 
     <div class="flex flex-wrap gap-6">
@@ -61,7 +64,77 @@
           </div>
         </div>
 
-
+        <!-- Social Media Icons -->
+        <div class="flex items-center gap-4 mt-4">
+          <a
+            v-if="social?.facebook"
+            :href="
+              social.facebook.startsWith('http')
+                ? social.facebook
+                : 'https://' + social.facebook
+            "
+            target="_blank"
+            rel="noopener"
+            title="Facebook"
+          >
+            <Icon
+              name="mdi:facebook"
+              size="24"
+              class="text-blue-600 hover:text-blue-800"
+            />
+          </a>
+          <a
+            v-if="social?.twitter"
+            :href="
+              social.twitter.startsWith('http')
+                ? social.twitter
+                : 'https://' + social.twitter
+            "
+            target="_blank"
+            rel="noopener"
+            title="Twitter"
+          >
+            <Icon
+              name="mdi:twitter"
+              size="24"
+              class="text-blue-400 hover:text-blue-600"
+            />
+          </a>
+          <a
+            v-if="social?.instagram"
+            :href="
+              social.instagram.startsWith('http')
+                ? social.instagram
+                : 'https://' + social.instagram
+            "
+            target="_blank"
+            rel="noopener"
+            title="Instagram"
+          >
+            <Icon
+              name="mdi:instagram"
+              size="24"
+              class="text-pink-500 hover:text-pink-700"
+            />
+          </a>
+          <a
+            v-if="social?.youtube"
+            :href="
+              social.youtube.startsWith('http')
+                ? social.youtube
+                : 'https://' + social.youtube
+            "
+            target="_blank"
+            rel="noopener"
+            title="YouTube"
+          >
+            <Icon
+              name="mdi:youtube"
+              size="24"
+              class="text-red-600 hover:text-red-800"
+            />
+          </a>
+        </div>
       </div>
 
       <!-- Map Section -->
@@ -93,15 +166,19 @@
 import Title from "@/components/ui/Title.vue";
 import { useOfficeStore } from "@/stores/officeStore";
 import { computed, onMounted, ref } from "vue";
+
+const officeStore = useOfficeStore();
+
 const selectedOfficeId = ref(0);
-const social = ref({});
 const loading = ref(false);
 const error = ref(false);
-const officeStore = useOfficeStore();
+
+const social = computed(() => officeStore.social);
 onMounted(() => {
   loading.value = true;
-  officeStore.fetchOffices()
-  officeStore.fetchSocial()
+  officeStore.fetchOffices();
+  officeStore
+    .fetchSocial()
     .then(() => {
       loading.value = false;
     })
@@ -113,9 +190,8 @@ onMounted(() => {
 const selectedOfficeDetails = computed(
   () => officeStore.offices[selectedOfficeId.value]
 );
-social.value = officeStore.social;
-
 </script>
+
 
 <style scoped>
 .scrollable-list::-webkit-scrollbar {

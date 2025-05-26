@@ -7,8 +7,6 @@
 
       <p class="flex items-center gap-3">
         {{ $t("footer.developed") }}
-        <!-- <img src="/WS-logo.png" alt="Webstdy Logo" class="h-5" /> -->
-
         <a
           title="شركة ويب ستدي لخدمات تصميم و برمجة المواقع و التطبيقات"
           href="https://webstdy.com/ar?utm_source=benna-foorter&amp;utm_medium=referral"
@@ -17,26 +15,45 @@
         >
           <img
             class="lazyloaded h-5"
-            title="شركة ويب ستدي لخدمات تصميم و برمجة المواقع و التطبيقات"
             src="/WS-logo.png"
             alt="شركة ويب ستدي لخدمات تصميم و برمجة المواقع و التطبيقات"
-            data-src="https://webstdy.com/CDN/cr.png"
           />
         </a>
       </p>
 
-      <div class="flex items-center gap-2">
-        <p>{{ $t("footer.app-download") }}</p>
-        <a :href="appLinks?.google" target="_blank">
-          <img src="/google-play.png" alt="Google Play" class="h-5" />
+      <div v-if="appLinks" class="flex items-center justify-center gap-2">
+        <p class="leading-none">{{ $t("footer.app-download") }}</p>
+
+        <a
+          :href="
+            appLinks?.google.startsWith('http')
+              ? appLinks.google
+              : 'https://' + appLinks.google
+          "
+          target="_blank"
+          title="Google Play"
+          class="flex items-center "
+        >
+          <Icon name="mdi:google-play" size="20" class="leading-none" />
         </a>
-        <a :href="appLinks?.apple" target="_blank">
-          <img src="/apple-store.png" alt="Apple Store" class="h-5" />
+
+        <a
+          :href="
+            appLinks?.apple.startsWith('http')
+              ? appLinks.apple
+              : 'https://' + appLinks.apple
+          "
+          target="_blank"
+          title="Apple Store"
+          class="flex items-center "
+        >
+          <Icon name="mdi:apple" size="22" class="leading-none " />
         </a>
       </div>
     </div>
   </footer>
 </template>
+
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
@@ -56,5 +73,6 @@ onMounted(async () => {
   }
 });
 </script>
+
 
 <style scoped></style>
