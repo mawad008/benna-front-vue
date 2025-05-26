@@ -9,7 +9,6 @@ module.exports = {
     "./error.vue",
   ],
   theme: {
-    colorMode: false,
     container: {
       center: true,
       padding: {

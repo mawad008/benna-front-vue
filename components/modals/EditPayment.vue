@@ -11,10 +11,16 @@
       leaveFromClass: 'opacity-100 scale-100',
       leaveToClass: 'opacity-0 scale-95',
     }"
+    
   >
     <div class="p-4 space-y-4 rounded-lg shadow-xl" ref="modalContent">
+    
       <template v-if="!donationStore.showPayment">
+    
         <div class="flex flex-col gap-4 animate-in fade-in duration-500">
+          <div class="flex justify-end">
+            <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="closeModal" />
+          </div>
           <DonationCard :row="props?.row" />
           <DonorNameCard />
         </div>

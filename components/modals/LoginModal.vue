@@ -1,5 +1,6 @@
 <template>
   <Transition name="slide-left">
+    
     <div
       v-if="isOpen"
       ref="modalRef"
@@ -37,7 +38,7 @@
             class="w-full max-w-sm md:max-w-none md:h-full bg-white/30 md:bg-white backdrop-blur-md md:backdrop-blur-none rounded-lg p-6 flex items-center justify-center"
           >
             <div
-              class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px] relative"
+              class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px] relative overflow-hidden"
             >
               <!-- Logo -->
               <div
@@ -51,6 +52,7 @@
                 {{ $t("loginModel.title") }}
               </p>
 
+              <div class="w-full flex flex-col items-center justify-center min-h-[210px]">
               <!-- Dynamic Step Component -->
               <Transition :name="store.transitionDirection" mode="out-in">
                 <component
@@ -60,6 +62,7 @@
                   @close="closeModal"
                 />
               </Transition>
+            </div>
 
               <!-- Error Message -->
               <div class="text-red-600 text-center font-medium mt-2">

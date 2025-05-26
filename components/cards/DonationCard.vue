@@ -67,6 +67,7 @@
               />
               <template #panel="{ close }">
                 <DatePicker
+                  mode="date"
                   v-model="date"
                   is-required
                   @close="close"
@@ -87,7 +88,7 @@
             <label class="block text-dark font-bold text-sm mb-5">{{
               $t("cards.donationCard.recurringType")
             }}</label>
-            <div class="flex gap-3">
+            <div class="flex gap-3 flex-wrap">
               <UButton
                 v-for="type in types"
                 :key="type.label"
@@ -119,10 +120,8 @@
 import Title from "@/components/ui/Title.vue";
 import { useDonorStore } from "@/stores/donation/donorStore";
 import { format } from "date-fns";
-
 const donorStore = useDonorStore();
 const date = ref(new Date());
-
 const amounts = [5, 10, 50, 100];
 import { useI18n } from "vue-i18n";
 
@@ -131,12 +130,12 @@ const { t } = useI18n();
 const props = defineProps({
   row: Object,
 });
-
-// const editRow = () => {
-//   donorStore.setAmount(props.row.amount);
-//   donorStore.setRecurringType(props.row.type);
-
-// }
+// const disabledDates = [
+//   {
+//     from: new Date(1900, 0, 1),
+//     to: new Date(new Date().setDate(new Date().getDate() - 1)),
+//   },
+// ];
 
 const types = [
   { label: t("cards.donationCard.monthly"), value: "month" },

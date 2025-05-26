@@ -29,7 +29,6 @@ const attrs = {
   'transparent': true,
   'borderless': true,
   'color': 'primary',
-  'is-dark': { selector: 'html', darkClass: 'dark' },
   'first-day-of-week': 2
 }
 
@@ -40,9 +39,9 @@ function onDayClick(_: any, event: MouseEvent): void {
 </script>
 
 <template>
-  <VCalendarDatePicker v-if="date && (date as DatePickerRangeObject)?.start && (date as DatePickerRangeObject)?.end"
+  <VCalendarDatePicker :is-dark="false" v-if="date && (date as DatePickerRangeObject)?.start && (date as DatePickerRangeObject)?.end"
     v-model.range="date" :columns="2" v-bind="{ ...attrs, ...$attrs }" @dayclick="onDayClick" />
-  <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" @dayclick="onDayClick" />
+  <VCalendarDatePicker :is-dark="false" v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" @dayclick="onDayClick" />
 </template>
 
 <style>

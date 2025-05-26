@@ -75,6 +75,10 @@
         color: 'white',
         variant: 'outline',
       }"
+    :empty-state="{
+      label: $t('campaignTable.empty'),
+    }"
+      @sort="handleSort"
     >
       <!-- Row Number -->
       <template #index-data="{ index }">
@@ -222,14 +226,18 @@ const selectedStatus = ref("");
 const selectedType = ref("");
 
 const statusOptions = [
+{ label: t("campaignTable.allStatus"), value: "all" },
   { label: t("campaignTable.status.1"), value: 1 },
   { label: t("campaignTable.status.0"), value: 0 },
   { label: t("campaignTable.status.2"), value: 2 },
+
 ];
 const typeOptions = [
+{ label: t("campaignTable.allStatus"), value: "all" },
   { label: t("campaignTable.type.day"), value: "day" },
   { label: t("campaignTable.type.week"), value: "week" },
   { label: t("campaignTable.type.month"), value: "month" },
+
 ];
 const getGlobalIndex = (rowIndex: number) => {
   return (page.value - 1) * pageSize.value + rowIndex + 1;
@@ -248,6 +256,7 @@ const columns = ref([
     key: "date",
     label: t("campaignTable.columns.campaignStartDate"),
     sortable: true,
+ 
   },
   {
     key: "next_time",
@@ -368,9 +377,9 @@ const filteredData = computed(() => {
       (searchQuery.value === "" ||
         normalizedName.includes(normalizedQuery) ||
         normalizedType.includes(normalizedQuery)) &&
-      (selectedStatus.value === "" ||
+      (selectedStatus.value === "" || selectedStatus.value === "all" ||
         row.status === Number(selectedStatus.value)) &&
-      (selectedType.value === "" || row.type === selectedType.value)
+      (selectedType.value === "" || selectedType.value === "all" || row.type === selectedType.value) 
     );
   });
 });
@@ -391,6 +400,7 @@ const sortedData = computed(() => {
       ? String(valueA).localeCompare(String(valueB))
       : String(valueB).localeCompare(String(valueA));
   });
+
 });
 
 // Paginated Data

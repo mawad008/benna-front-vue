@@ -41,7 +41,8 @@
     "loading": "Loading...",
     "authLoading": "Checking login...",
     "login": "Login",
-    "notLoggedIn": "Please login to view the campaigns"
+    "notLoggedIn": "Please login to view the campaigns",
+    "errorAndRetry":"There is some error please try again "
   },
   "campaignsPage": {
     "loading": "Loading campaigns...",
@@ -59,6 +60,7 @@
     "error": "Error loading deductions",
     "noDeductions": "No deductions found",
     "deductions": "Deductions Record",
+    "goBack": "Go TO Campaigns ",
     "links": {
       "home": "Home",
       "campaigns": "Campaigns",
@@ -102,7 +104,9 @@
       "chooseSatatus": "Choose Campaign Status",
       "chooseType": "Choose Campaign Type",
       "search": "Search..."
-    }
+    },
+    "empty": "No campaigns found",
+    "allStatus":"All"
   },
   "deductionTable": {
     "filterResult": "Filter Result",

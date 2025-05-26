@@ -358,8 +358,8 @@ export default defineAppConfig({
           label: "Loading...",
         },
         emptyState: {
-          icon: "i-heroicons-circle-stack-20-solid",
-          label: "No items.",
+          icon: "i-heroicons-archive-box-x-mark-20-solid",
+          label: "No campaigns found",
         },
       },
     },

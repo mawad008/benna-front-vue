@@ -33,7 +33,7 @@
           <input
             v-model="form.cardholderName"
             class="w-full border-gray-300 p-2 rounded-lg text-start placeholder:text-start"
-            :placeholder="$t('cards.customPaymentCard.cardholderName')"
+            placeholder="Cardholder Name"
             :disabled="isSubmitting"
           />
           <p v-if="errors.cardholderName" class="text-red-500 text-sm">

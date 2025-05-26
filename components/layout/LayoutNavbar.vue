@@ -126,7 +126,7 @@
           <NuxtLink
             to="/"
             @click="handleLogout"
-            class="block py-2 text-red-800 space-x-2"
+            class="block py-2 text-red-600 hover:bg-red-50 bg-white rounded-md px-2"
             icon="i-lucide-arrow-left-start-on-rectangle"
           >
             <span class="px-2">{{

@@ -2,80 +2,81 @@
   <Hero />
   <div class="container lg:mt-10 md:mt-20">
     <!-- Loading State -->
-    <div v-if="authStore.loading" class="text-center text-gray-500 my-4">
-      {{ $t('general.authLoading') }}
+    <div
+      v-if="isLoading"
+      class="text-center text-gray-500 h-[calc(100vh-200px)] flex items-center justify-center"
+    >
+      <div class="spinner" aria-label="جاري التحميل"></div>
     </div>
-
 
     <!-- Not Logged In -->
-    <div v-else-if="!authStore.isLoggedIn" class="flex justify-center h-[calc(100vh-200px)] items-center">
-      <LoginModal v-if="isLoginOpen" ref="loginModalRef" />
-      <div v-else class="text-center my-4">
-        <p class="text-gray-600">{{ $t('general.notLoggedIn') }}</p>
-        <button
-          @click="openLoginModal"
-          class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          {{ $t('general.login') }}
-        </button> 
-      </div>
-    </div>
+    <ClientOnly v-if="!authStore.isLoggedIn">
+      <div
+        class="flex justify-center h-[calc(100vh-200px)] items-center flex-col gap-4"
+      >
+        <div class="text-center flex flex-col gap-4">
+          <p class="text-gray-600">{{ $t("general.notLoggedIn") }}</p>
+          <button
+            @click="openLoginModal"
+            class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            {{ $t("general.login") }}
+          </button>
 
-  <!-- Logged In -->
-<div v-else>
-  <!-- Campaigns Loading -->
-  <div
-    v-if="campaignsStore.loading"
-    class="text-center text-gray-500 my-4 h-[calc(100vh-200px)] flex items-center justify-center font-medium"
-  >
-    {{ $t('campaignsPage.loading') }}
-  </div>
-
-  <!-- Campaigns Error -->
-  <div
-    v-else-if="campaignsStore.error"
-    class="text-center my-4 h-[calc(100vh-200px)] flex items-center justify-center font-medium"
-  >
-    <div class="bg-red-50 border-l-4 border-red-500 p-4 max-w-md mx-auto flex">
-      <div class="flex-shrink-0">
-        <svg class="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-            clip-rule="evenodd"
+          <LoginModal
+            v-if="isLoginOpen"
+            ref="loginModalRef"
+            :isOpen="isLoginOpen"
+            @close="isLoginOpen = false"
           />
-        </svg>
+        </div>
       </div>
-      <div class="ml-3 text-sm text-red-700">
-        <p class="mt-2">{{ campaignsStore.error }}</p>
+    </ClientOnly>
+
+    <!-- Logged In -->
+    <div v-else>
+      <!-- Campaigns Loading -->
+      <div
+        v-if="campaignsStore.loading"
+        class="text-center text-gray-500 h-[calc(100vh-200px)] flex items-center justify-center font-medium"
+      >
+        <!-- <p>{{ $t("campaignsPage.loading") }}</p> -->
+        <div class="spinner" aria-label="جاري التحميل"></div>
+      </div>
+
+      <!-- Campaigns Error -->
+      <div
+        v-else-if="campaignsStore.error"
+        class="text-center h-[calc(100vh-200px)] flex items-center justify-center font-medium flex-col gap-4"
+      >
+        <p>{{ $t("general.errorAndRetry") }}</p>
+        <button @click="retry" class="mt-2 bg-white px-4 py-2 rounded">
+          <img src="/refresh.gif" alt="refresh" />
+        </button>
+      </div>
+
+      <!-- No Campaigns -->
+      <div
+        v-else-if="campaignsStore.campaigns.length === 0"
+        class="text-center text-gray-500 h-[calc(100vh-200px)] flex items-center justify-center text-2xl font-medium"
+      >
+        {{ $t("campaignsPage.noCampaigns") }}
+      </div>
+
+      <!-- Show Campaigns -->
+      <div v-else>
+        <div class="mt-10 md:mt-0 lg:mt-0">
+          <UBreadcrumb :links="links" />
+        </div>
+        <br />
+        <p class="text-2xl font-bold mb-4 text-dark">
+          {{ $t("campaignsPage.campaigns") }}
+        </p>
+        <br />
+        <CampaignTable :campaigns="campaignsStore.campaigns" />
       </div>
     </div>
   </div>
-
-  <!-- No Campaigns -->
-  <div
-    v-else-if="campaignsStore.campaigns.length === 0"
-    class="text-center text-gray-500 my-4 h-[calc(100vh-200px)] flex items-center justify-center text-2xl font-medium"
-  >
-    {{ $t('campaignsPage.noCampaigns') }}
- 
-  </div>
-
-  <!-- Show Campaigns -->
-  <div v-else>
-    <div class="mt-10 md:mt-0 lg:mt-0">
-      <UBreadcrumb :links="links" />
-    </div>
-    <br />
-    <p class="text-2xl font-bold mb-4 text-dark">
-    {{ $t('campaignsPage.campaigns') }}
-    </p>
-    <br />
-    <CampaignTable :campaigns="campaignsStore.campaigns"/>
-  </div>
-</div>
-</div>
-
 </template>
 
 <script setup lang="ts">
@@ -86,11 +87,9 @@ import LoginModal from "@/components/modals/LoginModal.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
-import { useI18n } from 'vue-i18n';
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-
-definePageMeta({ layout: "default" });
 
 const campaignsStore = useCampaignsStore();
 const authStore = useAuthStore();
@@ -98,36 +97,42 @@ const registerStore = useRegisterStore();
 
 const loginModalRef = ref(null);
 const isLoginOpen = ref(false);
+const isLoading = computed(() => authStore.loading && campaignsStore.loading || import.meta.server);
 
-const openLoginModal = () => {
-  isLoginOpen.value = true;
-  registerStore.step = 0;
-};
-// console.log(campaignsStore.campaigns);
 onMounted(() => {
   authStore.init();
   if (authStore.isLoggedIn) {
     campaignsStore.fetchCampaigns();
   }
 });
+const openLoginModal = () => {
+  registerStore.step = 0;
+  isLoginOpen.value = true;
+  if (authStore.isLoggedIn) {
+    campaignsStore.fetchCampaigns();
+  }
+};
 
+const retry = () => {
+  campaignsStore.fetchCampaigns();
+};
 const links = [
   {
     label: t("campaignsPage.links.home"),
-    href: "/",
     link: true,
-    onClick: () => {
-      navigateTo("/");
-    }
+    to: "/",
   },
   {
-
     label: t("campaignsPage.links.campaigns"),
-    href: "/campaigns",
     link: true,
-    onClick: () => {
-      navigateTo("/campaigns");
-    }
-  }
+    to: "/campaigns",
+  },
 ];
 </script>
+
+<style scoped>
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #138b96;
+}
+</style>

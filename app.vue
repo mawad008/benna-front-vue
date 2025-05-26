@@ -1,9 +1,7 @@
 <template>
-
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -27,11 +25,12 @@ watchEffect(() => {
     },
   });
 });
-
-
 </script>
 <style>
-#__nuxt, html,body,:root{
+#__nuxt,
+html,
+body,
+:root {
   height: 100%;
 }
 
@@ -40,6 +39,4 @@ watchEffect(() => {
 *::after {
   box-sizing: border-box;
 }
-
-
 </style>
