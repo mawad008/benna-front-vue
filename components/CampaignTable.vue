@@ -248,7 +248,7 @@ const columns = ref([
   {
     key: "amount",
     label: t("campaignTable.columns.campaignAmount"),
-    sortable: true,
+
   },
   {
     key: "date",
