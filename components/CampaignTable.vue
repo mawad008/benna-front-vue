@@ -75,9 +75,9 @@
         color: 'white',
         variant: 'outline',
       }"
-    :empty-state="{
-      label: $t('campaignTable.empty'),
-    }"
+      :empty-state="{
+        label: $t('campaignTable.empty'),
+      }"
       @sort="handleSort"
     >
       <!-- Row Number -->
@@ -226,18 +226,16 @@ const selectedStatus = ref("");
 const selectedType = ref("");
 
 const statusOptions = [
-{ label: t("campaignTable.allStatus"), value: "all" },
+  { label: t("campaignTable.allStatus"), value: "all" },
   { label: t("campaignTable.status.1"), value: 1 },
   { label: t("campaignTable.status.0"), value: 0 },
   { label: t("campaignTable.status.2"), value: 2 },
-
 ];
 const typeOptions = [
-{ label: t("campaignTable.allStatus"), value: "all" },
+  { label: t("campaignTable.allStatus"), value: "all" },
   { label: t("campaignTable.type.day"), value: "day" },
   { label: t("campaignTable.type.week"), value: "week" },
   { label: t("campaignTable.type.month"), value: "month" },
-
 ];
 const getGlobalIndex = (rowIndex: number) => {
   return (page.value - 1) * pageSize.value + rowIndex + 1;
@@ -256,7 +254,6 @@ const columns = ref([
     key: "date",
     label: t("campaignTable.columns.campaignStartDate"),
     sortable: true,
- 
   },
   {
     key: "next_time",
@@ -377,9 +374,12 @@ const filteredData = computed(() => {
       (searchQuery.value === "" ||
         normalizedName.includes(normalizedQuery) ||
         normalizedType.includes(normalizedQuery)) &&
-      (selectedStatus.value === "" || selectedStatus.value === "all" ||
+      (selectedStatus.value === "" ||
+        selectedStatus.value === "all" ||
         row.status === Number(selectedStatus.value)) &&
-      (selectedType.value === "" || selectedType.value === "all" || row.type === selectedType.value) 
+      (selectedType.value === "" ||
+        selectedType.value === "all" ||
+        row.type === selectedType.value)
     );
   });
 });
@@ -388,10 +388,16 @@ const filteredData = computed(() => {
 const sortedData = computed(() => {
   if (!sorting.value) return filteredData.value;
   const { key, order } = sorting.value;
-  return [...filteredData.value].sort((a, b) => {
-    const valueA = a[key as keyof typeof a];
-    const valueB = b[key as keyof typeof b];
 
+  return [...filteredData.value].sort((a, b) => {
+    let valueA = a[key as keyof typeof a];
+    let valueB = b[key as keyof typeof b];
+
+    if (key === "amount") {
+      valueA = parseFloat(String(valueA).replace(/[^0-9.-]/g, "")) || 0;
+      valueB = parseFloat(String(valueB).replace(/[^0-9.-]/g, "")) || 0;
+      return order === "asc" ? valueA - valueB : valueB - valueA;
+    }
     if (typeof valueA === "number" && typeof valueB === "number") {
       return order === "asc" ? valueA - valueB : valueB - valueA;
     }
@@ -400,7 +406,6 @@ const sortedData = computed(() => {
       ? String(valueA).localeCompare(String(valueB))
       : String(valueB).localeCompare(String(valueA));
   });
-
 });
 
 // Paginated Data

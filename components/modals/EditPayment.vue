@@ -11,16 +11,20 @@
       leaveFromClass: 'opacity-100 scale-100',
       leaveToClass: 'opacity-0 scale-95',
     }"
-    
   >
     <div class="p-4 space-y-4 rounded-lg shadow-xl" ref="modalContent">
-    
-      <template v-if="!donationStore.showPayment">
-    
-        <div class="flex flex-col gap-4 animate-in fade-in duration-500">
-          <div class="flex justify-end">
-            <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="closeModal" />
-          </div>
+      <!-- Payment Form State -->
+      <template v-if="!donationStore.showPayment && !paymentSuccess">
+        <div
+          class="flex flex-col gap-4 animate-in fade-in duration-500 relative"
+        >
+          <UButton
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="absolute top-0 left-0 z-10 hover:bg-gray-200 rounded-full p-2"
+            @click="closeModal"
+          />
           <DonationCard :row="props?.row" />
           <DonorNameCard />
         </div>
@@ -52,8 +56,44 @@
         </div>
       </template>
 
-      <template v-if="donationStore.showPayment">
-        <CustomPaymentCard class="animate-in zoom-in-95 duration-300" />
+      <!-- Payment Card State -->
+      <template v-if="donationStore.showPayment && !paymentSuccess">
+        <CustomPaymentCard
+          class="animate-in zoom-in-95 duration-300"
+          @paymentSuccess="handlePaymentSuccess"
+        />
+      </template>
+
+      <!-- Success State -->
+      <template v-if="paymentSuccess">
+        <div class="flex flex-col items-center gap-4 p-6 text-center">
+          <div class="flex justify-end w-full">
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="closeModal"
+            />
+          </div>
+
+          <div class="text-green-500 text-5xl">
+            <UIcon name="i-heroicons-check-circle" />
+          </div>
+
+          <h3 class="text-xl font-bold text-gray-900">شكراً لتبرعك!</h3>
+
+          <p class="text-gray-600">لقد تم استلام تبرعك بنجاح. شكراً لدعمك!</p>
+
+          <UButton
+            color="primary"
+            variant="solid"
+            @click="closeModal"
+            class="mt-4"
+          >
+            إغلاق
+          </UButton>
+        </div>
       </template>
     </div>
   </UModal>
@@ -78,18 +118,26 @@ const props = defineProps({
 const emit = defineEmits(["update:open"]);
 
 const isOpen = ref(props.open);
+const paymentSuccess = ref(false);
+
 watch(
   () => props.open,
   (newVal) => {
     isOpen.value = newVal;
+    if (newVal) {
+      paymentSuccess.value = false;
+    }
   }
 );
+
 watch(isOpen, (newVal) => {
   emit("update:open", newVal);
 });
 
 const closeModal = () => {
   isOpen.value = false;
+  paymentSuccess.value = false;
+  donationStore.showPayment = false;
 };
 
 const handleDonation = async () => {
@@ -100,6 +148,11 @@ const handleDonation = async () => {
     return;
   }
   donationStore.showPayment = true;
+};
+
+const handlePaymentSuccess = (paymentData: any) => {
+  paymentSuccess.value = true;
+  donationStore.showPayment = false;
 };
 </script>
 

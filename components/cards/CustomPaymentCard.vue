@@ -118,6 +118,17 @@ import { useDonorStore } from "@/stores/donation/donorStore";
 import { useDonationStore } from "@/stores/donation/donationStore";
 import Title from "@/components/ui/Title.vue";
 
+// !POPUP SUCCESS PAYMENT
+const props = defineProps({
+  isCampaign: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const emit = defineEmits(["paymentSuccess"]);
+// !
+
 const donationStore = useDonationStore();
 const donorStore = useDonorStore();
 
@@ -312,7 +323,123 @@ const initiatePayment = async (token: string) => {
     isSubmitting.value = false;
   }
 };
+
+// ! POPUP SUCCESS PAYMENT
+// const initiatePayment = async (token: string) => {
+//   try {
+//     const amount = Math.round(Number(paymentAmount.value) * 100);
+
+//     if (amount < 100) {
+//       errors.amount = "المبلغ يجب أن يكون على الأقل 1 ريال سعودي";
+//       isSubmitting.value = false;
+//       return;
+//     }
+
+//     console.log("Processing payment for amount:", amount, "halalas");
+//     const response = await fetch("https://api.moyasar.com/v1/payments", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Basic ${btoa(
+//           "pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e:"
+//         )}`,
+//       },
+//       body: JSON.stringify({
+//         amount: amount,
+//         currency: "SAR",
+//         description: "Donation",
+//         source: {
+//           type: "token",
+//           token: token,
+//         },
+//       }),
+//     });
+
+//     const payment = await response.json();
+//     console.log("Initial Payment Response:", payment);
+
+//     if (!response.ok) {
+//       throw new Error(payment.message || "Payment creation failed");
+//     }
+
+//     switch (payment.status) {
+//       case "paid":
+//       case "authorized":
+
+//         handlePaymentSuccess(payment);
+//         break;
+
+//       case "initiated":
+//         await pollPaymentStatus(payment.id);
+//         break;
+
+//       default:
+//         throw new Error(`Payment status: ${payment.status}`);
+//     }
+//   } catch (error) {
+//     console.error("Payment Error:", error);
+//     errors.amount = error.message || "حدث خطأ أثناء معالجة الدفع";
+//   } finally {
+//     isSubmitting.value = false;
+//   }
+// };
+
+// const pollPaymentStatus = async (paymentId: string, attempts = 0) => {
+//   try {
+//     if (attempts >= 5) {
+//       throw new Error("تم تجاوز وقت انتظار الدفع");
+//     }
+
+//     await new Promise((resolve) => setTimeout(resolve, 2000));
+
+//     const response = await fetch(
+//       `https://api.moyasar.com/v1/payments/${paymentId}`,
+//       {
+//         headers: {
+//           Authorization: `Basic ${btoa(
+//             "pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e:"
+//           )}`,
+//         },
+//       }
+//     );
+
+//     const payment = await response.json();
+//     console.log(`Polling attempt ${attempts + 1}:`, payment.status);
+
+//     switch (payment.status) {
+//       case "paid":
+//       case "authorized":
+//         handlePaymentSuccess(payment);
+//         return;
+
+//       case "failed":
+//         throw new Error("فشل عملية الدفع");
+
+//       default:
+//         await pollPaymentStatus(paymentId, attempts + 1);
+//     }
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+// const handlePaymentSuccess = (paymentData: any) => {
+//   const amount = paymentData.amount / 100;
+
+//   if (props.isCampaign) {
+//     emit("paymentSuccess", paymentData);
+//   } else {
+//     window.location.href = `/thanks?${new URLSearchParams({
+//       amount: amount.toString(),
+//       currency: paymentData.currency,
+//       id: paymentData.id,
+//       status: paymentData.status,
+//     })}`;
+//   }
+// };
+// ! POPUP SUCCESS PAYMENT
 </script>
+
 
 <style scoped>
 input {

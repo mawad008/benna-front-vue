@@ -27,7 +27,7 @@
             v-if="isLoginOpen"
             ref="loginModalRef"
             :isOpen="isLoginOpen"
-            @close="isLoginOpen = false"
+            @close="handleModalClose"
           />
         </div>
       </div>
@@ -97,7 +97,9 @@ const registerStore = useRegisterStore();
 
 const loginModalRef = ref(null);
 const isLoginOpen = ref(false);
-const isLoading = computed(() => authStore.loading && campaignsStore.loading || import.meta.server);
+const isLoading = computed(
+  () => (authStore.loading && campaignsStore.loading) || import.meta.server
+);
 
 onMounted(() => {
   authStore.init();
@@ -105,14 +107,31 @@ onMounted(() => {
     campaignsStore.fetchCampaigns();
   }
 });
+
+watch(
+  () => authStore.isLoggedIn,
+  (newVal, oldVal) => {
+    console.log(`Auth state changed from ${oldVal} to ${newVal}`);
+    if (newVal) {
+      console.log("User logged in, fetching campaigns...");
+      campaignsStore.fetchCampaigns().catch((err) => {
+        console.error("Failed to fetch campaigns:", err);
+      });
+    }
+  },
+  { immediate: true }
+);
+
 const openLoginModal = () => {
   registerStore.step = 0;
   isLoginOpen.value = true;
+};
+const handleModalClose = () => {
+  isLoginOpen.value = false;
   if (authStore.isLoggedIn) {
     campaignsStore.fetchCampaigns();
   }
 };
-
 const retry = () => {
   campaignsStore.fetchCampaigns();
 };

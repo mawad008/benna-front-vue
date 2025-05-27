@@ -72,6 +72,9 @@
                   is-required
                   @close="close"
                   @click="HandleDate"
+                  :class="[
+                    $i18n.locale === 'en' ? 'direction-ltr' : 'direction-rtl',
+                  ]"
                 />
               </template>
             </UPopover>
@@ -130,13 +133,6 @@ const { t } = useI18n();
 const props = defineProps({
   row: Object,
 });
-// const disabledDates = [
-//   {
-//     from: new Date(1900, 0, 1),
-//     to: new Date(new Date().setDate(new Date().getDate() - 1)),
-//   },
-// ];
-
 const types = [
   { label: t("cards.donationCard.monthly"), value: "month" },
   { label: t("cards.donationCard.weekly"), value: "week" },
@@ -153,7 +149,6 @@ const formatDate = (date) => {
 const HandleDate = () => {
   const formatted = formatDate(date.value);
   donorStore.setStartDate(formatted);
-  // console.log(donorStore.startDate);
 };
 </script>
 
