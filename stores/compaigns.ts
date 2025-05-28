@@ -28,9 +28,9 @@ export const useCampaignsStore = defineStore("campaigns", {
   }),
 
   actions: {
-    async fetchCampaigns() {
-      const { locale } = useI18n();
-      const { get } = useApi(locale.value);
+    async fetchCampaigns(locale:string) {
+    
+      const { get } = useApi(locale);
       this.loading = true;
       try {
         const response = await get<{ data: Campaign[] }>("/api/campaigns");

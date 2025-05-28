@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted,computed,watch } from "vue";
 import Hero from "@/components/ui/Hero.vue";
 import CampaignTable from "@/components/CampaignTable.vue";
 import LoginModal from "@/components/modals/LoginModal.vue";
@@ -90,6 +90,8 @@ import { useAuthStore } from "@/stores/auth";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
+const hasUser = computed(() => registerStore.hasUser);
+const { locale } = useI18n();
 
 const campaignsStore = useCampaignsStore();
 const authStore = useAuthStore();
@@ -101,39 +103,35 @@ const isLoading = computed(
   () => (authStore.loading && campaignsStore.loading) || import.meta.server
 );
 
-onMounted(() => {
-  authStore.init();
-  if (authStore.isLoggedIn) {
-    campaignsStore.fetchCampaigns();
+watch(hasUser, () => {
+  if (hasUser.value) {
+    campaignsStore.fetchCampaigns(locale.value);
   }
 });
 
-watch(
-  () => authStore.isLoggedIn,
-  (newVal, oldVal) => {
-    console.log(`Auth state changed from ${oldVal} to ${newVal}`);
-    if (newVal) {
-      console.log("User logged in, fetching campaigns...");
-      campaignsStore.fetchCampaigns().catch((err) => {
-        console.error("Failed to fetch campaigns:", err);
-      });
-    }
-  },
-  { immediate: true }
-);
+console.log(hasUser.value);
+
+onMounted(() => { 
+  authStore.init();
+  if (authStore.isLoggedIn) {
+    campaignsStore.fetchCampaigns(locale.value);
+  }
+});
 
 const openLoginModal = () => {
   registerStore.step = 0;
   isLoginOpen.value = true;
+  authStore.init();
+
 };
 const handleModalClose = () => {
   isLoginOpen.value = false;
-  if (authStore.isLoggedIn) {
-    campaignsStore.fetchCampaigns();
+  if (hasUser.value) {
+    campaignsStore.fetchCampaigns(locale.value);
   }
 };
 const retry = () => {
-  campaignsStore.fetchCampaigns();
+  campaignsStore.fetchCampaigns(locale.value);
 };
 const links = [
   {

@@ -27,6 +27,7 @@ export const useAuthStore = defineStore("auth", {
 
   getters: {
     isLoggedIn: (state) => !!state.token,
+
   },
 
   actions: {
@@ -59,7 +60,8 @@ export const useAuthStore = defineStore("auth", {
     clearAuth() {
       this.user = null;
       this.token = null;
-      if (process.client) {
+      useRegisterStore().hasUser = false;
+        if (process.client) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
       }

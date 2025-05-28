@@ -10,6 +10,7 @@ interface User {
 export const useRegisterStore = defineStore("register", {
   state: () => ({
     mode: "login" as "login" | "register",
+    hasUser: false,
     step: 0 as number,
     phone: "" as string,
     name: "" as string,
@@ -91,6 +92,7 @@ export const useRegisterStore = defineStore("register", {
         };
         const response = await api.post("/api/valid/otp", payload);
         const { token, user } = response.data;
+        this.hasUser = true;
         authStore.setUser(user, token);
         this.nextStep();
       } catch (error: any) {
