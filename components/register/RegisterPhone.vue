@@ -1,9 +1,13 @@
 <template>
   <div class="w-full max-w-sm">
-    <h2 class="text-xl font-bold mb-6 text-dark">{{$t("loginModel.register.phoneStep.title")}} </h2>
+    <h2 class="text-xl font-bold mb-6 text-dark">
+      {{ $t("loginModel.register.phoneStep.RegisterTitle") }}
+    </h2>
 
     <!-- Phone Input -->
-    <div class="text-start mb-2 text-dark font-medium">{{$t("loginModel.register.phoneStep.phone")}}</div>
+    <div class="text-start mb-2 text-dark font-medium">
+      {{ $t("loginModel.register.phoneStep.phone") }}
+    </div>
     <VueTelInput
       v-model="phone"
       mode="national"
@@ -20,6 +24,9 @@
     <p v-if="errors.phone" class="text-red-500 text-xs mt-1 text-start">
       {{ errors.phone }}
     </p>
+    <p v-if="store.errors.phone" class="text-red-500 text-sm mt-1 text-start">
+      {{ store.errors.phone }} ,<span @click="HandleUserLogin" class="text-primary text-sm cursor-pointer"> {{ $t("loginModel.login") }}</span>
+    </p>
 
     <!-- Submit Button -->
     <UButton
@@ -28,7 +35,8 @@
       class="mt-6"
       color="primary"
       variant="solid"
-      :disabled="!phone"
+      :disabled="!meta.valid || !phone"
+      :loading="loading"
     >
       {{ $t("loginModel.register.phoneStep.next") }}
     </UButton>
@@ -44,7 +52,7 @@ import * as yup from "yup";
 import { useI18n } from "vue-i18n";
 
 
-const {t} =useI18n();
+const { t } = useI18n();
 
 const store = useRegisterStore();
 
@@ -56,27 +64,38 @@ const schema = yup.object({
     .matches(/^05\d{8}$/, t("loginModel.register.phoneStep.phoneError2")),
 });
 
-
-
-
-const { errors, handleSubmit } = useForm({
+const loading = ref(false);
+const { errors, meta, handleSubmit } = useForm({
   validationSchema: schema,
+  initialValues: {
+    phone: store.phone,
+  },
 });
 
 const { value: phone } = useField<string>("phone");
-  const handlePhoneValidation = (phoneObject: { valid: boolean; number: string }) => {
+const handlePhoneValidation = (phoneObject: {
+  valid: boolean;
+  number: string;
+}) => {
   if (phoneObject.valid) {
     phone.value = phoneObject.number.replace(/\D/g, "");
-
   } else {
     phone.value = "";
   }
 };
-
-
-const onSubmit = handleSubmit(() => {
+const HandleUserLogin = async () => {
   store.phone = phone.value.replace(/\D/g, "");
-  store.nextStep();
+  loading.value = true;
+  store.mode = "login";
+  await store.Login();
+  store.step = 2;
+  loading.value = false;
+};
+const onSubmit = handleSubmit(async () => {
+  store.phone = phone.value.replace(/\D/g, "");
+  loading.value = true;
+  await store.RegisterStepOne();
+  loading.value = false;
 });
 </script>
 

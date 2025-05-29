@@ -77,7 +77,7 @@ const validateField = () => {
 
 const onSubmit = handleSubmit(async () => {
   loading.value = true;
-  await store.Register();
+  await store.RegisterStepTwo();
   loading.value = false;
 });
 </script>

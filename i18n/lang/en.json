@@ -172,7 +172,8 @@
         "otpError2": "OTP Should be 4 Digits Number"
       },
       "phoneStep": {
-        "title": "Sign Up",
+        "RegisterTitle":"Sign Up",
+        "title": "Login",
         "phone": "Phone Number",
         "next": "Continue Registering",
         "phoneError": "Enter Phone Number",

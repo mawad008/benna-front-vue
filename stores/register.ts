@@ -20,9 +20,10 @@ export const useRegisterStore = defineStore("register", {
       phone: "" as string,
       name: "" as string,
       otp: "" as string,
-      loginPhone:"" as string,
-      loginOtp  :"" as string
+      loginPhone: "" as string,
+      loginOtp: "" as string,
     },
+    registerToken: "" as string,
   }),
 
   actions: {
@@ -37,14 +38,45 @@ export const useRegisterStore = defineStore("register", {
       return !this.errors.name;
     },
 
-    async Register() {
+    async RegisterStepOne() {
+      const api = useApi();
+      try {
+        const payload = {
+          phone: this.phone,
+        };
+        const response = await api.post("/api/register", payload,{
+          params: {
+            step: 0,
+          },
+        });
+        // console.log("Submitted user successfully:", response.data);
+        this.registerToken = response.data.registration_token;
+        this.errors.phone = "";
+        this.mode = "register";
+        this.nextStep();
+      } catch (error: any) {
+        if (error.response?.data?.errors?.phone) {
+          this.errors.phone = error.response.data.errors.phone[0];
+        } else if (error.response?.data?.message) {
+          this.errors.phone = error.response.data.message;
+        } else {
+          this.errors.phone = "حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.";
+        }
+      }
+    },
+    async RegisterStepTwo() {
       const api = useApi();
       try {
         const payload = {
           name: this.name,
           phone: this.phone,
+          registration_token: this.registerToken,
         };
-        const response = await api.post("/api/register", payload);
+        const response = await api.post("/api/register", payload,{
+          params: {
+            step: 1,
+          },
+        });
         // console.log("Submitted user successfully:", response.data);
         this.errors.name = "";
         this.mode = "register";
@@ -96,14 +128,13 @@ export const useRegisterStore = defineStore("register", {
         authStore.setUser(user, token);
         this.nextStep();
       } catch (error: any) {
-        if (error.response?.data?.errors?.otp) {
-          this.errors.otp = error.response.data.errors.otp[0];
+        if (error.response) {
+          this.errors.otp = error.response.data.error;
         } else {
-          this.errors.otp = "رمز OTP غير صالح";
+          this.errors.otp = "رمز التحقق غير صالح";
         }
       }
     },
-    
 
     async ResendOTP() {
       const api = useApi();
@@ -116,7 +147,7 @@ export const useRegisterStore = defineStore("register", {
         if (error.response?.data?.errors?.phone) {
           this.errors.phone = error.response.data.errors.phone[0];
         } else {
-          this.errors.phone = "فشل إعادة إرسال OTP";
+          this.errors.phone = "فشل إعادة إرسال رمز التحقق";
         }
       }
     },
@@ -147,7 +178,7 @@ export const useRegisterStore = defineStore("register", {
         }
       }
     },
-    
+
     prevStep() {
       if (this.step > 0) {
         this.transitionDirection = "slide-right";
@@ -163,8 +194,8 @@ export const useRegisterStore = defineStore("register", {
       this.errors.phone = "";
       this.errors.name = "";
       this.errors.otp = "";
-      this.errors.loginPhone="";
-      this.errors.loginOtp="";
+      this.errors.loginPhone = "";
+      this.errors.loginOtp = "";
       this.transitionDirection = "slide-left";
     },
     resetErrors() {
@@ -172,6 +203,8 @@ export const useRegisterStore = defineStore("register", {
         phone: "",
         name: "",
         otp: "",
+        loginPhone: "",
+        loginOtp: "",
       };
     },
   },

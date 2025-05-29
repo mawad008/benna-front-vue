@@ -74,7 +74,7 @@
                 <span
                   @click="HandleUserRegister"
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
-                  :class="{ hidden: store.step > 0 }"
+                  :class="{ hidden: store.step >1 }"
                 >
                   {{
                     isLogin ? $t("loginModel.newUser") : $t("loginModel.login")
@@ -97,7 +97,7 @@ import { onClickOutside } from "@vueuse/core";
 const emit = defineEmits(["close"]);
 const store = useRegisterStore();
 
-const isLogin = ref(true);
+const isLogin = ref(false);
 const isOpen = ref(true);
 const error = ref("");
 const modalRef = ref(null);
