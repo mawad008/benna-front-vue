@@ -1,6 +1,5 @@
 <template>
   <Transition name="slide-left">
-    
     <div
       v-if="isOpen"
       ref="modalRef"
@@ -14,10 +13,7 @@
           class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative"
         >
           <!-- Close Button -->
-          <button
-            @click="closeModal"
-            class="absolute top-5 right-5 z-60"
-          >
+          <button @click="closeModal" class="absolute top-5 right-5 z-60">
             <UButton
               color="gray"
               variant="ghost"
@@ -52,17 +48,22 @@
                 {{ $t("loginModel.title") }}
               </p>
 
-              <div class="w-full flex flex-col items-center justify-center min-h-[210px]">
-              <!-- Dynamic Step Component -->
-              <Transition :name="store.transitionDirection" mode="out-in">
-                <component
-                  :is="
-                    isLogin ? LoginSteps[store.step] : RegisterSteps[store.step]
-                  "
-                  @close="closeModal"
-                />
-              </Transition>
-            </div>
+              <div
+                class="w-full flex flex-col items-center justify-center min-h-[210px]"
+              >
+                <!-- Dynamic Step Component -->
+                <Transition :name="store.transitionDirection" mode="out-in">
+                  <component
+                    :is="
+                      isLogin
+                        ? LoginSteps[store.step]
+                        : RegisterSteps[store.step]
+                    "
+                    @close="closeModal"
+                    @switch-to-login="switchToLogin"
+                  />
+                </Transition>
+              </div>
 
               <!-- Error Message -->
               <div class="text-red-600 text-center font-medium mt-2">
@@ -74,7 +75,7 @@
                 <span
                   @click="HandleUserRegister"
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
-                  :class="{ hidden: store.step >1 }"
+                  :class="{ hidden: store.step > 1 }"
                 >
                   {{
                     isLogin ? $t("loginModel.newUser") : $t("loginModel.login")
@@ -111,7 +112,7 @@ const closeModal = () => {
 };
 
 onClickOutside(modalRef, () => {
- closeModal();
+  closeModal();
 });
 
 watch(isOpen, (val) => {
@@ -129,6 +130,13 @@ const HandleUserRegister = () => {
   isLogin.value = !isLogin.value;
   store.step = 0;
   store.reset();
+};
+
+const switchToLogin = (phone: string) => {
+  isLogin.value = true;
+  store.step = 0;
+  store.phone = phone; 
+  store.errors.phone = "";
 };
 
 const LoginSteps = [
