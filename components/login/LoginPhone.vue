@@ -1,9 +1,13 @@
 <template>
   <div class="w-full max-w-sm">
-    <h2 class="text-xl font-bold mb-6 text-dark"> {{$t("loginModel.register.phoneStep.title")}} </h2>
+    <h2 class="text-xl font-bold mb-6 text-dark">
+      {{ $t("loginModel.register.phoneStep.title") }}
+    </h2>
 
     <!-- Phone Input -->
-    <div class="text-start mb-2 text-dark font-medium">{{$t('loginModel.register.phoneStep.phone')}}</div>
+    <div class="text-start mb-2 text-dark font-medium">
+      {{ $t("loginModel.register.phoneStep.phone") }}
+    </div>
 
     <VueTelInput
       v-model="phone"
@@ -16,12 +20,11 @@
       :dropdownOptions="{ styleClasses: 'custom-dropdown' }"
       @validate="handlePhoneValidation"
       class="w-full custom-tel-input"
-      :countryCode="'SA'"
     />
 
     <p v-if="displayedError" class="text-red-500 text-sm mt-1 text-start">
-  {{ displayedError }}
-</p>
+      {{ displayedError }}
+    </p>
 
     <!-- Submit Button -->
     <UButton
@@ -33,7 +36,7 @@
       :disabled="!phone"
       :loading="loading"
     >
-      {{$t('loginModel.register.phoneStep.next')}}
+      {{ $t("loginModel.register.phoneStep.next") }}
     </UButton>
   </div>
 </template>
@@ -46,8 +49,7 @@ import * as yup from "yup";
 import { ref, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 
-
-const {t} =useI18n();
+const { t } = useI18n();
 const store = useRegisterStore();
 const loading = ref(false);
 
@@ -59,46 +61,42 @@ const schema = yup.object({
     .matches(/^05\d{8}$/, t("loginModel.register.phoneStep.phoneError2")),
 });
 
-const { errors, handleSubmit, resetForm } = useForm({
+const { errors, handleSubmit, resetForm, setFieldValue } = useForm({
   validationSchema: schema,
 });
 const { value: phone } = useField<string>("phone");
 
 const semanticPhoneError = ref("");
 
-
 const displayedError = computed(() => {
   return errors.value.phone || semanticPhoneError.value;
 });
-
 
 const handlePhoneValidation = (phoneObject: {
   valid: boolean;
   number: string;
 }) => {
   if (phoneObject.valid) {
-    phone.value = phoneObject.number.replace(/\D/g, "");
+    phone.value = phoneObject.number;
   } else {
     phone.value = "";
   }
 };
-
 
 watch(phone, () => {
   if (errors.value.phone) errors.value.phone = undefined;
   if (semanticPhoneError.value) semanticPhoneError.value = "";
 });
 
-
 const onSubmit = handleSubmit(async () => {
   loading.value = true;
   semanticPhoneError.value = "";
-
   store.phone = phone.value.replace(/\D/g, "");
   await store.Login();
 
   if (store.errors.loginPhone === "User not found") {
-    semanticPhoneError.value = "رقم الجوال غير صحيح الرجاء إدخال رقم صحيح او انشاء مستخدم جديد";
+    semanticPhoneError.value =
+      "رقم الجوال غير صحيح الرجاء إدخال رقم صحيح او انشاء مستخدم جديد";
   } else {
     semanticPhoneError.value = store.errors.loginPhone;
   }
