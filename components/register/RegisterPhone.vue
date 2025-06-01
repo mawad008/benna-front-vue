@@ -25,7 +25,12 @@
       {{ errors.phone }}
     </p>
     <p v-if="store.errors.phone" class="text-red-500 text-sm mt-1 text-start">
-      {{ store.errors.phone }} ,<span @click="HandleUserLogin" class="text-primary text-sm cursor-pointer"> {{ $t("loginModel.login") }}</span>
+      {{ store.errors.phone }} ,<span
+        @click="HandleUserLogin"
+        class="text-primary text-sm cursor-pointer"
+      >
+        {{ $t("loginModel.login") }}</span
+      >
     </p>
 
     <!-- Submit Button -->
@@ -50,7 +55,11 @@ import "vue-tel-input/dist/vue-tel-input.css";
 import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { useI18n } from "vue-i18n";
+import { defineEmits } from "vue";
 
+const emit = defineEmits<{
+  (e: "switch-to-login", phoneNumber: string): void;
+}>();
 
 const { t } = useI18n();
 
@@ -84,13 +93,11 @@ const handlePhoneValidation = (phoneObject: {
   }
 };
 const HandleUserLogin = async () => {
-  store.phone = phone.value.replace(/\D/g, "");
-  loading.value = true;
-  store.mode = "login";
-  await store.Login();
-  store.step = 2;
-  loading.value = false;
+  emit("switch-to-login", phone.value);
+  console.log(phone.value);
 };
+
+
 const onSubmit = handleSubmit(async () => {
   store.phone = phone.value.replace(/\D/g, "");
   loading.value = true;
