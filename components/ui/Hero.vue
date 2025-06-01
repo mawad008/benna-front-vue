@@ -10,7 +10,10 @@
         <h1 class="font-semibold text-[19px] text-start mb-2">
           {{ $t("hero.title") }}
         </h1>
-        <p class="font-normal text-[16px] text-justify p-2 text-start mb-2">
+        <p class="font-semibold text-[18px] p-2 mb-2 text-center">
+          {{ $t("hero.deduction") }}
+        </p>
+        <p class="font-normal text-[18px] text-start mb-2">
           {{ $t("hero.quote") }}
         </p>
       </div>
@@ -38,7 +41,7 @@
             v-if="heroImage"
             :src="heroImage"
             alt="Hero Image"
-            class="masked-image relative z-[5] "
+            class="masked-image relative z-[5]"
           />
         </div>
       </div>

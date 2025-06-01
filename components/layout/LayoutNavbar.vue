@@ -1,18 +1,18 @@
 <template>
-  <!-- <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent "> -->
+  <!-- <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] lg:bg-transparent "> -->
   <header
-    class="relative md:absolute top-0 left-0 w-full z-50 bg-[#138b96] md:bg-transparent h-[60px]"
+    class="relative lg:absolute top-0 left-0 w-full z-50 bg-[#138b96] lg:bg-transparent min-h-[83px]"
   >
     <nav
       class="flex items-center justify-between px-8 py-4 text-white sticky top-0 mb-8"
     >
       <!-- Logo -->
       <div class="cursor-pointer" @click="$router.push(localePath('/'))">
-        <img src="@/assets/svg/logo.svg" alt="Logo" class="h-12 w-auto" />
+        <img src="@/assets/svg/benna-logo.svg" alt="Logo" class="" />
       </div>
-      <div class="flex items-center space-x-6 gap-4">
+      <div class="flex items-center gap-8">
         <!-- Desktop Navbar -->
-        <ul class="hidden md:flex gap-4 justify-between items-center w-full">
+        <ul class="hidden lg:flex gap-4 justify-between items-center w-full">
           <li v-for="route in routes" :key="route.path" class="px-1">
             <NuxtLink
               :to="localePath(route.path)"
@@ -29,14 +29,14 @@
           v-for="locale in availableLocales"
           :key="locale.code"
           :to="switchLocalePath(locale.code)"
-          class="nav-link hidden md:block"
+          class="nav-link hidden lg:block"
         >
           {{ locale.name }}
         </NuxtLink>
 
         <!-- User Avatar with Dropdown -->
 
-        <div class="relative hidden md:flex items-center" ref="dropdownRef">
+        <div class="relative hidden lg:flex items-center" ref="dropdownRef">
           <div @click="toggleDropdown" class="cursor-pointer">
             <template v-if="userName">
               <UTooltip :text="userName">
@@ -88,7 +88,10 @@
       </div>
 
       <!-- Mobile Menu Button -->
-      <button @click="toggleMenu" class="md:hidden text-white">
+      <button
+        @click="toggleMenu"
+        class="lg:hidden text-white flex items-center"
+      >
         <Icon name="heroicons-outline:menu" class="w-8 h-8" />
       </button>
     </nav>
@@ -96,7 +99,7 @@
     <!-- Mobile Menu -->
     <div
       v-if="isMenuOpen"
-      class="absolute top-16 left-0 w-full bg-[#138b96] md:hidden"
+      class="absolute top-20 left-0 w-full bg-[#138b96] lg:hidden"
     >
       <ul class="flex flex-col text-white text-center py-4">
         <li v-for="route in routes" :key="route.path">

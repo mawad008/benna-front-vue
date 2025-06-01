@@ -32,7 +32,7 @@
           }}</label>
           <input
             v-model="form.cardholderName"
-            class="w-full border-gray-300 p-2 rounded-lg text-start "
+            class="w-full border-gray-300 p-2 rounded-lg text-start"
             :placeholder="$t('cards.customPaymentCard.cardholderName')"
             :disabled="isSubmitting"
           />
@@ -124,7 +124,9 @@ const donationStore = useDonationStore();
 const donorStore = useDonorStore();
 const { locale } = useI18n();
 const icon = computed(() => {
-  return locale.value === "ar" ? "i-heroicons-arrow-right" : "i-heroicons-arrow-left";
+  return locale.value === "ar"
+    ? "i-heroicons-arrow-right"
+    : "i-heroicons-arrow-left";
 });
 const form = reactive({
   cardholderName: "",
@@ -310,9 +312,12 @@ const initiatePayment = async (token: string) => {
       currency: "SAR",
     });
 
-    const isFromCampaign = route.name === "campaigns" || route.path.includes("/campaigns");
+    const isFromCampaign =
+      route.name === "campaigns" || route.path.includes("/campaigns");
     const targetPage = isFromCampaign ? "edit" : "thanks";
-    const redirectUrl = `${window.location.origin}/${targetPage}?${params.toString()}`;
+    const redirectUrl = `${
+      window.location.origin
+    }/${targetPage}?${params.toString()}`;
     window.location.assign(redirectUrl);
   } catch (error) {
     console.error("Redirect Error:", error);
@@ -320,10 +325,7 @@ const initiatePayment = async (token: string) => {
     isSubmitting.value = false;
   }
 };
-
-
 </script>
-
 
 <style scoped>
 input {
