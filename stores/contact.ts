@@ -1,31 +1,69 @@
 import { defineStore } from 'pinia';
-
+import { useApi } from '@/composables/api';
 export const useContactStore = defineStore('contact', {
   state: () => ({
-    type: 'message', 
-    fullName: '',
+    type: 'message',
+    name: '',
     phone: '',
-    message: '',
+    note: '',
+    loading: false,
+    apiError: '',
     errors: {
-      fullName: '',
+      name: '',
       phone: '',
-      message: '',
+      note: '',
     },
   }),
   actions: {
     validateForm() {
-      this.errors.fullName = this.fullName ? '' : 'الاسم مطلوب';
-      this.errors.phone = /^\d{9}$/.test(this.phone) ? '' : 'رقم الهاتف يجب أن يكون 9 أرقام';
-      this.errors.message = this.message ? '' : 'الرسالة مطلوبة';
-
-      return !this.errors.fullName && !this.errors.phone && !this.errors.message;
+      this.errors.name = this.name ? '' : 'الاسم مطلوب';
+      if (!this.phone) {
+        this.errors.phone = 'رقم الجوال مطلوب';
+      } else {
+        const cleanedPhone = this.phone.replace(/\D/g, "").trim();
+        this.errors.phone = /^05\d{8}$/.test(cleanedPhone) 
+          ? '' 
+          : 'رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام';
+      }
+      
+      this.errors.note = this.note ? '' : 'الرسالة مطلوبة';
+      return !this.errors.name && !this.errors.phone && !this.errors.note;
     },
     resetForm() {
       this.type = 'message';
-      this.fullName = '';
+      this.name = '';
       this.phone = '';
-      this.message = '';
-      this.errors = { fullName: '', phone: '', message: '' };
+      this.note = '';
+      this.errors = { name: '', phone: '', note: '' };
+      this.apiError = '';
     },
+  
+    async sendMessage() {
+      this.apiError = '';
+      this.loading = true;
+    
+      if (!this.validateForm()) {
+        this.loading = false;
+        return false;
+      }
+    
+      try {
+        const api = useApi();
+        await api.post("/api/store/suggestion", {
+          status: this.type,
+          name: this.name,
+          phone: this.phone,
+          note: this.note,
+        });
+        return true;
+      } catch (error) {
+        this.apiError = 'حدث خطأ أثناء إرسال النموذج. حاول مرة أخرى.';
+        console.error("Send failed", error);
+        return false;
+      } finally {
+        this.loading = false;
+      }
+    }
+    
   },
 });

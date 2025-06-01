@@ -1,20 +1,20 @@
 <template>
   <div class="w-full max-w-sm">
     <h2 class="text-xl font-bold mb-6 text-dark">
-      تم ارسال رمز التحقق الى جوالك
+      {{ $t("loginModel.register.OTPStep.title") }}
     </h2>
 
-    <p class="text-dark mb-4">ادخل رمز التحقق (OTP) إلى هاتفك</p>
+    <p class="text-dark mb-4">{{ $t("loginModel.register.OTPStep.instruction") }}</p>
     <UInput
-      type="password"
-      v-model="store.otp"
+      type="text"
+      v-model="otp"
       color="white"
       variant="outline"
-      @blur="store.validateOtp"
-      @input="store.validateOtp"
+      @blur="validateField"
+      @input="validateField"
     />
-    <p v-if="store.errors.otp" class="text-red-500 text-xs mt-1 text-right">
-      {{ store.errors.otp }}
+    <p v-if="displayedError" class="text-red-500 text-sm mt-1 text-start">
+      {{ displayedError }}
     </p>
 
     <p
@@ -25,18 +25,19 @@
       }"
       @click="resendOtp"
     >
-      إعادة ارسال رمز التحقق {{ countdown > 0 ? `بعد ${countdown} ث` : "" }}
+      {{ $t("loginModel.register.OTPStep.resend") }} {{ countdown > 0 ? ` ${countdown} ${$t("loginModel.register.OTPStep.sec")}` : "" }}
     </p>
 
     <UButton
-      @click="store.nextStep"
+      @click="onSubmit"
       block
       color="primary"
       variant="solid"
       class="mt-6"
-      :disabled="!!store.errors.otp || !store.otp.trim()"
+      :disabled="!meta.valid || !otp.trim()"
+      :loading="loading"
     >
-      تأكيد
+      {{ $t("loginModel.register.OTPStep.next") }}
     </UButton>
   </div>
 </template>
@@ -44,10 +45,61 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRegisterStore } from "@/stores/register";
+import { useForm, useField } from "vee-validate";
+import * as yup from "yup";
+import { useI18n } from "vue-i18n";
+
+
+const {t} =useI18n();
 
 const store = useRegisterStore();
 const countdown = ref(60);
 let interval: ReturnType<typeof setInterval> | null = null;
+const loading = ref(false);
+
+const schema = yup.object({
+  otp: yup
+    .string()
+    .required( t("loginModel.register.OTPStep.otpError"))
+    .matches(/^\d{4}$/, t("loginModel.register.OTPStep.otpError2")),
+});
+
+const { errors, meta, handleSubmit } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    otp: store.otp,
+  },
+});
+const { value: otp } = useField<string>("otp");
+
+const semanticOTPError = ref("");
+
+const displayedError = computed(() => {
+  return errors.value.otp || semanticOTPError.value;
+});
+
+const validateField = () => {
+  store.otp = otp.value;
+};
+
+watch(otp, () => {
+  if (errors.value.otp) errors.value.otp = undefined;
+  if (semanticOTPError.value) semanticOTPError.value = "";
+});
+
+const onSubmit = handleSubmit(async () => {
+  loading.value = true;
+  semanticOTPError.value = "";
+  
+  await store.ValidateOTP();
+  if (store.errors.otp == "OTP is incorrect") {
+    semanticOTPError.value = "رمز التحقق غير صحيح";
+  } else {
+    semanticOTPError.value = store.errors.otp;
+  }
+  store.errors.otp="";
+  loading.value = false;
+});
 
 onMounted(() => {
   startCountdown();
@@ -64,9 +116,10 @@ const startCountdown = () => {
   }, 1000);
 };
 
-const resendOtp = () => {
+const resendOtp = async () => {
   if (countdown.value === 0) {
     console.log("Resending OTP...");
+    await store.ResendOTP();
     startCountdown();
   }
 };

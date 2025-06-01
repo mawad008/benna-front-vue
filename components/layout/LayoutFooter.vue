@@ -1,25 +1,78 @@
 <template>
-  <footer class="bg-white text-dark py-4 border-t border-gray-300 shadow-md mt-10">
-    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4">
-      <!-- License Info -->
-      <p>جمعية بناء لرعاية الأيتام برخصة 568</p>
+  <footer class="bg-white text-dark py-4 border-t border-gray-300">
+    <div
+      class="container mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4 py-2 gap-2"
+    >
+      <p>{{ $t("footer.title") }}</p>
 
-      <!-- Developed By -->
-      <p class="flex items-center gap-1">
-        تم التطوير بواسطة
-        <img src="/WS-logo.png" alt="Webstdy Logo" class="h-5" />
+      <p class="flex items-center gap-3">
+        {{ $t("footer.developed") }}
+        <a
+          title="شركة ويب ستدي لخدمات تصميم و برمجة المواقع و التطبيقات"
+          href="https://webstdy.com/ar?utm_source=benna-foorter&amp;utm_medium=referral"
+          target="_blank"
+          rel="noopener"
+        >
+          <img
+            class="lazyloaded h-5"
+            src="/WS-logo.png"
+            alt="شركة ويب ستدي لخدمات تصميم و برمجة المواقع و التطبيقات"
+          />
+        </a>
       </p>
 
-      <!-- App Download Links -->
-      <div class="flex items-center gap-2">
-        <p>يمكنك تحميل التطبيق من المتاجر التالية</p>
-        <img src="/apple-store.png" alt="Apple Store" class="h-5" />
-        <img src="/google-play.png" alt="Google Play" class="h-5" />
+      <div v-if="appLinks" class="flex items-center justify-center gap-2">
+        <p class="leading-none">{{ $t("footer.app-download") }}</p>
+
+        <a
+          :href="
+            appLinks?.google.startsWith('http')
+              ? appLinks.google
+              : 'https://' + appLinks.google
+          "
+          target="_blank"
+          title="Google Play"
+          class="flex items-center "
+        >
+          <Icon name="mdi:google-play" size="20" class="leading-none" />
+        </a>
+
+        <a
+          :href="
+            appLinks?.apple.startsWith('http')
+              ? appLinks.apple
+              : 'https://' + appLinks.apple
+          "
+          target="_blank"
+          title="Apple Store"
+          class="flex items-center "
+        >
+          <Icon name="mdi:apple" size="22" class="leading-none " />
+        </a>
       </div>
     </div>
   </footer>
 </template>
 
-<style scoped>
 
-</style>
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import { useApi } from "@/composables/api";
+
+const { locale } = useI18n();
+const { get } = useApi(locale.value);
+const appLinks = ref<{ apple: string; google: string } | null>(null);
+
+onMounted(async () => {
+  try {
+    const res = await get("/api/footer");
+    const { apple, google } = res.data.data as any;
+    appLinks.value = { apple, google };
+  } catch (error) {
+    console.error("Error fetching social media links: ", error as string);
+  }
+});
+</script>
+
+
+<style scoped></style>

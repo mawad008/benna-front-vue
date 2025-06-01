@@ -60,6 +60,7 @@ module.exports = {
           950: "#CFCFCF",
         },
         dark: "#111928",
+
       },
       boxShadow: {
         varShadow1: "0px 0px 3px 0px rgba(166, 175, 195, 0.50)",

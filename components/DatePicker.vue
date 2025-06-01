@@ -1,48 +1,75 @@
 <script setup lang="ts">
-import { DatePicker as VCalendarDatePicker } from 'v-calendar'
+import { DatePicker as VCalendarDatePicker } from "v-calendar";
 // @ts-ignore
-import type { DatePickerDate, DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker'
-import 'v-calendar/dist/style.css'
+import type {
+  DatePickerDate,
+  DatePickerRangeObject,
+} from "v-calendar/dist/types/src/use/datePicker";
+import "v-calendar/dist/style.css";
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
 
 defineOptions({
-  inheritAttrs: false
-})
+  inheritAttrs: false,
+});
 
 const props = defineProps({
   modelValue: {
-    type: [Date, Object] as PropType<DatePickerDate | DatePickerRangeObject | null>,
-    default: null
-  }
-})
+    type: [Date, Object] as PropType<
+      DatePickerDate | DatePickerRangeObject | null
+    >,
+    default: null,
+  },
+});
 
-const emit = defineEmits(['update:model-value', 'close'])
+const emit = defineEmits(["update:model-value", "close"]);
 
 const date = computed({
   get: () => props.modelValue,
   set: (value) => {
-    emit('update:model-value', value)
-    emit('close')
-  }
-})
+    emit("update:model-value", value);
+    emit("close");
+  },
+});
 
-const attrs = {
-  'transparent': true,
-  'borderless': true,
-  'color': 'primary',
-  'is-dark': { selector: 'html', darkClass: 'dark' },
-  'first-day-of-week': 2
-}
+const minDate = new Date();
+minDate.setHours(0, 0, 0, 0);
+
+const attrs = computed(() => ({
+  transparent: true,
+  borderless: true,
+  color: "primary",
+  "first-day-of-week": locale.value === "ar" ? 6 : 2,
+  "min-date": minDate,
+  locale: locale.value === "ar" ? "ar" : "en",
+  dir: locale.value === "ar" ? "rtl" : "ltr",
+}));
 
 function onDayClick(_: any, event: MouseEvent): void {
-  const target = event.target as HTMLElement
-  target.blur()
+  const target = event.target as HTMLElement;
+  target.blur();
 }
 </script>
 
 <template>
-  <VCalendarDatePicker v-if="date && (date as DatePickerRangeObject)?.start && (date as DatePickerRangeObject)?.end"
-    v-model.range="date" :columns="2" v-bind="{ ...attrs, ...$attrs }" @dayclick="onDayClick" />
-  <VCalendarDatePicker v-else v-model="date" v-bind="{ ...attrs, ...$attrs }" @dayclick="onDayClick" />
+  <div :dir="locale === 'ar' ? 'rtl' : 'ltr'">
+    <VCalendarDatePicker
+      :is-dark="false"
+      v-if="date && (date as DatePickerRangeObject)?.start && (date as DatePickerRangeObject)?.end"
+      v-model.range="date"
+      :columns="2"
+      v-bind="{ ...attrs, ...$attrs }"
+      @dayclick="onDayClick"
+    />
+    <VCalendarDatePicker
+      :is-dark="false"
+      v-else
+      v-model="date"
+      v-bind="{ ...attrs, ...$attrs }"
+      @dayclick="onDayClick"
+    />
+  </div>
 </template>
 
 <style>
@@ -70,5 +97,9 @@ function onDayClick(_: any, event: MouseEvent): void {
   --vc-accent-700: rgb(var(--color-primary-700));
   --vc-accent-800: rgb(var(--color-primary-800));
   --vc-accent-900: rgb(var(--color-primary-900));
+}
+
+[dir="rtl"] .vc-arrow {
+  transform: rotate(180deg);
 }
 </style>

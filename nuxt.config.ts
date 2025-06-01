@@ -1,8 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  compatibilityDate: '2024-11-01',
-  modules:["@pinia/nuxt" , "@nuxt/ui" , "@nuxtjs/tailwindcss" , "@nuxtjs/i18n", ],
+  compatibilityDate: "2024-11-01",
+  modules: [
+    "@pinia/nuxt",
+    "@nuxt/ui",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/i18n",
+    "@nuxt/icon",
+    // "@nuxtjs/color-mode",
+  ],
+  colorMode: {
+    preference: 'light'
+  },
   i18n: {
     locales: [
       {
@@ -22,36 +32,36 @@ export default defineNuxtConfig({
     ],
     defaultLocale: "ar",
     lazy: true,
-    legacy:false,
     langDir: "lang",
     strategy: "prefix_and_default",
     detectBrowserLanguage: {
-      useCookie: true, // Enable cookie usage
-      cookieKey: "i18n_redirected", // Name of the cookie
-      redirectOn: "root", // Redirect only on the root path
-      alwaysRedirect: false, // Disable to avoid redirecting every visit
-      
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+      alwaysRedirect: false,
     },
-    vueI18n: './i18n.config.ts'
   },
-  app:{
-    head:{
+  app: {
+    head: {
+      title: "Benna | بناء",
       htmlAttrs: {
         lang: "ar",
         dir: "rtl",
       },
-      link:[
-        // { rel: "icon", type: "image/svg", href: "/fav.svg" },
+      link: [
+        {
+          rel: "stylesheet",
+          href: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.css",
+        },
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       ],
       script: [
-        
+        {
+          src: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js",
+          type: "text/javascript",
+        },
       ],
     },
   },
-  // router: {
-  //   middleware: ['loading.global'],
-  // },
-  css: [
-    "@/assets/main.css"
-  ]
-})
+  css: ["@/assets/main.css"],
+});

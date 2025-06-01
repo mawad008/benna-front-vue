@@ -2,27 +2,27 @@ import { defineStore } from "pinia";
 
 export const useDonorStore = defineStore("donor", {
   state: () => ({
-    donorName: "",
-    customAmount: "",
-    selectedAmount: null as number | null,
-    recurringType: "daily",
-    startDate: new Date(),
+    donorName: "" as string,
+    customAmount: "" as string,
+    selectedAmount: "" as string,
+    recurringType: "day" as string,
+    startDate: "",
     errors: {
-      donorName: "",
-      amount: "",
-      startDate: "",
-      recurringType: "",
+      donorName: "" as string,
+      amount: "" as string,
+      startDate: "" as string,
+      recurringType: "" as string,
     },
   }),
   actions: {
-    setAmount(amount: number) {
-      this.selectedAmount = this.selectedAmount === amount ? null : amount;
+    setAmount(amount: string) {
+      this.selectedAmount = this.selectedAmount === amount ? "" : amount;
       this.customAmount = "";
       this.errors.amount = "";
     },
     setCustomAmount(value: string) {
       this.customAmount = value.replace(/\D/g, "");
-      this.selectedAmount = null;
+      this.selectedAmount = "";
       this.errors.amount = this.customAmount ? "" : "يرجى إدخال مبلغ صالح";
     },
     validateDonor() {
@@ -46,7 +46,7 @@ export const useDonorStore = defineStore("donor", {
       this.recurringType = type;
       this.errors.recurringType = "";
     },
-    setStartDate(date: Date) {
+    setStartDate(date: string) {
       this.startDate = date;
       this.errors.startDate = this.validateStartDate()
         ? ""
@@ -54,7 +54,15 @@ export const useDonorStore = defineStore("donor", {
     },
     validateStartDate() {
       const today = new Date();
-      return this.startDate.getTime() >= today.getTime();
-    },
+      const [day, month, year] = this.startDate.split('-').map(Number);
+      const selectedDate = new Date(year, month - 1, day);
+      selectedDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      // console.log("validate Start Date ",selectedDate >= today);
+      // console.log("selectedDate",selectedDate);
+      // console.log("today",today);
+      return selectedDate >= today;
+    }
+    
   },
 });

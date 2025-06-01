@@ -1,121 +1,160 @@
 <template>
-  <UModal v-model="isOpen">
-    <div class="p-6">
+  <UModal
+    v-model="isOpen"
+    @ui:close="closeModal"
+    :transition="true"
+    :transition-props="{
+      enterActiveClass: 'transition ease-out duration-300 transform',
+      enterFromClass: 'opacity-0 scale-95',
+      enterToClass: 'opacity-100 scale-100',
+      leaveActiveClass: 'transition ease-in duration-200 transform',
+      leaveFromClass: 'opacity-100 scale-100',
+      leaveToClass: 'opacity-0 scale-95',
+    }"
+  >
+    <div class="p-4 space-y-4 rounded-lg shadow-xl" ref="modalContent">
+      <!-- Payment Form State -->
+      <template v-if="!donationStore.showPayment && !paymentSuccess">
+        <div
+          class="flex flex-col gap-4 animate-in fade-in duration-500 relative"
+        >
+          <UButton
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="absolute top-0 left-0 z-10 hover:bg-gray-200 rounded-full p-2"
+            @click="closeModal"
+          />
+          <DonationCard :row="props?.row" />
+          <DonorNameCard />
+        </div>
 
-      <!-- Title: Edit Donation -->
-      <Title title="تعديل طريقة الاستقطاع" badge="1" class="mb-4" />
+        <!-- Error -->
+        <div
+          v-if="donationStore.submissionError"
+          class="text-red-600 text-sm text-center animate-in slide-in-from-bottom-2"
+        >
+          {{ donationStore.submissionError }}
+        </div>
 
-      <!-- Donation Amount Selection -->
-      <div class="mt-4">
-        <label class="block text-dark font-bold text-sm mb-2">اختر مبلغ المتبرع</label>
-        <div class="flex flex-wrap gap-2 justify-end">
-          <UButton v-for="amount in amounts" :key="amount" :label="`${amount} ر.س`" variant="outline" color="selector"
-            class="px-4 py-2 rounded-lg" />
+        <!-- Button -->
+        <div class="mt-4 w-full">
+          <UButton
+            class="w-[50%] mx-auto bg-[#138B96] text-white font-bold py-3 rounded-lg text-center hover:bg-[#0f6f77] transition-colors duration-300"
+            :loading="donationStore.loading"
+            :disabled="donationStore.loading"
+            @click="handleDonation"
+            :loading-text="
+              donationStore.loading ? 'جاري التحقق ...' : 'جاري التحميل...'
+            "
+            color="primary"
+            variant="solid"
+            block
+          >
+            تعديل بيانات الدفع
+          </UButton>
+        </div>
+      </template>
 
-          <div class="flex flex-col">
-            <UInput placeholder="مبلغ آخر" class="w-28 border-gray-300" color="white" varient="solid" />
+      <!-- Payment Card State -->
+      <template v-if="donationStore.showPayment && !paymentSuccess">
+        <CustomPaymentCard
+          class="animate-in zoom-in-95 duration-300"
+          @paymentSuccess="handlePaymentSuccess"
+        />
+      </template>
+
+      <!-- Success State -->
+      <template v-if="paymentSuccess">
+        <div class="flex flex-col items-center gap-4 p-6 text-center">
+          <div class="flex justify-end w-full">
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="closeModal"
+            />
           </div>
+
+          <div class="text-green-500 text-5xl">
+            <UIcon name="i-heroicons-check-circle" />
+          </div>
+
+          <h3 class="text-xl font-bold text-gray-900">شكراً لتبرعك!</h3>
+
+          <p class="text-gray-600">لقد تم استلام تبرعك بنجاح. شكراً لدعمك!</p>
+
+          <UButton
+            color="primary"
+            variant="solid"
+            @click="closeModal"
+            class="mt-4"
+          >
+            إغلاق
+          </UButton>
         </div>
-      </div>
-
-      <!-- Recurring Donation Type -->
-      <div class="mt-6">
-        <label class="block text-dark font-bold text-sm mb-2">نوع الاستقطاع الدوري</label>
-        <div class="flex justify-end gap-2">
-          <UButton v-for="type in types" :key="type.value" :label="type.label" variant="outline" color="selector"
-            class="px-4 py-2 rounded-lg" />
-        </div>
-      </div>
-<br>
-      <!-- Title: Available Payment Methods -->
-      <Title title="خيارات الدفع المتاحة" badge="2" class="mb-4 text-end" />
-
-      <!-- Payment Methods -->
-      <div class="flex justify-center gap-4 mb-4">
-        <UButton class="h-12 w-24 flex items-center justify-center rounded-lg bg-white" color="selector"
-          variant="outline">
-          <img src="/visa.png" alt="Visa" />
-        </UButton>
-        <UButton class="h-12 w-24 flex items-center justify-center rounded-lg bg-white" color="selector"
-          variant="outline">
-          <img src="/mastercard.png" alt="MasterCard" />
-        </UButton>
-        <UButton class="h-12 w-24 flex items-center justify-center rounded-lg bg-white" color="selector"
-          variant="outline">
-          <img src="/mada.png" alt="Mada" />
-        </UButton>
-      </div>
-
-      <!-- Cardholder Name -->
-      <div class="mt-4">
-        <label class="block text-dark font-bold text-sm mb-2">اسم حامل البطاقة</label>
-        <UInput class="w-full border-gray-300 p-2 rounded-lg" color="white" variant="outline" />
-      </div>
-
-      <!-- Card Number -->
-      <div class="mt-4">
-        <label class="block text-dark font-bold text-sm mb-2">رقم البطاقة</label>
-        <UInput class="w-full border-gray-300 p-2 rounded-lg" color="white" variant="outline" />
-      </div>
-
-      <!-- Expiry Date & CVV -->
-      <div class="mt-4 flex gap-4">
-        <div class="flex-1">
-          <label class="block text-dark font-bold text-sm mb-2">تاريخ الانتهاء</label>
-          <UInput placeholder="شهر/سنة" class="w-full border-gray-300 p-2 rounded-lg" color="white" variant="outline" />
-        </div>
-        <div class="flex-1">
-          <label class="block text-dark font-bold text-sm mb-2">رمز التحقق (CVV)</label>
-          <UInput placeholder="CVV" class="w-full border-gray-300 p-2 rounded-lg" color="white" variant="outline" />
-        </div>
-      </div>
-
-      <!-- Buttons: Cancel and Save -->
-      <div class="flex justify-end gap-2 mt-4">
-        <UButton type="submit" color="primary" variant="solid" block @click="saveChanges">تطبيق الاختيارات</UButton>
-      </div>
-
+      </template>
     </div>
   </UModal>
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps } from "vue";
-import Title from "@/components/ui/Title.vue";
+import { ref, defineProps, defineEmits, watch } from "vue";
+import { useDonationStore } from "@/stores/donation/donationStore";
+import DonationCard from "@/components/cards/DonationCard.vue";
+import DonorNameCard from "@/components/cards/DonorNameCard.vue";
+import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
 
-// Donation amounts and types
-const amounts = [5, 10, 50, 100];
-const types = [
-  { label: "شهري", value: "monthly" },
-  { label: "اسبوعي", value: "weekly" },
-  { label: "يومي", value: "daily" }
-];
+const donationStore = useDonationStore();
 
-// Props & Emits
 const props = defineProps({
-  row: Object
+  row: Object,
+  open: {
+    type: Boolean,
+    default: false,
+  },
 });
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["update:open"]);
 
-// Local state for modal and editing
-const isOpen = ref(true);
-const editedRow = ref({ ...props.row });
+const isOpen = ref(props.open);
+const paymentSuccess = ref(false);
 
-// Payment methods (icons and names)
-const paymentMethods = [
-  { id: "visa", name: "Visa", icon: "/visa.png" },
-  { id: "mastercard", name: "MasterCard", icon: "/mastercard.png" },
-  { id: "mada", name: "Mada", icon: "/mada.png" }
-];
+watch(
+  () => props.open,
+  (newVal) => {
+    isOpen.value = newVal;
+    if (newVal) {
+      paymentSuccess.value = false;
+    }
+  }
+);
 
-// Methods
+watch(isOpen, (newVal) => {
+  emit("update:open", newVal);
+});
+
 const closeModal = () => {
   isOpen.value = false;
-  emit("close");
+  paymentSuccess.value = false;
+  donationStore.showPayment = false;
 };
 
-const saveChanges = () => {
-  console.log("Saving changes:", editedRow.value);
-  closeModal();
+const handleDonation = async () => {
+  if (!props.row?.id) return;
+  await donationStore.submitDonation(props.row.id);
+  if (donationStore.submissionError) {
+    donationStore.showPayment = false;
+    return;
+  }
+  donationStore.showPayment = true;
+};
+
+const handlePaymentSuccess = (paymentData: any) => {
+  paymentSuccess.value = true;
+  donationStore.showPayment = false;
 };
 </script>
+
+<style scoped>
+</style>

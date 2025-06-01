@@ -2,6 +2,14 @@ export default defineAppConfig({
   ui: {
     primary: "blue",
     gray: "stone",
+    avatar:{
+      slots: {
+        root: 'inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated',
+        image: 'h-full w-full rounded-[inherit] object-cover',
+        fallback: 'font-medium leading-none',
+        icon: 'text-muted shrink-0'
+      },
+    },
     Ubadge: {
       base: "inline-flex items-center",
       rounded: "rounded-md",
@@ -28,13 +36,23 @@ export default defineAppConfig({
             "ring-1 ring-inset ring-gray-300 dark:ring-gray-700 text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-800",
         },
         black: {
-          solid: "text-white dark:text-gray-900 bg-gray-900 dark:bg-white",
+          solid: "text-white dark:text-gray-900 bg-gray-900 dark:bg-white ",
         },
         green: {
-          solid: "bg-green-500 dark:bg-green-400 text-white dark:text-gray-900",
+          solid:
+            "bg-green-500 dark:bg-green-400 text-white dark:text-gray-900 ring-1 ring-inset ring-green-500 dark:ring-green-400",
         },
         red: {
-          solid: "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900",
+          solid:
+            "bg-red-500 dark:bg-red-400 text-white dark:text-gray-900 ring-1 ring-inset ring-red-500 dark:ring-red-400",
+        },
+        yellow: {
+          solid:
+            "bg-yellow-500 dark:bg-yellow-400 text-white dark:text-gray-900 ring-1 ring-inset ring-yellow-500 dark:ring-yellow-400",
+        },
+        blue: {
+          solid:
+            "bg-blue-500 dark:bg-blue-400 text-white dark:text-gray-900 ring-1 ring-inset ring-blue-500 dark:ring-blue-400",
         },
       },
       variant: {
@@ -66,41 +84,41 @@ export default defineAppConfig({
     },
     input: {
       wrapper: "relative",
-      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0",
+      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 border-[#d1d5db] dark:border-[#d1d5db] ",
       form: "form-input",
-      rounded: "rounded-md",
+      rounded: "rounded-sm",
       placeholder: "placeholder-gray-400 dark:placeholder-gray-500",
       color: {
         white: {
           outline:
-            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-1 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-1 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db]",
         },
         gray: {
           outline:
-            "shadow-sm bg-transparent dark:bg-gray-800 text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+            "shadow-sm bg-transparent dark:bg-white text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
         },
       },
       variant: {
         outline:
-          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#138B96] dark:ring-[#138B96] focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96] bg-[#A6AFC366]",
+          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-2 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db] bg-[#A6AFC366]",
         none: "bg-transparent focus:ring-0 focus:shadow-none",
       },
       default: {
-        size: "sm",
+        size: "md",
         color: "primary",
         variant: "outline",
       },
     },
     textarea: {
       wrapper: "relative",
-      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0",
+      base: "relative block w-full disabled:cursor-not-allowed disabled:opacity-75 focus:outline-none border-0 border-[#d1d5db] dark:border-[#d1d5db] ",
       form: "form-textarea",
       rounded: "rounded-md",
       placeholder: "placeholder-gray-400 dark:placeholder-gray-500",
       color: {
         white: {
           outline:
-            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:ring-1 focus:ring-[#138B96] dark:focus:ring-[#138B96]",
+            "shadow-sm bg-transparent dark:bg-white text-dark dark:text-gray-900 ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-1 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db]",
         },
         gray: {
           outline:
@@ -109,7 +127,7 @@ export default defineAppConfig({
       },
       variant: {
         outline:
-          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#138B96] dark:ring-[#138B96] focus:ring-2 focus:ring-[#138B96] dark:focus:ring-[#138B96] bg-[#A6AFC366]",
+          "shadow-sm bg-transparent text-gray-900 dark:text-dark ring-1 ring-inset ring-[#d1d5db] dark:ring-[#d1d5db] focus:ring-2 focus:ring-[#d1d5db] dark:focus:ring-[#d1d5db] bg-[#A6AFC366]",
         none: "bg-transparent focus:ring-0 focus:shadow-none",
       },
       default: {
@@ -156,7 +174,7 @@ export default defineAppConfig({
     modal: {
       wrapper: "relative z-50",
       inner: "fixed inset-0 overflow-y-auto",
-      container: "flex min-h-full items-center justify-center text-center",
+      container: "flex min-h-full items-center justify-center text-center ",
       padding: "p-6 sm:p-8",
       margin: "sm:my-10",
       base: "relative text-left rtl:text-right flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-2xl",
@@ -176,7 +194,7 @@ export default defineAppConfig({
       ring: "ring-1 ring-gray-300 dark:ring-gray-700",
       rounded: "rounded-2xl",
       shadow: "shadow-xl dark:shadow-gray-800",
-      width: "w-full sm:max-w-md",
+      width: "w-full ",
       height: "",
       fullscreen: "w-screen h-screen",
       transition: {
@@ -187,6 +205,22 @@ export default defineAppConfig({
         leaveFrom: "opacity-100 scale-100",
         leaveTo: "opacity-0 scale-95",
       },
+      variants: {
+        transition: {
+          true: {
+            overlay: 'data-[state=open]:animate-[fade-in_200ms_ease-out] data-[state=closed]:animate-[fade-out_200ms_ease-in]',
+            content: 'data-[state=open]:animate-[scale-in_200ms_ease-out] data-[state=closed]:animate-[scale-out_200ms_ease-in]'
+          }
+        },
+        fullscreen: {
+          true: {
+            content: 'inset-0'
+          },
+          false: {
+            content: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-4rem)] rounded-lg shadow-lg ring ring-default'
+          }
+        }
+      }
     },
     radio: {
       wrapper: "relative flex items-start",
@@ -324,8 +358,8 @@ export default defineAppConfig({
           label: "Loading...",
         },
         emptyState: {
-          icon: "i-heroicons-circle-stack-20-solid",
-          label: "No items.",
+          icon: "i-heroicons-archive-box-x-mark-20-solid",
+          label: "No campaigns found",
         },
       },
     },
@@ -338,7 +372,7 @@ export default defineAppConfig({
       background: "bg-white dark:bg-white",
       shadow: "shadow-lg",
       rounded: "rounded-md",
-      ring: "ring-1 ring-gray-200 dark:ring-gray-700",
+      ring: "ring-none dark:ring-none",
       base: "relative focus:outline-none overflow-y-auto scroll-py-1",
       divide: "divide-y divide-gray-200 dark:divide-gray-700",
       padding: "p-1",
@@ -347,12 +381,13 @@ export default defineAppConfig({
         rounded: "rounded-md",
         padding: "px-1.5 py-1.5",
         size: "text-sm",
-        active: "bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white",
+        active:
+          "bg-primary-20 dark:bg-primary-20 text-primary dark:text-primary",
         inactive: "text-[#111928] dark:text-[#111928]",
         disabled: "cursor-not-allowed opacity-50",
         icon: {
           base: "flex-shrink-0 w-5 h-5",
-          active: "text-gray-500 dark:text-gray-400",
+          active: "text-primary dark:text-primary",
           inactive: "text-gray-400 dark:text-gray-500",
         },
         transition: {
@@ -381,6 +416,9 @@ export default defineAppConfig({
             "group-data-[popper-placement*='right']:-left-1 group-data-[popper-placement*='left']:-right-1 group-data-[popper-placement*='top']:-bottom-1 group-data-[popper-placement*='bottom']:-top-1",
         },
       },
+    },
+    skeleton: {
+      base: "animate-pulse rounded-md bg-primary-20 dark:bg-primary-20 ",
     },
   },
 });

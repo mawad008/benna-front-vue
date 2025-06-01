@@ -6,16 +6,14 @@
     <LayoutFooter></LayoutFooter>
   </div>
 </template>
-  
-  <script setup>
-import { useRoute } from "vue-router";
-import { useHead } from "#app";
+
+<script setup>
 import LayoutNavbar from "@/components/layout/LayoutNavbar.vue";
 import LayoutFooter from "@/components/layout/LayoutFooter.vue";
 // import Loader from "@/components/ui/Loader.vue";
 
 const route = useRoute();
-const websiteName = "Benaa";
+const websiteName = "Benna";
 
 
 
@@ -23,11 +21,14 @@ useHead({
   title: computed(() => {
     const pageTitle =
       {
-        "/home": "Home",
+        "/": "Home",
         "/contact": "Contact",
-        "/donate": "Donate",
-      }[route.path] || "Page";
-    return `${websiteName} - ${pageTitle}`;
+        "/campaigns": "Campaigns",
+        "/deductions/:id": "Deductions",
+        "/terms": "Terms",
+        "/thanks": "Thanks",
+      }[route.path] || "";
+    return `${websiteName}${pageTitle ? " - " + pageTitle : ""}`;
   }),
 });
 </script>

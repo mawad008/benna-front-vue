@@ -1,82 +1,101 @@
 <template>
-  <div class="h-screen flex flex-col md:flex-row relative">
-    <!-- Background Section -->
-    <div class="absolute md:relative inset-0 h-full lg:w-[50%] w-full bg-[url('/bg.png')] bg-cover bg-center">
-      <div class="hidden md:flex justify-center items-center h-full">
-        <img src="/heart-hands.png" alt="Heart Hands" class="w-45" />
-      </div>
-    </div>
+  <Hero />
+  <div class="flex flex-col items-center bg-gray-50 py-12">
+    <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[50%] lg:w-[48%]">
+      <template v-if="!donationStore.showPayment">
+        <DonationCard />
+        <DonorNameCard />
 
-    <!-- Form Section -->
-    <div class="absolute inset-0 md:relative md:w-1/2 flex justify-center items-center p-4">
-      <div class="w-full max-w-sm md:w-full md:max-w-none md:h-full bg-white/30 backdrop-blur-md rounded-lg p-6 
-                  md:bg-white md:backdrop-blur-none md:flex md:items-center md:justify-center">
-
-        <div class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px]  relative">
-          <div
-            class="lg:w-40 lg:h-40 md:w-32 md:h-32 flex items-center justify-center rounded-full bg-gradient-to-b from-[#169FAE] to-[#138B96] p-2 mb-4">
-            <img src="/logo.png" alt="Logo" class="w-[50%] h-[50%]" />
-          </div>
-
-          <p class="text-dark mb-6 font-bold text-center">
-            جمعية بناء لرعاية الأيتام ترخيص 568
-          </p>
-
-          <Transition :name="store.transitionDirection" mode="out-in">
-            <component :is="currentStepComponent"></component>
-          </Transition>
+        <!-- Error message -->
+        <div
+          v-if="donationStore.submissionError"
+          class="text-red-600 text-sm text-center"
+        >
+          {{ donationStore.submissionError }}
         </div>
-      </div>
+
+        <div class="mt-4 md:w-[50%] lg:w-[48%] w-full">
+          <UButton
+            class="w-full bg-[#138B96] text-white font-bold py-3 rounded-lg text-center"
+            :loading="donationStore.loading"
+            :disabled="donationStore.loading"
+            @click="authStore.isLoggedIn ? handleDonation() : openLoginModal()"
+            :loading-text="
+              authStore.loading
+                ? 'جاري التحقق من تسجيل الدخول...'
+                : 'جاري التحميل...'
+            "
+            :loading-color="authStore.loading ? 'gray' : 'white'"
+            color="primary"
+            variant="solid"
+            block
+          >
+            {{ $t('homePayButton') }}
+          </UButton>
+        </div>
+      </template>
+
+      <template v-else>
+        <CustomPaymentCard />
+        <!-- <MoyasarPayment /> -->
+      </template>
     </div>
   </div>
+
+  <LoginModal v-if="isLoginOpen" ref="loginModalRef" @close="isLoginOpen = false" />
 </template>
 
+<script setup>
+import Hero from "@/components/ui/Hero.vue";
+import DonationCard from "@/components/cards/DonationCard.vue";
+import DonorNameCard from "@/components/cards/DonorNameCard.vue";
+// import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
+import LoginModal from "@/components/modals/LoginModal.vue";
+import { useDonationStore } from "@/stores/donation/donationStore";
+import { useRegisterStore } from "@/stores/register";
+import { useAuthStore } from "@/stores/auth";
+import CustomPaymentCard from "@/components/cards/CustomPaymentCard.vue";
 
-<script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue';
-import { useRegisterStore } from '@/stores/register';
 definePageMeta({
-  layout: "auth",
+  layout: "default",
+});
+
+const route = useRoute();
+const router = useRouter();
+const donationStore = useDonationStore();
+const authStore = useAuthStore();
+const registerStore = useRegisterStore();
+
+const loginModalRef = ref(null);
+const showPayment = ref(false);
+const isLoginOpen = ref(false);
+
+authStore.init();
+onMounted(() => {
+  if (route.query.id) {
+    const campaignId = route.query.id.split("?")[0];
+    donationStore.campaign_id = campaignId;
+  }
 });
 
 
-const store = useRegisterStore();
+//https://donate.benaa.org.sa/?id=104?name=zain
 
-const steps = [
-  defineAsyncComponent(() => import('@/components/register/RegisterPhone.vue')),
-  defineAsyncComponent(() => import('@/components/register/RegisterName.vue')),
-  defineAsyncComponent(() => import('@/components/register/RegisterOTP.vue')),
-  defineAsyncComponent(() => import('@/components/register/RegisterSuccess.vue'))
-];
+const handleDonation = async () => {
+  await donationStore.submitDonation(donationStore.campaign_id);
+  if (donationStore.submissionError) {
+    donationStore.showPayment = false;
+    isLoginOpen.value = false;
+    return;
+  }
+  donationStore.showPayment = true;
+};
 
-const currentStepComponent = computed(() => steps[store.step]);
+const openLoginModal = () => {
+  isLoginOpen.value = false;
+  nextTick(() => {
+    isLoginOpen.value = true;
+  });
+};
+
 </script>
-
-<style scoped>
-.slide-left-enter-active,
-.slide-right-leave-active,
-.slide-right-enter-active,
-.slide-left-leave-active {
-  transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
-}
-
-.slide-left-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-.slide-left-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-right-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
-}
-</style>

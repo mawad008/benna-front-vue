@@ -1,5 +1,197 @@
 {
-    "home":"home",
-    "donate":"donate",
-    "contact":"contact"
+  "home": "Home",
+  "campaigns": "Campaigns",
+  "contact": "Contact",
+  "terms": "Terms",
+  "hero": {
+    "title": "Benna Association for Orphan Care, licensed in 2010 (No. 568), supports over 4,500 orphans under the supervision of the National Center for Non-Profit Sector Development.",
+    "quote": "The Prophet (peace be upon him) said: 'Each day, two angels descend. One says: O Allah, bless the spender; the other says: O Allah, ruin the withholder.'"
+  },
+  "footer": {
+    "title": "Benna Association for Orphan Care, License No. 568",
+    "developed": "Developed by",
+    "app-download": "You can download downlaod our apps"
+  },
+  "cards": {
+    "donorCard": {
+      "title": "Donor Name",
+      "label": "Donor Name"
+    },
+    "donationCard": {
+      "title": "Donation Card",
+      "amount": "Donation Amount",
+      "customAmount": "Custom Amount",
+      "startDate": "Start Date",
+      "recurringType": "Recurring Type",
+      "monthly": "Monthly",
+      "weekly": "Weekly",
+      "daily": "Daily"
+    },
+    "customPaymentCard": {
+      "title": "Complete the payment process",
+      "cardholderName": "Cardholder Name",
+      "cardNumber": "Card Number",
+      "expiryDate": "Expiry Date",
+      "cvv": "CVV",
+      "button": "Donate Now"
+    }
+  },
+  "homePayButton": "Pay Now",
+  "general": {
+    "loading": "Loading...",
+    "authLoading": "Checking login...",
+    "login": "Login",
+    "notLoggedIn": "Please login to view the campaigns",
+    "errorAndRetry":"There is some error please try again "
+  },
+  "campaignsPage": {
+    "loading": "Loading campaigns...",
+    "error": "Error loading campaigns",
+    "noCampaigns": "No campaigns found",
+    "campaigns": "Campaigns Record",
+    "links": {
+      "home": "Home",
+      "campaigns": "Campaigns",
+      "deductions": "Deductions"
+    }
+  },
+  "deductionPage": {
+    "loading": "Loading deductions...",
+    "error": "Error loading deductions",
+    "noDeductions": "No deductions found",
+    "deductions": "Deductions Record",
+    "goBack": "Go TO Campaigns ",
+    "links": {
+      "home": "Home",
+      "campaigns": "Campaigns",
+      "deductions": "Deductions"
+    }
+  },
+  "campaignTable": {
+    "filterResult": "Filter Result",
+    "search": "Search",
+    "labels": {
+      "status": "Status",
+      "type": "Type"
+    },
+    "columns": {
+      "campaignName": "Campaign Name",
+      "campaignStatus": "Campaign Status",
+      "campaignType": "Recurring Type",
+      "campaignAmount": "Amount",
+      "campaignStartDate": "Date",
+      "campaignActions": "Actions",
+      "deductionNextTime": "Next Time",
+      "deductionFirstDate": "Date"
+    },
+    "actions": {
+      "update": "Update Payment Data",
+      "pause": "Pause Payment",
+      "resume": "Resume Payment",
+      "showTransactions": "Show Deduction Record"
+    },
+    "status": {
+      "1": "Active",
+      "0": "Paused",
+      "2": "Not Started"
+    },
+    "type": {
+      "day": "Daily",
+      "week": "Weekly",
+      "month": "Monthly"
+    },
+    "placeholder": {
+      "chooseSatatus": "Choose Campaign Status",
+      "chooseType": "Choose Campaign Type",
+      "search": "Search..."
+    },
+    "empty": "No campaigns found",
+    "allStatus":"All"
+  },
+  "deductionTable": {
+    "filterResult": "Filter Result",
+    "search": "Search",
+    "labels": {
+      "status": "Status"
+    },
+    "placeholder": {
+      "chooseSatatus": "Choose Deduction Status",
+      "search": "Search..."
+    },
+    "status": {
+      "1": "Active",
+      "0": "Paused"
+    },
+    "columns": {
+      "name": "Name",
+      "campaignName": "Campaign Name",
+      "amount": "Amount",
+      "deductionDate": "Date",
+      "status": "Status"
+    }
+  },
+  "contactPage": {
+    "description": "Thank you for your interest in Benna Association for Orphan Care. We are here to help you with any questions or concerns you may have. Please fill out the form below to get in touch with us.",
+    "callCenter": "920002568",
+
+    "messageOptions": {
+      "message": "Message",
+      "suggestion": "Suggestion",
+      "complaint": "Complaint"
+    },
+    "contactForm": {
+      "fullName": "Full Name",
+      "phone": "Phone",
+      "note": "Write your message here",
+      "send": "Send"
+    },
+    "apiError": "Error Occurred Please Try Again",
+    "successMessage": "Message Sent Successfully",
+    "branshsandOffices": "Branches and Offices "
+  },
+  "loginModel": {
+    "title": "Benna Association for Orphan Care License 568",
+    "newUser": "New User",
+    "login": "Log In",
+    "register": {
+      "nameStep": {
+        "title": " Sign Up",
+        "fullname": "Full Name ",
+        "next": "Continue Registering",
+        "nameError": "Name Required",
+        "nameError2": "Name should be at least 3 letters"
+      },
+      "OTPStep": {
+        "title": "The verification code has been sent to your phone",
+        "instruction": "Enter the verification code",
+        "resend": "Resend OTP Code",
+        "after": "after",
+        "sec": "sec",
+        "next": " Comfirm",
+        "otpError": "OTP Required",
+        "otpError2": "OTP Should be 4 Digits Number"
+      },
+      "phoneStep": {
+        "RegisterTitle":"Sign Up",
+        "title": "Login",
+        "phone": "Phone Number",
+        "next": "Continue Registering",
+        "phoneError": "Enter Phone Number",
+        "phoneError2": "Phone Number must start with 05 and be 10 digits"
+      },
+      "success": {
+        "title": "Welcome to our Website",
+        "RegisterMessage": "You have successfully registered",
+        "LoginMessage": "You Login Successfully",
+        "enter": "Enter"
+      }
+    }
+  },
+  "termsPage":{
+    "title":"Terms and Conditions"
+  },
+  "errorPage":{
+    "title":" Go to Home ",
+    "message":"An unexpected error occurred"
+  }
 }

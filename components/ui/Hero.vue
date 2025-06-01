@@ -1,27 +1,24 @@
 <template>
   <section
-    class="relative h-[70vh] hidden md:flex items-center justify-center bg-cover bg-center px-8 "
+    class="relative h-[60vh] md:h-[70vh] hidden md:flex items-center justify-center bg-cover bg-center px-4 md:px-8 h-[70vh]"
     style="background-image: url('/hero-bg.png')"
   >
     <div
-      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white text-center w-[95%] "
+      class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white w-full m-auto"
     >
-      <div class="w-[100%]  ml-80  ">
-        <h1 class="font-bold lg:text-[30px] md:text-[28px] md:leading-[42px] lg:leading-[45px] text-right text-justify">
-          جمعية بناء لرعاية الأيتام تأسست الجمعية عام 2010 م ، تحت إشراف المركز
-          الوطني لتنمية القطاع الغير ربحي بترخيص رقم 568 تساهم الجمعية برعاية
-          وكفالة أكثر من 4500 يتيم ويتيمة
+      <div class="w-full px-4 md:px-6 lg:px-8 text-start mt-10">
+        <h1 class="font-semibold text-[19px] text-start mb-2">
+          {{ $t("hero.title") }}
         </h1>
-        <p class="font-normal lg:text-[24px] md:text-[20px] md:leading-[34px] lg:leading-[36px] text-right mt-4 text-justify">
-          قالَ رَسُول اللَّه ﷺ: (مَا مِنْ يَوْمٍ يُصبِحُ العِبادُ فِيهِ إِلَّا
-          مَلَكَانِ يَنْزِلانِ، فَيَقُولُ أَحَدُهُمَا: اللَّهُمَّ أَعْطِ
-          مُنْفِقًا خَلَفًا، وَيَقُولُ الآخَرُ: اللَّهُمَّ أَعْطِ مُمْسِكًا
-          تَلَفًا)
+        <p class="font-normal text-[16px] text-justify p-2 text-start mb-2">
+          {{ $t("hero.quote") }}
         </p>
       </div>
 
-      <div class="flex justify-center relative ">
-        <div class="hero-image relative ">
+      <div
+        class="flex justify-center relative w-full px-4 md:px-6 lg:px-8 p-10 mt-10 h-[70vh]"
+      >
+        <div class="hero-image relative w-[clamp(200px,50vw,500px)]">
           <div
             v-for="(ball, index) in balls"
             :key="index"
@@ -41,7 +38,7 @@
             v-if="heroImage"
             :src="heroImage"
             alt="Hero Image"
-            class="masked-image relative z-[5] w-[90%]  "
+            class="masked-image relative z-[5] "
           />
         </div>
       </div>
@@ -51,17 +48,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useAsyncData, useRuntimeConfig } from "#imports";
-
-const config = useRuntimeConfig();
-
-
-const { data: baseURL } = await useAsyncData("baseURL", () => {
-  return config.public.baseURL ?? "";
-});
-
-
-const heroImage = ref(`${baseURL.value}/hero-image2.png`);
+const heroImage = ref("/hero-image2.png");
 
 const balls = ref([
   { size: 12, color: "#2753AC", top: 5, left: 5, speed: 4, delay: 0 },
@@ -80,26 +67,22 @@ const balls = ref([
 <style scoped>
 .hero-image {
   position: relative;
-  width:100%;
-  /* width: fit-content;
-  height: fit-content; */
+  width: 90%;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  margin-right: 90px;
 }
 
 .masked-image {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: auto;
   object-fit: contain;
-
   -webkit-mask-image: url("/mask-image.png");
   -webkit-mask-size: cover;
   -webkit-mask-position: center;
   -webkit-mask-repeat: no-repeat;
-
   mask-image: url("/mask-image.png");
   mask-size: cover;
   mask-position: center;
