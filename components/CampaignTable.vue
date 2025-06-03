@@ -297,13 +297,13 @@ const items = (row: any) => [
           : "text-[#22AD5C] dark:text-[#22AD5C] ",
       click: () => toggleDonationStatus(row),
     },
-    // {
-    //   label: t("campaignTable.actions.showTransactions"),
-    //   icon: "i-heroicons-eye",
-    //   color: "neutral",
-    //   class: "dark:text-[#111928] text-[#111928]",
-    //   click: () => showTransactions(row),
-    // },
+    {
+      label: t("campaignTable.actions.showTransactions"),
+      icon: "i-heroicons-eye",
+      color: "neutral",
+      class: "dark:text-[#111928] text-[#111928]",
+      click: () => showTransactions(row),
+    },
   ],
 ];
 
