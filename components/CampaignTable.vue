@@ -114,13 +114,14 @@
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
+        <!-- <UDropdown :items="items(row)"> -->
           <UButton
+          @click="showTransactions(row)"
             color="icon"
             variant="solid"
-            icon="i-heroicons-ellipsis-vertical-20-solid"
+            icon="i-heroicons-eye"
           />
-        </UDropdown>
+        <!-- </UDropdown> -->
       </template>
     </UTable>
 
@@ -265,47 +266,47 @@ const columns = ref([
   { key: "actions", label: t("campaignTable.columns.campaignActions") },
 ]);
 
-const items = (row: any) => [
-  [
-    {
-      label: t("campaignTable.actions.update"),
-      icon: "i-heroicons-pencil-square",
-      color: "info",
-      class: "dark:text-[#138B96] text-[#138B96]",
-      click: () => updatePaymentData(row),
-    },
-    {
-      label:
-        row.status === 1
-          ? t("campaignTable.actions.pause")
-          : row.status === 2
-          ? t("campaignTable.actions.pause")
-          : t("campaignTable.actions.resume"),
-      icon:
-        row.status === 1
-          ? "i-heroicons-pause"
-          : row.status === 2
-          ? "i-heroicons-pause"
-          : "i-heroicons-play",
-      color:
-        row.status === 1 ? "danger" : row.status === 2 ? "warning" : "success",
-      class:
-        row.status === 1
-          ? "text-[#F23030] dark:text-[#F23030] "
-          : row.status === 2
-          ? "text-[#F23030] dark:text-[#F23030] "
-          : "text-[#22AD5C] dark:text-[#22AD5C] ",
-      click: () => toggleDonationStatus(row),
-    },
-    {
-      label: t("campaignTable.actions.showTransactions"),
-      icon: "i-heroicons-eye",
-      color: "neutral",
-      class: "dark:text-[#111928] text-[#111928]",
-      click: () => showTransactions(row),
-    },
-  ],
-];
+// const items = (row: any) => [
+//   [
+//     {
+//       label: t("campaignTable.actions.update"),
+//       icon: "i-heroicons-pencil-square",
+//       color: "info",
+//       class: "dark:text-[#138B96] text-[#138B96]",
+//       click: () => updatePaymentData(row),
+//     },
+//     {
+//       label:
+//         row.status === 1
+//           ? t("campaignTable.actions.pause")
+//           : row.status === 2
+//           ? t("campaignTable.actions.pause")
+//           : t("campaignTable.actions.resume"),
+//       icon:
+//         row.status === 1
+//           ? "i-heroicons-pause"
+//           : row.status === 2
+//           ? "i-heroicons-pause"
+//           : "i-heroicons-play",
+//       color:
+//         row.status === 1 ? "danger" : row.status === 2 ? "warning" : "success",
+//       class:
+//         row.status === 1
+//           ? "text-[#F23030] dark:text-[#F23030] "
+//           : row.status === 2
+//           ? "text-[#F23030] dark:text-[#F23030] "
+//           : "text-[#22AD5C] dark:text-[#22AD5C] ",
+//       click: () => toggleDonationStatus(row),
+//     },
+//     {
+//       label: t("campaignTable.actions.showTransactions"),
+//       icon: "i-heroicons-eye",
+//       color: "neutral",
+//       class: "dark:text-[#111928] text-[#111928]",
+//       click: () => showTransactions(row),
+//     },
+//   ],
+// ];
 
 const toggleDonationStatus = async (row: any) => {
   isLoading.value = true;

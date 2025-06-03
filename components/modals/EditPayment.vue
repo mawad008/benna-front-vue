@@ -105,8 +105,12 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
 import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
+import { useDeductionStore } from "@/stores/deductions";
+
+
 
 const donationStore = useDonationStore();
+const deductionStore = useDeductionsStore();
 
 const props = defineProps({
   row: Object,
@@ -142,7 +146,7 @@ const closeModal = () => {
 
 const handleDonation = async () => {
   if (!props.row?.id) return;
-  await donationStore.submitDonation(props.row.id);
+  await deductionStore.updatePayment(props.row.id);
   if (donationStore.submissionError) {
     donationStore.showPayment = false;
     return;

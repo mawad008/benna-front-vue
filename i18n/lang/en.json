@@ -81,13 +81,13 @@
       "campaignType": "Recurring Type",
       "campaignAmount": "Amount",
       "campaignStartDate": "Date",
-      "campaignActions": "Actions",
+      "campaignActions": "Details",
       "deductionNextTime": "Next Time",
       "deductionFirstDate": "Date"
     },
     "actions": {
       "update": "Update Payment Data",
-      "pause": "Pause Payment",
+      "pause": "Cancel Payment",
       "resume": "Resume Payment",
       "showTransactions": "Show Deduction Record"
     },
@@ -112,16 +112,21 @@
   "deductionTable": {
     "filterResult": "Filter Result",
     "search": "Search",
+    "deductionAction": "Edit Deduction ",
     "labels": {
       "status": "Status"
     },
     "placeholder": {
       "chooseSatatus": "Choose Deduction Status",
-      "search": "Search..."
+      "search": "Search...",
+      "chooseAction":"Edit Deduction"
+
     },
     "status": {
       "1": "Active",
-      "0": "Paused"
+      "0": "Failed",
+      "2": "Pending",
+      "3": "Cancelled"
     },
     "columns": {
       "name": "Name",

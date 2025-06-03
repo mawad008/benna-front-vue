@@ -64,7 +64,7 @@ export const useDonationStore = defineStore("donation", {
           payload
         );
         const { data } = response;
-        this.donation = data.message;
+        this.donation = data.data;
         localStorage.setItem("donation", this.donation?.id?.toString());
         // console.log(this.donation?.id);
         // console.log("Donation submitted:", response.data);

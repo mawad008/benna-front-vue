@@ -15,15 +15,9 @@
               <label class="text-sm text-gray-600 font-medium">{{
                 t("deductionTable.labels.status")
               }}</label>
-              <USelect
-                v-model="selectedStatus"
-                :options="statusOptions"
-                :placeholder="t('deductionTable.placeholder.chooseSatatus')"
-                color="white"
-                variant="outline"
-                option-attribute="label"
-                value-attribute="value"
-              />
+              <USelect v-model="selectedStatus" :options="statusOptions"
+                :placeholder="t('deductionTable.placeholder.chooseSatatus')" color="white" variant="outline"
+                option-attribute="label" value-attribute="value" />
             </div>
           </div>
         </div>
@@ -34,28 +28,18 @@
             <i class="i-lucide-search"></i>
             <span>{{ t("deductionTable.search") }}</span>
           </div>
-          <UInput
-            v-model="searchQuery"
-            :placeholder="t('deductionTable.placeholder.search')"
-            class="w-full max-w-md"
-            color="white"
-            variant="outline"
-          />
+          <UInput v-model="searchQuery" :placeholder="t('deductionTable.placeholder.search')" class="w-full max-w-md"
+            color="white" variant="outline" />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable
-      :rows="paginatedData"
-      :columns="columns"
-      class="w-full"
-      :sort-button="{
-        icon: 'i-heroicons-sparkles-20-solid',
-        color: 'white',
-        variant: 'outline',
-      }"
-    >
+    <UTable sticky :rows="paginatedData" :loading="isLoading" :columns="columns" class="w-full" :sort-button="{
+      icon: 'i-heroicons-sparkles-20-solid',
+      color: 'white',
+      variant: 'outline',
+    }">
       <!-- Row Number -->
       <template #index-data="{ index }">
         <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
@@ -73,53 +57,34 @@
           {{ getStatusLabel(row.status) }}
         </UBadge>
       </template>
+
+      <!-- Action Column -->
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" />
+        </UDropdown>
+      </template>
+      <!-- <template v-else #actions-data="{ row }">
+        <span>-</span>
+      </template> -->
+
     </UTable>
 
     <!-- Pagination -->
     <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
       <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
-          <UButton
-            :disabled="page === 1"
-            @click="page = page - 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-              />
+          <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton
-            :disabled="page === pageCount"
-            @click="page = page + 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
-              />
+          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon" class="p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </UButton>
         </div>
@@ -127,25 +92,34 @@
         <div class="flex text-gray-600 text-sm gap-1">
           <span>{{ filteredData?.length }}</span>
           <span>of</span>
-          <span
-            >{{ (page - 1) * pageSize + 1 }}-{{
-              Math.min(page * pageSize, filteredData?.length)
-            }}</span
-          >
+          <span>{{ (page - 1) * pageSize + 1 }}-{{
+            Math.min(page * pageSize, filteredData?.length)
+          }}</span>
         </div>
       </div>
     </div>
   </div>
+
+  <EditPayment
+    v-model:open="isEditModalOpen"
+    :row="selectedRow"
+    @updated="handleUpdatedPayment"
+  />
+
+
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useDeductionStore } from "@/stores/deductions";
+import EditPayment from "@/components/modals/EditPayment.vue";
 const { t } = useI18n();
 
 const props = defineProps<{ deductions: any }>();
 const deductions = ref(props.deductions);
-
+const deductionsStore = useDeductionsStore();
+const isLoading = ref(false);
 watch(
   () => props.deductions,
   (newDeductions) => {
@@ -177,22 +151,102 @@ const columns = ref([
     sortable: true,
   },
   { key: "status", label: t("deductionTable.columns.status") },
+  { key: "actions", label: t("campaignTable.columns.campaignActions") },
+
 ]);
+
+
+const items = (row: any) => {
+  const baseItems = [
+    {
+      label: t("campaignTable.actions.update"),
+      icon: "i-heroicons-pencil-square",
+      color: "info",
+      class: "dark:text-[#138B96] text-[#138B96]",
+      click: () => updatePaymentData(row),
+    }
+  ];
+
+
+  if (row.status === 2) {
+    baseItems.push({
+      label: t("campaignTable.actions.pause"),
+      icon: "i-heroicons-pause",
+      color: "danger",
+      class: "text-[#F23030] dark:text-[#F23030]",
+      click: () => toggleDonationStatus(row),
+    });
+  }
+
+  return [baseItems]; 
+};
+
+
+
+const toggleDonationStatus = async (row: any) => {
+  isLoading.value = true;
+  try {
+    let cancelDeduction;
+    if (row.status === 2) {
+      cancelDeduction = await deductionsStore.cancelPayment(row.id);
+    }
+    const index = deductions.value.findIndex(
+      (c) => c.id === row.id
+    );
+    if (index !== -1) {
+      deductions.value[index] = {
+        ...deductions.value[index],
+        status: cancelDeduction.data.status,
+      };
+    }
+
+    isLoading.value = false;
+  } catch (error) {
+    console.error("Failed to update status:", error);
+    isLoading.value = false;
+  }
+};
+
+
+const isEditModalOpen = ref(false);
+const selectedRow = ref(null);
+
+// Update Payment Data
+const updatePaymentData = (row: any) => {
+  if(row.status === 2){
+  selectedRow.value = row;
+  isEditModalOpen.value = true;
+}
+};
+
+
+const handleUpdatedPayment = (updatedRow: any) => {
+  const index = deductions.value.findIndex(
+    (c) => c.id === updatedRow.id
+  );
+  if (index !== -1) deductions.value[index] = { ...updatedRow };
+};
 
 const selectedStatus = ref("");
 const statusOptions = [
-  { label: t("deductionTable.status.1"), value: 1 },
   { label: t("deductionTable.status.0"), value: 0 },
+  { label: t("deductionTable.status.1"), value: 1 },
+  { label: t("deductionTable.status.2"), value: 2 },
+  { label: t("deductionTable.status.3"), value: 3 },
 ];
 
 const getStatusLabel = (status: number) => {
   return status === 1
     ? t("deductionTable.status.1")
-    : t("deductionTable.status.0");
+    : status === 2
+      ? t("deductionTable.status.2")
+      : status === 3
+        ? t("deductionTable.status.3")
+        : t("deductionTable.status.0");
 };
 
 const getStatusColor = (status: number) => {
-  return status === 1 ? "green" : "red";
+  return status === 1 ? "green" : status === 2 ? "yellow" : status === 3 ? "red" : "black";
 };
 
 // Sorting Variables

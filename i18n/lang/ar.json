@@ -77,13 +77,13 @@
       "campaignType": "نوع الاستقطاع",
       "campaignAmount": "مبلغ الاستقطاع",
       "campaignStartDate": "تاريخ البدء",
-      "campaignActions": "الإجراءات",
+      "campaignActions": "التفاصيل",
       "deductionNextTime": "تاريخ الاستقطاع القادم",
       "deductionFirstDate": "تاريخ البدء"
     },
     "actions": {
       "update": "تحديث بيانات الدفع",
-      "pause": "إيقاف الدفع",
+      "pause": "الغاء الدفع",
       "resume": "تفعيل الدفع",
       "showTransactions": "عرض سجل الاستقطاعات"
     },
@@ -108,16 +108,20 @@
   "deductionTable": {
     "filterResult": "تصفية النتائج",
     "search": "بحث",
+    "deductionAction": "تعديل الاستقطاع",
     "labels": {
       "status": "حالة الدفع"
     },
     "placeholder": {
       "chooseSatatus": "اختر حالة الدفع",
-      "search": "بحث..."
+      "search": "بحث...",
+      "chooseAction":"تعديل الاستقطاع"
     },
     "status": {
       "1": "تم الدفع",
-      "0": "فشل الدفع"
+      "0": "فشل الدفع",
+      "2": "قيد الانتظار",
+      "3": "الغاء الدفع"
     },
     "columns": {
       "name": "اسم المستقطع",

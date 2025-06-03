@@ -12,7 +12,8 @@ export function useApi(locale?: string) {
 
   const config = useRuntimeConfig();
   const apiClient: AxiosInstance = axios.create({
-    baseURL: "https://ws.donate.benaa.org.sa",
+    // baseURL: "https://ws.donate.benaa.org.sa",
+    baseURL: "http://192.168.1.103:8000",
     headers: {
       "Content-Type": "application/json",
     },
@@ -70,6 +71,14 @@ export function useApi(locale?: string) {
       config?: AxiosRequestConfig
     ): Promise<AxiosResponse<T>> => {
       const response = await apiClient.post<T>(url, data, config);
+      return response;
+    },
+    patch: async <T>(
+      url: string,
+      data: any,
+      config?: AxiosRequestConfig
+    ): Promise<AxiosResponse<T>> => {
+      const response = await apiClient.patch<T>(url, data, config);
       return response;
     },
     put: async <T>(

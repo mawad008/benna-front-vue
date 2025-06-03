@@ -37,5 +37,49 @@ export const useDeductionsStore = defineStore("deductions", {
     getCampaignName() {
       return this.DeductionCampaign;
     },
+    
+async cancelPayment(deduction_id: number) {
+    const { post } = useApi();
+    this.loading = true;
+    try {
+      const response = await post("/api/cancel-payment", { deduction_id });
+      const { data } = response;
+      const index = this.deductions.findIndex(c => c.id === deduction_id);
+      if (index !== -1) {
+        this.deductions[index] = {
+          ...this.deductions[index],
+          status: data.status,
+        };
+      }
+      return data; 
+    } catch (error: any) {
+      this.error = error.message;
+      throw error; 
+    } finally {
+      this.loading = false;
+    }
+  },
+  async updatePayment(deduction_id: number) {
+    // add payload
+    const { post } = useApi();
+    this.loading = true;
+    try {
+      const response = await post(`/update/deduction/${deduction_id}`);
+      const { data } = response;
+      const index = this.deductions.findIndex(c => c.id === deduction_id);
+      if (index !== -1) {
+        this.deductions[index] = {
+          ...this.deductions[index],
+          status: data.status,
+        };
+      }
+      return data; 
+    } catch (error: any) {
+      this.error = error.message;
+      throw error; 
+    } finally {
+      this.loading = false;
+    }
+  },
     },
 });
