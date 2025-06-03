@@ -52,6 +52,7 @@ import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 const store = useRegisterStore();
 const loading = ref(false);
+const { locale } = useI18n();
 
 const schema = yup.object({
   phone: yup
@@ -92,7 +93,7 @@ const onSubmit = handleSubmit(async () => {
   loading.value = true;
   semanticPhoneError.value = "";
   store.phone = phone.value.replace(/\D/g, "");
-  await store.Login();
+  await store.Login(locale.value);
 
   if (store.errors.loginPhone === "User not found") {
     semanticPhoneError.value =

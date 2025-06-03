@@ -99,6 +99,7 @@
     <!-- Mobile Menu -->
     <div
       v-if="isMenuOpen"
+      ref="mobileMenuRef"
       class="absolute top-20 left-0 w-full bg-[#138b96] lg:hidden"
     >
       <ul class="flex flex-col text-white text-center py-4">
@@ -107,18 +108,19 @@
             :to="localePath(route.path)"
             class="block py-2 relative mobile-nav-link"
             exact-active-class="active-mobile-link"
+            @click="closeMenu"
           >
             {{ $t(route.name) }}
             <span class="mobile-underline"></span>
           </NuxtLink>
         </li>
         <!-- Language Switcher (Mobile) -->
-
         <li v-for="locale in availableLocales" :key="locale.code">
           <NuxtLink
             :to="switchLocalePath(locale.code)"
             class="block py-2 transition-colors"
             exact-active-class="active-mobile-link"
+            @click="closeMenu"
           >
             {{ locale.name }}
           </NuxtLink>
@@ -128,7 +130,10 @@
         <li v-if="isLogged" class="flex items-center justify-center space-x-2">
           <NuxtLink
             to="/"
-            @click="handleLogout"
+            @click="
+              handleLogout;
+              closeMenu();
+            "
             class="block py-2 text-red-600 hover:bg-red-50 bg-white rounded-md px-2"
             icon="i-lucide-arrow-left-start-on-rectangle"
           >
@@ -139,7 +144,10 @@
         </li>
         <li v-else>
           <button
-            @click="openLoginModal"
+            @click="
+              openLoginModal;
+              closeMenu();
+            "
             class="block py-2 text-white space-x-2 hover:bg-red-50"
             icon="i-lucide-log-in"
           >
@@ -177,6 +185,7 @@ const registerStore = useRegisterStore();
 
 const isMenuOpen = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
+const mobileMenuRef = ref<HTMLElement | null>(null);
 const isDropdownOpen = ref(false);
 const isLoginOpen = ref(false);
 const userName = ref("" as string);
@@ -211,9 +220,16 @@ const handleLogout = () => {
   isMenuOpen.value = false;
 };
 
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
+
 onMounted(() => {
   onClickOutside(dropdownRef, () => {
     isDropdownOpen.value = false;
+  });
+  onClickOutside(mobileMenuRef, () => {
+    isMenuOpen.value = false;
   });
 });
 
@@ -221,7 +237,7 @@ const routes = [
   { path: "/", name: "home" },
   { path: "/campaigns", name: "campaigns" },
   { path: "/contact", name: "contact" },
-  { path: "/terms", name: "terms" },
+  // { path: "/terms", name: "terms" },
 ];
 </script>
 

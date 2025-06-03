@@ -7,32 +7,37 @@
     >
       <!-- Loading State -->
       <div v-if="isLoading" class="max-w-2xl">
-        <p class="text-2xl text-white">جاري معالجة الدفع...</p>
+        <p class="text-2xl text-white">
+          {{ $t("successPage.loading") }}
+        </p>
         <div class="spinner" aria-label="جاري التحميل"></div>
       </div>
 
       <!-- Success State -->
-      <div v-else-if="isSuccess" class="max-w-2xl flex flex-col items-center justify-center gap-4">
-        <h1 class="text-5xl md:text-5xl font-bold text-white mb-4">
-          شكراً لتبرعك
+      <div
+        v-else-if="isSuccess"
+        class="max-w-2xl flex flex-col items-center justify-center gap-4"
+      >
+        <h1 class="text-text-2xl md:text-2xl font-bold text-white mb-4">
+          {{ $t("successPage.title") }}
         </h1>
-        <p class="text-2xl lg:text-4xl text-white">
-          نحن نقدر دعمك ومساهمتك في عملنا الخيري.
+        <p class="text-xl lg:text-xl text-white">
+          {{ $t("successPage.message") }}
         </p>
         <button
-          @click="router.push('/campaigns')"
-        class="bg-white text-[#138B96] font-bold py-4 px-4 rounded-lg hover:bg-gray-200 transition-colors mt-4"
+          @click="goToHome"
+          class="bg-white text-[#138B96] font-bold py-4 px-4 rounded-lg hover:bg-gray-200 transition-colors mt-4"
           icon="i-heroicons-arrow-left-20-solid"
           icon-position="end"
-          
-          >الذهاب الى سجل الاستقطاعات</button
         >
+          {{ $t("successPage.goToHome") }}
+        </button>
       </div>
 
       <!-- Error State -->
       <div v-else class="max-w-2xl">
         <h1 class="text-3xl font-bold text-white mb-4">
-          حدث خطأ أثناء معالجة الدفع
+          {{ $t("successPage.error") }}
         </h1>
         <p class="text-xl text-white mb-4">
           {{ errorMessage || "يرجى المحاولة مرة أخرى لاحقاً." }}
@@ -43,7 +48,7 @@
           aria-label="إعادة محاولة الدفع"
           class="bg-white text-[#138B96] font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
         >
-          إعادة المحاولة
+          {{ $t("successPage.retry") }}
         </button>
       </div>
     </div>
@@ -54,7 +59,9 @@
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useApi } from "@/composables/api";
+import { useI18n } from "vue-i18n";
 
+const { locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const id = ref<string | null>(route.query.id as string | null);
@@ -90,7 +97,7 @@ const createPayment = async () => {
     });
     // console.log(response.data.status);
     // if (response?.data?.status === "paid") {
-       isSuccess.value = true;
+    isSuccess.value = true;
     // } else {
     //   throw new Error("Payment creation failed: Invalid response");
     // }
@@ -121,8 +128,15 @@ onMounted(() => {
   }
   createPayment();
 });
+
+const goToHome = () => {
+  if (locale.value === "ar") {
+    router.push("/ar");
+  } else if (locale.value === "en") {
+    router.push("/en");
+  }
+};
 </script>
 
 <style scoped>
-
 </style>

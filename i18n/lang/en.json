@@ -2,7 +2,7 @@
   "home": "Recurring Donation",
   "campaigns": "Campaigns",
   "contact": "Contact",
-  "terms": "Terms",
+  "terms": "Terms and Conditions",
   "hero": {
     "title": "Benna Association for Orphan Care, licensed in 2010 (No. 568), supports over 4,500 orphans under the supervision of the National Center for Non-Profit Sector Development.",
     "deduction": "Recurring Donation Service",
@@ -194,5 +194,62 @@
   "errorPage": {
     "title": " Go to Home ",
     "message": "An unexpected error occurred"
+  },
+  "donationErrors": {
+    "donorNameRequired": "Please enter the donor's name",
+    "donorNameInvalid": "The donor's name must be more than two characters",
+    "amountRequired": "Please enter the donation amount",
+    "amountInvalid": "The amount must be a valid number",
+    "startDateRequired": "Please select a start date for the recurring donation",
+    "recurringTypeRequired": "Please select a recurring donation type",
+    "cardholderNameRequired": "Please enter the cardholder's name",
+    "cardNumberRequired": "Please enter the card number",
+    "expiryDateRequired": "Please enter the card's expiry date",
+    "cvvRequired": "Please enter the CVV code",
+    "submissionRequired": "Please fill in all required fields correctly.",
+    "generalSubmissionError": "An error occurred while submitting the donation. Please try again."
+  },
+  "generalError": "An error occurred while submitting the donation. Please try again.",
+
+  "successPage": {
+    "title": "The recurring donation was successful",
+    "message": "You can activate additional recurring donations by returning to the homepage",
+    "goToHome": "Back to Home",
+    "loading": "Processing payment...",
+    "error": "An error occurred while processing the payment, please try again",
+    "retry": "Retry"
+  },
+  "errors": {
+    "cardholderName": {
+      "required": "Cardholder name is required"
+    },
+    "cardNumber": {
+      "invalid": "Invalid card number"
+    },
+    "expiryDate": {
+      "invalid": "Invalid expiry date",
+      "expired": "Card has expired",
+      "monthInvalid": "Invalid month",
+      "yearTooFar": "Expiry year is too far in the future"
+    },
+    "cvv": {
+      "invalid": "Invalid CVV code"
+    },
+    "amount": {
+      "invalid": "Please select a valid donation amount",
+      "processingFailed": "Payment processing failed, please try again",
+      "processingError": "An error occurred during processing, please try later",
+      "redirectError": "An error occurred during redirection"
+    }
+  },
+  "paymentCards": {
+    "customPaymentCard": {
+      "title": "Payment Details",
+      "cardholderName": "Cardholder Name",
+      "cardNumber": "Card Number",
+      "expiryDate": "Expiry Date",
+      "cvv": "CVV",
+      "button": "Pay Now"
+    }
   }
 }

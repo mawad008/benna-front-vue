@@ -1,9 +1,13 @@
 <template>
   <footer class="bg-white text-dark py-4 border-t border-gray-300">
     <div
-      class="container mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4 py-2 gap-2"
+      class="container mx-auto flex flex-col md:flex-row justify-between items-center text-sm px-4 py-2 gap-2 text-center"
     >
       <p>{{ $t("footer.title") }}</p>
+
+      <NuxtLink to="/terms" class="hover:text-primary">{{
+        $t("terms")
+      }}</NuxtLink>
 
       <p class="flex items-center gap-3">
         {{ $t("footer.developed") }}
@@ -32,7 +36,7 @@
           "
           target="_blank"
           title="Google Play"
-          class="flex items-center "
+          class="flex items-center"
         >
           <Icon name="mdi:google-play" size="20" class="leading-none" />
         </a>
@@ -45,9 +49,9 @@
           "
           target="_blank"
           title="Apple Store"
-          class="flex items-center "
+          class="flex items-center"
         >
-          <Icon name="mdi:apple" size="22" class="leading-none " />
+          <Icon name="mdi:apple" size="22" class="leading-none" />
         </a>
       </div>
     </div>
@@ -66,7 +70,10 @@ const appLinks = ref<{ apple: string; google: string } | null>(null);
 onMounted(async () => {
   try {
     const res = await get("/api/footer");
-    const { apple, google } = res.data.data as any;
+    const responseData = res.data as {
+      data: { apple: string; google: string };
+    };
+    const { apple, google } = responseData.data;
     appLinks.value = { apple, google };
   } catch (error) {
     console.error("Error fetching social media links: ", error as string);

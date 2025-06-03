@@ -4,7 +4,9 @@
       {{ $t("loginModel.register.OTPStep.title") }}
     </h2>
 
-    <p class="text-dark mb-4">{{ $t("loginModel.register.OTPStep.instruction") }}</p>
+    <p class="text-dark mb-4">
+      {{ $t("loginModel.register.OTPStep.instruction") }}
+    </p>
     <UInput
       type="text"
       v-model="otp"
@@ -25,7 +27,12 @@
       }"
       @click="resendOtp"
     >
-      {{ $t("loginModel.register.OTPStep.resend") }} {{ countdown > 0 ? ` ${countdown} ${$t("loginModel.register.OTPStep.sec")}` : "" }}
+      {{ $t("loginModel.register.OTPStep.resend") }}
+      {{
+        countdown > 0
+          ? ` ${countdown} ${$t("loginModel.register.OTPStep.sec")}`
+          : ""
+      }}
     </p>
 
     <UButton
@@ -49,9 +56,8 @@ import { useForm, useField } from "vee-validate";
 import * as yup from "yup";
 import { useI18n } from "vue-i18n";
 
-
-const {t} =useI18n();
-
+const { t } = useI18n();
+const { locale } = useI18n();
 const store = useRegisterStore();
 const countdown = ref(60);
 let interval: ReturnType<typeof setInterval> | null = null;
@@ -60,7 +66,7 @@ const loading = ref(false);
 const schema = yup.object({
   otp: yup
     .string()
-    .required( t("loginModel.register.OTPStep.otpError"))
+    .required(t("loginModel.register.OTPStep.otpError"))
     .matches(/^\d{4}$/, t("loginModel.register.OTPStep.otpError2")),
 });
 
@@ -90,14 +96,14 @@ watch(otp, () => {
 const onSubmit = handleSubmit(async () => {
   loading.value = true;
   semanticOTPError.value = "";
-  
-  await store.ValidateOTP();
+
+  await store.ValidateOTP(locale.value);
   if (store.errors.otp == "OTP is incorrect") {
     semanticOTPError.value = "رمز التحقق غير صحيح";
   } else {
     semanticOTPError.value = store.errors.otp;
   }
-  store.errors.otp="";
+  store.errors.otp = "";
   loading.value = false;
 });
 
@@ -119,7 +125,7 @@ const startCountdown = () => {
 const resendOtp = async () => {
   if (countdown.value === 0) {
     console.log("Resending OTP...");
-    await store.ResendOTP();
+    await store.ResendOTP(locale.value);
     startCountdown();
   }
 };

@@ -62,7 +62,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-
+const { locale } = useI18n();
 const store = useRegisterStore();
 
 const schema = yup.object({
@@ -97,11 +97,10 @@ const HandleUserLogin = async () => {
   console.log(phone.value);
 };
 
-
 const onSubmit = handleSubmit(async () => {
   store.phone = phone.value.replace(/\D/g, "");
   loading.value = true;
-  await store.RegisterStepOne();
+  await store.RegisterStepOne(locale.value);
   loading.value = false;
 });
 </script>

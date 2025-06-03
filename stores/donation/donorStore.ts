@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useNuxtApp } from "#app";
 
 export const useDonorStore = defineStore("donor", {
   state: () => ({
@@ -15,6 +16,10 @@ export const useDonorStore = defineStore("donor", {
     },
   }),
   actions: {
+    getI18n() {
+      const { $i18n } = useNuxtApp();
+      return $i18n;
+    },
     setAmount(amount: string) {
       this.selectedAmount = this.selectedAmount === amount ? "" : amount;
       this.customAmount = "";
@@ -23,22 +28,25 @@ export const useDonorStore = defineStore("donor", {
     setCustomAmount(value: string) {
       this.customAmount = value.replace(/\D/g, "");
       this.selectedAmount = "";
-      this.errors.amount = this.customAmount ? "" : "يرجى إدخال مبلغ صالح";
+      this.errors.amount = this.customAmount
+        ? ""
+        : this.getI18n().t("donationErrors.amountRequired");
     },
     validateDonor() {
+      const $t = this.getI18n().t;
       this.errors.donorName = this.donorName.trim()
         ? ""
-        : "يرجى إدخال اسم المتبرع";
+        : $t("donationErrors.donorNameRequired");
       this.errors.amount =
         this.selectedAmount || this.customAmount
           ? ""
-          : "يرجى تحديد أو إدخال مبلغ التبرع";
+          : $t("donationErrors.amountInvalid");
       this.errors.recurringType = this.recurringType
         ? ""
-        : "يرجى اختيار نوع الاستقطاع الدوري";
+        : $t("donationErrors.recurringTypeRequired");
       this.errors.startDate = this.validateStartDate()
         ? ""
-        : "لا يمكن اختيار تاريخ في الماضي";
+        : $t("donationErrors.startDateRequired");
 
       return !Object.values(this.errors).some((error) => error);
     },
@@ -50,19 +58,15 @@ export const useDonorStore = defineStore("donor", {
       this.startDate = date;
       this.errors.startDate = this.validateStartDate()
         ? ""
-        : "لا يمكن اختيار تاريخ في الماضي";
+        : this.getI18n().t("donationErrors.startDateRequired");
     },
     validateStartDate() {
       const today = new Date();
-      const [day, month, year] = this.startDate.split('-').map(Number);
+      const [day, month, year] = this.startDate.split("-").map(Number);
       const selectedDate = new Date(year, month - 1, day);
       selectedDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
-      // console.log("validate Start Date ",selectedDate >= today);
-      // console.log("selectedDate",selectedDate);
-      // console.log("today",today);
       return selectedDate >= today;
-    }
-    
+    },
   },
 });

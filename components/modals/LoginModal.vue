@@ -13,7 +13,11 @@
           class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative"
         >
           <!-- Close Button -->
-          <button @click="closeModal" class="absolute top-5 right-5 z-60">
+          <button
+            @click="closeModal"
+            class="absolute top-5 z-60"
+            :class="locale === 'ar' ? 'right-5 left-auto' : 'left-5 right-auto'"
+          >
             <UButton
               color="gray"
               variant="ghost"
@@ -97,7 +101,7 @@ import { onClickOutside } from "@vueuse/core";
 
 const emit = defineEmits(["close"]);
 const store = useRegisterStore();
-
+const { locale } = useI18n();
 const isLogin = ref(false);
 const isOpen = ref(true);
 const error = ref("");
@@ -109,6 +113,8 @@ const closeModal = () => {
   setTimeout(() => {
     emit("close");
   }, 400);
+  error.value = "";
+  store.reset();
 };
 
 onClickOutside(modalRef, () => {
@@ -135,7 +141,7 @@ const HandleUserRegister = () => {
 const switchToLogin = (phone: string) => {
   isLogin.value = true;
   store.step = 0;
-  store.phone = phone; 
+  store.phone = phone;
   store.errors.phone = "";
 };
 
