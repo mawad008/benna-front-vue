@@ -72,7 +72,7 @@
       "type": "نوع الاستقطاع"
     },
     "columns": {
-      "campaignName": "اسم الحملة",
+      "campaignName": "اسم المستقطع",
       "campaignStatus": "حالة التبرع",
       "campaignType": "نوع الاستقطاع",
       "campaignAmount": "مبلغ الاستقطاع",

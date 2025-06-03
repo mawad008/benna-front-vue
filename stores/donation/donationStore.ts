@@ -3,6 +3,14 @@ import { useDonorStore } from "./donorStore";
 import { usePaymentStore } from "./paymentStore";
 import { useApi } from "@/composables/api";
 import { useNuxtApp } from "#app";
+interface donation {
+  id: number;
+  name: string;
+  amount: number;
+  type: string;
+  date: string;
+  campaign_id: number;
+}
 
 export const useDonationStore = defineStore("donation", {
   state: () => ({
@@ -10,6 +18,7 @@ export const useDonationStore = defineStore("donation", {
     submissionError: "",
     campaign_id: null,
     showPayment: false,
+    donation: null as donation | null,
   }),
 
   actions: {
@@ -44,14 +53,20 @@ export const useDonationStore = defineStore("donation", {
           date: donorStore.startDate,
         };
       }
-
-      const api = useApi();
+      const { post } = useApi();
       this.loading = true;
       this.submissionError = "";
 
       try {
-        console.log(payload);
-        const response = await api.post("/api/create/deduction", payload);
+        // console.log(payload);
+        const response = await post<{ data: donation }>(
+          "/api/create/deduction",
+          payload
+        );
+        const { data } = response;
+        this.donation = data.message;
+        localStorage.setItem("donation", this.donation?.id?.toString());
+        // console.log(this.donation?.id);
         // console.log("Donation submitted:", response.data);
 
         // Reset donor form

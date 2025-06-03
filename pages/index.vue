@@ -2,7 +2,7 @@
   <Hero />
   <div class="flex flex-col items-center bg-gray-50 py-12">
     <div
-      class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[70%] lg:w-[70%]"
+      class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[70%] lg:w-[50%]"
     >
       <template v-if="!donationStore.showPayment">
         <DonationCard />

@@ -109,7 +109,7 @@ watch(hasUser, () => {
   }
 });
 
-console.log(hasUser.value);
+// console.log(hasUser.value);
 
 onMounted(() => { 
   authStore.init();

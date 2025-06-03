@@ -60,6 +60,8 @@ import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useApi } from "@/composables/api";
 import { useI18n } from "vue-i18n";
+import { useDonationStore } from "@/stores/donation/donationStore";
+
 
 const { locale } = useI18n();
 const route = useRoute();
@@ -71,7 +73,7 @@ const amount = ref<number | null>(
   route.query.amount ? parseFloat(route.query.amount as string) : null
 );
 const { post } = useApi();
-
+const donationStore = useDonationStore();
 const isLoading = ref(true);
 const isSuccess = ref(false);
 const errorMessage = ref<string | null>(null);
@@ -80,7 +82,7 @@ interface PaymentResponse {
   data: {
     status: string;
   };
-}
+};
 
 const createPayment = async () => {
   try {
@@ -94,6 +96,8 @@ const createPayment = async () => {
       // status: status.value,
       // amount: amount.value,
       token: token.value,
+      deduction_id: Number(localStorage.getItem("donation")),
+
     });
     // console.log(response.data.status);
     // if (response?.data?.status === "paid") {
