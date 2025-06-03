@@ -15,8 +15,7 @@
           <!-- Close Button -->
           <button
             @click="closeModal"
-            class="absolute top-5 z-60"
-            :class="locale === 'ar' ? 'right-5 left-auto' : 'left-5 right-auto'"
+            class="absolute top-5 right-5 z-60"
           >
             <UButton
               color="gray"
@@ -141,7 +140,7 @@ const HandleUserRegister = () => {
 const switchToLogin = (phone: string) => {
   isLogin.value = true;
   store.step = 0;
-  store.phone = phone;
+  store.phone = phone; 
   store.errors.phone = "";
 };
 
