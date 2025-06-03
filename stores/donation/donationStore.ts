@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { useDonorStore } from "./donorStore";
 import { usePaymentStore } from "./paymentStore";
 import { useApi } from "@/composables/api";
+import { useNuxtApp } from "#app";
 
 export const useDonationStore = defineStore("donation", {
   state: () => ({
@@ -12,17 +13,23 @@ export const useDonationStore = defineStore("donation", {
   }),
 
   actions: {
+    getI18n() {
+      const { $i18n } = useNuxtApp();
+      return $i18n;
+    },
     async submitDonation(campaign_id?: number) {
       const donorStore = useDonorStore();
       const isValidDonor = donorStore.validateDonor();
       let payload: any;
 
       if (!isValidDonor) {
-        this.submissionError = "يرجى ملء جميع الحقول المطلوبة بشكل صحيح.";
+        this.submissionError = this.getI18n().t(
+          "donationErrors.submissionRequired"
+        );
         return;
       }
       if (campaign_id) {
-      payload = {
+        payload = {
           name: donorStore.donorName,
           amount: donorStore.selectedAmount || donorStore.customAmount,
           type: donorStore.recurringType,
@@ -30,7 +37,7 @@ export const useDonationStore = defineStore("donation", {
           campaign_id: campaign_id,
         };
       } else {
-     payload = {
+        payload = {
           name: donorStore.donorName,
           amount: donorStore.selectedAmount || donorStore.customAmount,
           type: donorStore.recurringType,

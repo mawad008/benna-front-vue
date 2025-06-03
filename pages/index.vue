@@ -1,7 +1,9 @@
 <template>
   <Hero />
   <div class="flex flex-col items-center bg-gray-50 py-12">
-    <div class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[50%] lg:w-[48%]">
+    <div
+      class="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8 gap-8 md:w-[70%] lg:w-[70%]"
+    >
       <template v-if="!donationStore.showPayment">
         <DonationCard />
         <DonorNameCard />
@@ -30,7 +32,7 @@
             variant="solid"
             block
           >
-            {{ $t('homePayButton') }}
+            {{ $t("homePayButton") }}
           </UButton>
         </div>
       </template>
@@ -42,7 +44,11 @@
     </div>
   </div>
 
-  <LoginModal v-if="isLoginOpen" ref="loginModalRef" @close="isLoginOpen = false" />
+  <LoginModal
+    v-if="isLoginOpen"
+    ref="loginModalRef"
+    @close="isLoginOpen = false"
+  />
 </template>
 
 <script setup>
@@ -78,17 +84,22 @@ onMounted(() => {
   }
 });
 
-
 //https://donate.benaa.org.sa/?id=104?name=zain
 
 const handleDonation = async () => {
-  await donationStore.submitDonation(donationStore.campaign_id);
-  if (donationStore.submissionError) {
-    donationStore.showPayment = false;
-    isLoginOpen.value = false;
-    return;
+  try {
+    await donationStore.submitDonation(donationStore.campaign_id);
+    if (donationStore.submissionError) {
+      donationStore.showPayment = false;
+      isLoginOpen.value = false;
+      return;
+    }
+    donationStore.showPayment = true;
+  } catch (error) {
+    console.error("Error submitting donation:", error);
+    donationStore.submissionError =
+      "حدث خطأ أثناء تقديم التبرع. يرجى المحاولة مرة أخرى.";
   }
-  donationStore.showPayment = true;
 };
 
 const openLoginModal = () => {
@@ -97,5 +108,4 @@ const openLoginModal = () => {
     isLoginOpen.value = true;
   });
 };
-
 </script>

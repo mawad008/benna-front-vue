@@ -11,10 +11,10 @@ const langCookie = useCookie("i18n_redirected");
 
 onMounted(() => {
   if (!langCookie.value) {
-    const userLang = navigator.language.startsWith("ar") ? "ar" : "en";
-    i18n.locale.value = userLang;
-    langCookie.value = userLang;
+    i18n.locale.value = "ar";
+    langCookie.value = "ar";
   }
+  localStorage.setItem("nuxt-color-mode", "light");
 });
 
 watchEffect(() => {

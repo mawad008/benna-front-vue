@@ -38,13 +38,13 @@ export const useRegisterStore = defineStore("register", {
       return !this.errors.name;
     },
 
-    async RegisterStepOne() {
-      const api = useApi();
+    async RegisterStepOne(locale: string) {
+      const { post } = useApi(locale);
       try {
         const payload = {
           phone: this.phone,
         };
-        const response = await api.post("/api/register", payload,{
+        const response = await post("/api/register", payload, {
           params: {
             step: 0,
           },
@@ -64,15 +64,15 @@ export const useRegisterStore = defineStore("register", {
         }
       }
     },
-    async RegisterStepTwo() {
-      const api = useApi();
+    async RegisterStepTwo(locale: string) {
+      const { post } = useApi(locale);
       try {
         const payload = {
           name: this.name,
           phone: this.phone,
           registration_token: this.registerToken,
         };
-        const response = await api.post("/api/register", payload,{
+        const response = await post("/api/register", payload, {
           params: {
             step: 1,
           },
@@ -92,14 +92,14 @@ export const useRegisterStore = defineStore("register", {
       }
     },
 
-    async Login() {
-      const api = useApi();
+    async Login(locale: string) {
+      const { post } = useApi(locale);
 
       try {
         const payload = {
           phone: this.phone,
         };
-        const response = await api.post("/api/login", payload);
+        const response = await post("/api/login", payload);
         this.errors.loginPhone = "";
         this.mode = "login";
         this.nextStep();
@@ -114,15 +114,15 @@ export const useRegisterStore = defineStore("register", {
       }
     },
 
-    async ValidateOTP() {
-      const api = useApi();
+    async ValidateOTP(locale: string) {
+      const { post } = useApi(locale);
       const authStore = useAuthStore();
       try {
         const payload = {
           otp: this.otp,
           phone: this.phone,
         };
-        const response = await api.post("/api/valid/otp", payload);
+        const response = await post("/api/valid/otp", payload);
         const { token, user } = response.data;
         this.hasUser = true;
         authStore.setUser(user, token);
@@ -136,13 +136,13 @@ export const useRegisterStore = defineStore("register", {
       }
     },
 
-    async ResendOTP() {
-      const api = useApi();
+    async ResendOTP(locale: string) {
+      const { post } = useApi(locale);
       try {
         const payload = {
           phone: this.phone,
         };
-        const response = await api.post("/api/resend/otp", payload);
+        const response = await post("/api/resend/otp", payload);
       } catch (error: any) {
         if (error.response?.data?.errors?.phone) {
           this.errors.phone = error.response.data.errors.phone[0];

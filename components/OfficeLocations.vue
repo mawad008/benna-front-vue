@@ -54,12 +54,22 @@
         <div class="flex flex-col gap-4">
           <div class="flex items-center gap-4">
             <img src="/phone.png" alt="Phone Icon" class="w-4 h-5" />
-            <p class="text-gray-700">{{ selectedOfficeDetails?.phone }}</p>
+            <a
+              :href="'tel:' + selectedOfficeDetails?.phone"
+              class="text-blue-600 hover:underline"
+            >
+              {{ selectedOfficeDetails?.phone }}
+            </a>
             <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
           </div>
           <div class="flex items-center gap-4">
             <img src="/email.png" alt="Mail Icon" class="w-5 h-4" />
-            <p class="text-gray-700">{{ selectedOfficeDetails?.email }}</p>
+            <a
+              :href="'mailto:' + selectedOfficeDetails?.email"
+              class="text-blue-600 hover:underline"
+            >
+              {{ selectedOfficeDetails?.email }}
+            </a>
             <USkeleton v-if="loading || error" class="h-5 w-20 bg-primary-20" />
           </div>
         </div>
@@ -134,12 +144,7 @@
       </div>
 
       <!-- Map Section -->
-
       <div class="w-full md:w-1/2 lg:w-1/3 flex justify-center">
-        <!-- <USkeleton
-          v-if="loading || error"
-          class="h-[300px] w-full rounded-lg shadow-sm bg-primary-20"
-        /> -->
         <div v-if="loading">
           <img
             src="/map-placeholder.png"

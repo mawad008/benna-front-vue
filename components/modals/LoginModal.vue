@@ -1,6 +1,5 @@
 <template>
   <Transition name="slide-left">
-    
     <div
       v-if="isOpen"
       ref="modalRef"
@@ -16,7 +15,8 @@
           <!-- Close Button -->
           <button
             @click="closeModal"
-            class="absolute top-5 right-5 z-60"
+            class="absolute top-5 z-60"
+            :class="locale === 'ar' ? 'right-5 left-auto' : 'left-5 right-auto'"
           >
             <UButton
               color="gray"
@@ -52,17 +52,22 @@
                 {{ $t("loginModel.title") }}
               </p>
 
-              <div class="w-full flex flex-col items-center justify-center min-h-[210px]">
-              <!-- Dynamic Step Component -->
-              <Transition :name="store.transitionDirection" mode="out-in">
-                <component
-                  :is="
-                    isLogin ? LoginSteps[store.step] : RegisterSteps[store.step]
-                  "
-                  @close="closeModal"
-                />
-              </Transition>
-            </div>
+              <div
+                class="w-full flex flex-col items-center justify-center min-h-[210px]"
+              >
+                <!-- Dynamic Step Component -->
+                <Transition :name="store.transitionDirection" mode="out-in">
+                  <component
+                    :is="
+                      isLogin
+                        ? LoginSteps[store.step]
+                        : RegisterSteps[store.step]
+                    "
+                    @close="closeModal"
+                    @switch-to-login="switchToLogin"
+                  />
+                </Transition>
+              </div>
 
               <!-- Error Message -->
               <div class="text-red-600 text-center font-medium mt-2">
@@ -74,7 +79,7 @@
                 <span
                   @click="HandleUserRegister"
                   class="mt-6 text-primary font-bold cursor-pointer hover:underline"
-                  :class="{ hidden: store.step >1 }"
+                  :class="{ hidden: store.step > 1 }"
                 >
                   {{
                     isLogin ? $t("loginModel.newUser") : $t("loginModel.login")
@@ -96,7 +101,7 @@ import { onClickOutside } from "@vueuse/core";
 
 const emit = defineEmits(["close"]);
 const store = useRegisterStore();
-
+const { locale } = useI18n();
 const isLogin = ref(false);
 const isOpen = ref(true);
 const error = ref("");
@@ -108,10 +113,12 @@ const closeModal = () => {
   setTimeout(() => {
     emit("close");
   }, 400);
+  error.value = "";
+  store.reset();
 };
 
 onClickOutside(modalRef, () => {
- closeModal();
+  closeModal();
 });
 
 watch(isOpen, (val) => {
@@ -129,6 +136,13 @@ const HandleUserRegister = () => {
   isLogin.value = !isLogin.value;
   store.step = 0;
   store.reset();
+};
+
+const switchToLogin = (phone: string) => {
+  isLogin.value = true;
+  store.step = 0;
+  store.phone = phone;
+  store.errors.phone = "";
 };
 
 const LoginSteps = [

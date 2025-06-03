@@ -1,10 +1,9 @@
 <template>
   <div class="p-6 bg-white rounded-lg shadow-md w-full max-w-lg mx-auto">
     <!-- Intro Text -->
-    <p class="text-center text-gray-700 mb-4">
+    <p class="text-center text-gray-700 mb-4 font-semibold">
       {{ $t("contactPage.description") }}
-      <span class="font-bold"> {{ $t("contactPage.callCenter") }}</span> 
-  
+      <!-- <span class="font-bold"> {{ $t("contactPage.callCenter") }}</span> -->
     </p>
 
     <!-- Radio Options -->
@@ -20,9 +19,9 @@
 
     <!-- Full Name -->
     <div class="mb-4">
-      <label for="fullName" class="block text-gray-700 mb-1 font-semibold"
-        >{{ $t("contactPage.contactForm.fullName") }}</label
-      >
+      <label for="fullName" class="block text-gray-700 mb-1 font-semibold">{{
+        $t("contactPage.contactForm.fullName")
+      }}</label>
       <UInput
         id="fullName"
         v-model="contactStore.name"
@@ -38,12 +37,14 @@
 
     <!-- Phone Input -->
     <div class="mb-4">
-      <label class="block text-gray-700 mb-1 font-semibold">{{ $t("contactPage.contactForm.phone") }}</label>
+      <label class="block text-gray-700 mb-1 font-semibold">{{
+        $t("contactPage.contactForm.phone")
+      }}</label>
       <VueTelInput
         v-model="contactStore.phone"
         mode="national"
         :defaultCountry="'SA'"
-         :enabledCountryCode="true"
+        :enabledCountryCode="true"
         :countryCode="'SA'"
         :disabledFetchingCountry="true"
         :onlyCountries="['SA']"
@@ -51,7 +52,6 @@
         :dropdownOptions="{ styleClasses: 'custom-dropdown' }"
         @input="handlePhoneInput"
         class="w-full custom-tel-input"
-       
       />
       <p v-if="contactStore.errors.phone" class="text-red-500 text-sm mt-2">
         {{ contactStore.errors.phone }}
@@ -60,9 +60,9 @@
 
     <!-- Message -->
     <div class="mb-4">
-      <label for="message" class="block text-gray-700 mb-1 font-semibold"
-        >{{ $t("contactPage.contactForm.note") }}</label
-      >
+      <label for="message" class="block text-gray-700 mb-1 font-semibold">{{
+        $t("contactPage.contactForm.note")
+      }}</label>
       <UTextarea
         id="message"
         v-model="contactStore.note"
@@ -96,7 +96,7 @@
 
     <!-- Success Message -->
     <p v-if="successMessage" class="text-green-500 text-center mt-3">
-    {{successMessage}}
+      {{ successMessage }}
     </p>
   </div>
 </template>

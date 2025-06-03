@@ -32,7 +32,7 @@
           }}</label>
           <input
             v-model="form.cardholderName"
-            class="w-full border-gray-300 p-2 rounded-lg text-start "
+            class="w-full border-gray-300 p-2 rounded-lg text-start"
             :placeholder="$t('cards.customPaymentCard.cardholderName')"
             :disabled="isSubmitting"
           />
@@ -116,16 +116,20 @@
 import { ref, reactive } from "vue";
 import { useDonorStore } from "@/stores/donation/donorStore";
 import { useDonationStore } from "@/stores/donation/donationStore";
+import { useI18n } from "vue-i18n";
 import Title from "@/components/ui/Title.vue";
 
 const route = useRoute();
-
+const { t, locale } = useI18n();
 const donationStore = useDonationStore();
 const donorStore = useDonorStore();
-const { locale } = useI18n();
+
 const icon = computed(() => {
-  return locale.value === "ar" ? "i-heroicons-arrow-right" : "i-heroicons-arrow-left";
+  return locale.value === "ar"
+    ? "i-heroicons-arrow-right"
+    : "i-heroicons-arrow-left";
 });
+
 const form = reactive({
   cardholderName: "",
   cardNumber: "",
@@ -151,13 +155,11 @@ const paymentAmount = computed(() => {
 const formatCardNumber = (event: Event) => {
   const inputEl = event.target as HTMLInputElement;
   let raw = inputEl.value.replace(/\D/g, "").slice(0, 16);
-
   const formatted = raw.replace(/(.{4})/g, "$1 ").trim();
-
   form.cardNumber = formatted;
 
   if (raw.length === 16) {
-    errors.cardNumber = luhnCheck(raw) ? "" : "رقم البطاقة غير صالح";
+    errors.cardNumber = luhnCheck(raw) ? "" : t("errors.cardNumber.invalid");
   } else {
     errors.cardNumber = "";
   }
@@ -201,7 +203,7 @@ const handleExpiryDateInput = (event: Event) => {
   if (cleaned.length >= 2) {
     const month = parseInt(cleaned.slice(0, 2));
     if (month < 1 || month > 12) {
-      errors.expiryDate = "الشهر غير صالح";
+      errors.expiryDate = t("errors.expiryDate.monthInvalid");
     }
   }
 };
@@ -213,14 +215,14 @@ const validateExpiryDate = (month: string, year: string) => {
   const currentMonth = new Date().getMonth() + 1;
 
   if (parsedMonth < 1 || parsedMonth > 12) {
-    errors.expiryDate = "الشهر غير صالح";
+    errors.expiryDate = t("errors.expiryDate.monthInvalid");
   } else if (
     parsedYear < currentYear ||
     (parsedYear === currentYear && parsedMonth < currentMonth)
   ) {
-    errors.expiryDate = "البطاقة منتهية الصلاحية";
+    errors.expiryDate = t("errors.expiryDate.expired");
   } else if (parsedYear > currentYear + 10) {
-    errors.expiryDate = "سنة الانتهاء بعيدة جدًا";
+    errors.expiryDate = t("errors.expiryDate.yearTooFar");
   } else {
     errors.expiryDate = "";
   }
@@ -229,23 +231,23 @@ const validateExpiryDate = (month: string, year: string) => {
 const handlePayment = async () => {
   Object.keys(errors).forEach((key) => (errors[key] = ""));
   if (!form.cardholderName.trim())
-    errors.cardholderName = "اسم حامل البطاقة مطلوب";
+    errors.cardholderName = t("errors.cardholderName.required");
   if (
     !form.cardNumber ||
     form.cardNumber.replace(/\s/g, "").length !== 16 ||
     !luhnCheck(form.cardNumber.replace(/\s/g, ""))
   ) {
-    errors.cardNumber = "رقم البطاقة غير صالح";
+    errors.cardNumber = t("errors.cardNumber.invalid");
   }
   if (!form.cvv || form.cvv.length < 3 || form.cvv.length > 4)
-    errors.cvv = "رمز التحقق غير صالح";
+    errors.cvv = t("errors.cvv.invalid");
   if (!form.month || !form.year || form.expiryDate.length !== 5) {
-    errors.expiryDate = "تاريخ الانتهاء غير صالح";
+    errors.expiryDate = t("errors.expiryDate.invalid");
   } else {
     validateExpiryDate(form.month, form.year);
   }
   if (!paymentAmount.value || paymentAmount.value <= 0) {
-    errors.amount = "يرجى تحديد مبلغ تبرع صالح";
+    errors.amount = t("errors.amount.invalid");
   }
 
   if (Object.values(errors).some((error) => error)) {
@@ -276,13 +278,19 @@ const handlePayment = async () => {
 
     if (data.type === "validation_error") {
       if (data.errors) {
-        errors.cardholderName = data.errors.name?.[0] || "";
-        errors.cardNumber = data.errors.number?.[0] || "";
+        errors.cardholderName = data.errors.name?.[0]
+          ? t(`errors.cardholderName.${data.errors.name[0]}`)
+          : "";
+        errors.cardNumber = data.errors.number?.[0]
+          ? t(`errors.cardNumber.${data.errors.number[0]}`)
+          : "";
         errors.expiryDate =
           data.errors.month || data.errors.year
-            ? "تاريخ الانتهاء غير صالح"
+            ? t("errors.expiryDate.invalid")
             : "";
-        errors.cvv = data.errors.cvc?.[0] || "";
+        errors.cvv = data.errors.cvc?.[0]
+          ? t(`errors.cvv.${data.errors.cvc[0]}`)
+          : "";
       }
       return;
     }
@@ -291,11 +299,11 @@ const handlePayment = async () => {
       await initiatePayment(data.id);
     } else {
       console.error("Tokenization failed:", data);
-      errors.amount = "فشل في معالجة الدفع، حاول مرة أخرى";
+      errors.amount = t("errors.amount.processingFailed");
     }
   } catch (error) {
     console.error("Error during tokenization:", error);
-    errors.amount = "حدث خطأ أثناء المعالجة، حاول لاحقًا";
+    errors.amount = t("errors.amount.processingError");
   } finally {
     isSubmitting.value = false;
   }
@@ -308,22 +316,22 @@ const initiatePayment = async (token: string) => {
       token,
       amount: amount.toString(),
       currency: "SAR",
+      // lang: locale.value,
     });
-
-    const isFromCampaign = route.name === "campaigns" || route.path.includes("/campaigns");
+    const isFromCampaign =
+      route.name === "campaigns" || route.path.includes("/campaigns");
     const targetPage = isFromCampaign ? "edit" : "thanks";
-    const redirectUrl = `${window.location.origin}/${targetPage}?${params.toString()}`;
+    const redirectUrl = `${window.location.origin}/${
+      locale.value
+    }/${targetPage}?${params.toString()}`;
     window.location.assign(redirectUrl);
   } catch (error) {
     console.error("Redirect Error:", error);
-    errors.amount = "حدث خطأ أثناء إعادة التوجيه";
+    errors.amount = t("errors.amount.redirectError");
     isSubmitting.value = false;
   }
 };
-
-
 </script>
-
 
 <style scoped>
 input {
@@ -345,5 +353,9 @@ input:focus {
 input::placeholder[dir="rtl"] {
   color: #9ca3af;
   text-align: right;
+}
+input::placeholder[dir="ltr"] {
+  color: #9ca3af;
+  text-align: left;
 }
 </style>

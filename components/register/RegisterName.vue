@@ -2,16 +2,20 @@
   <div class="w-full max-w-sm">
     <div class="flex items-center mb-6 space-x-2 rtl:space-x-reverse">
       <UButton
-        icon="i-heroicons-arrow-right"
+        :icon="icon"
         color="icon"
         size="xs"
         @click="store.prevStep"
         :disabled="store.step === 0"
       />
-      <h2 class="text-xl font-bold text-dark">{{ $t("loginModel.register.nameStep.title") }}</h2>
+      <h2 class="text-xl font-bold text-dark">
+        {{ $t("loginModel.register.nameStep.title") }}
+      </h2>
     </div>
 
-    <div class="text-start mb-2 text-dark font-medium">{{ $t("loginModel.register.nameStep.fullname") }}</div>
+    <div class="text-start mb-2 text-dark font-medium">
+      {{ $t("loginModel.register.nameStep.fullname") }}
+    </div>
     <UInput
       v-model="name"
       color="white"
@@ -44,8 +48,7 @@ import * as yup from "yup";
 import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
-
-const {t} =useI18n();
+const { t } = useI18n();
 const store = useRegisterStore();
 
 const schema = yup.object({
@@ -53,6 +56,12 @@ const schema = yup.object({
     .string()
     .required(t("loginModel.register.nameStep.nameError"))
     .min(2, t("loginModel.register.nameStep.nameError2")),
+});
+
+const icon = computed(() => {
+  return locale.value === "ar"
+    ? "i-heroicons-arrow-right"
+    : "i-heroicons-arrow-left";
 });
 
 const { errors, meta, handleSubmit } = useForm({
@@ -74,10 +83,10 @@ const validateField = () => {
   store.name = name.value;
   store.validateName();
 };
-
+const { locale } = useI18n();
 const onSubmit = handleSubmit(async () => {
   loading.value = true;
-  await store.RegisterStepTwo();
+  await store.RegisterStepTwo(locale.value);
   loading.value = false;
 });
 </script>
