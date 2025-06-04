@@ -12,6 +12,7 @@
       leaveToClass: 'opacity-0 scale-95',
     }"
     class="flex items-center justify-center"
+    prevent-close
   >
     <div class="bg-white rounded-lg w-full p-4 text-center">
       <h2 class="text-xl font-semibold text-dark mb-4">
@@ -20,7 +21,7 @@
       <p class="text-dark mb-6">
         {{ $t("cancelModal.message") }}
       </p>
-      <div class="flex justify-between">
+      <div class="flex justify-around">
         <UButton
           @click="cancelDeduction"
           color="red"
