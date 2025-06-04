@@ -92,8 +92,8 @@
       "showTransactions": "Show Deduction Record"
     },
     "status": {
-      "1": "Active",
       "0": "Paused",
+      "1": "Active",
       "2": "Not Started"
     },
     "type": {
@@ -113,18 +113,18 @@
     "filterResult": "Filter Result",
     "search": "Search",
     "deductionAction": "Edit Deduction ",
+    "empty": "No deductions found",
     "labels": {
       "status": "Status"
     },
     "placeholder": {
       "chooseSatatus": "Choose Deduction Status",
       "search": "Search...",
-      "chooseAction":"Edit Deduction"
-
+      "chooseAction": "Edit Deduction"
     },
     "status": {
-      "1": "Active",
       "0": "Failed",
+      "1": "Active",
       "2": "Pending",
       "3": "Cancelled"
     },
@@ -256,5 +256,12 @@
       "cvv": "CVV",
       "button": "Pay Now"
     }
-  }
+  },
+  "cancelModal": {
+    "title": "Confirm Deduction Cancellation",
+    "message": "This deduction cannot be resumed once cancelled. Are you sure you want to proceed?",
+    "cancel": "  Continue Deduction",
+    "confirm": " Cancel Deduction"
+  },
+  "editPaymentButton": "Edit Payment Data"
 }

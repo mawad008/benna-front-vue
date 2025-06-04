@@ -15,9 +15,15 @@
               <label class="text-sm text-gray-600 font-medium">{{
                 t("deductionTable.labels.status")
               }}</label>
-              <USelect v-model="selectedStatus" :options="statusOptions"
-                :placeholder="t('deductionTable.placeholder.chooseSatatus')" color="white" variant="outline"
-                option-attribute="label" value-attribute="value" />
+              <USelect
+                v-model="selectedStatus"
+                :options="statusOptions"
+                :placeholder="t('deductionTable.placeholder.chooseSatatus')"
+                color="white"
+                variant="outline"
+                option-attribute="label"
+                value-attribute="value"
+              />
             </div>
           </div>
         </div>
@@ -28,18 +34,36 @@
             <i class="i-lucide-search"></i>
             <span>{{ t("deductionTable.search") }}</span>
           </div>
-          <UInput v-model="searchQuery" :placeholder="t('deductionTable.placeholder.search')" class="w-full max-w-md"
-            color="white" variant="outline" />
+          <UInput
+            v-model="searchQuery"
+            :placeholder="t('deductionTable.placeholder.search')"
+            class="w-full max-w-md"
+            color="white"
+            variant="outline"
+          />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable sticky :rows="paginatedData" :loading="isLoading" :columns="columns" class="w-full" :sort-button="{
-      icon: 'i-heroicons-sparkles-20-solid',
-      color: 'white',
-      variant: 'outline',
-    }">
+    <UTable
+      sticky
+      :rows="paginatedData"
+      loading-color="primary"
+      loading-animation="carousel"
+      :loading="isLoading"
+      :columns="columns"
+      class="w-full"
+      :sort-button="{
+        icon: 'i-heroicons-sparkles-20-solid',
+        color: 'white',
+        variant: 'outline',
+      }"
+      :empty-state="{
+        label: $t('deductionTable.empty'),
+      }"
+      @sort="handleSort"
+    >
       <!-- Row Number -->
       <template #index-data="{ index }">
         <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
@@ -60,31 +84,65 @@
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
-          <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" />
+        <UDropdown v-if="row.status === 2" :items="items(row)">
+          <UButton
+            color="icon"
+            variant="solid"
+            icon="i-heroicons-ellipsis-vertical-20-solid"
+          />
         </UDropdown>
+        <span v-else class="font-bold text-center">-</span>
       </template>
       <!-- <template v-else #actions-data="{ row }">
         <span>-</span>
       </template> -->
-
     </UTable>
 
     <!-- Pagination -->
     <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
       <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
-          <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          <UButton
+            :disabled="page === 1"
+            @click="page = page - 1"
+            color="icon"
+            class="p-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
             </svg>
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon" class="p-1">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="size-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          <UButton
+            :disabled="page === pageCount"
+            @click="page = page + 1"
+            color="icon"
+            class="p-1"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-4"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
             </svg>
           </UButton>
         </div>
@@ -92,9 +150,11 @@
         <div class="flex text-gray-600 text-sm gap-1">
           <span>{{ filteredData?.length }}</span>
           <span>of</span>
-          <span>{{ (page - 1) * pageSize + 1 }}-{{
-            Math.min(page * pageSize, filteredData?.length)
-          }}</span>
+          <span
+            >{{ (page - 1) * pageSize + 1 }}-{{
+              Math.min(page * pageSize, filteredData?.length)
+            }}</span
+          >
         </div>
       </div>
     </div>
@@ -106,14 +166,19 @@
     @updated="handleUpdatedPayment"
   />
 
-
+  <CancelPayment
+    v-if="selectedRow && selectedRow?.status === 2"
+    :row-id="selectedRow?.id"
+    v-model:open="isCancelModalOpen"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useDeductionStore } from "@/stores/deductions";
+import { useDeductionsStore } from "@/stores/deductions";
 import EditPayment from "@/components/modals/EditPayment.vue";
+import CancelPayment from "@/components/modals/CancelPayment.vue";
 const { t } = useI18n();
 
 const props = defineProps<{ deductions: any }>();
@@ -152,9 +217,7 @@ const columns = ref([
   },
   { key: "status", label: t("deductionTable.columns.status") },
   { key: "actions", label: t("campaignTable.columns.campaignActions") },
-
 ]);
-
 
 const items = (row: any) => {
   const baseItems = [
@@ -164,9 +227,8 @@ const items = (row: any) => {
       color: "info",
       class: "dark:text-[#138B96] text-[#138B96]",
       click: () => updatePaymentData(row),
-    }
+    },
   ];
-
 
   if (row.status === 2) {
     baseItems.push({
@@ -174,56 +236,32 @@ const items = (row: any) => {
       icon: "i-heroicons-pause",
       color: "danger",
       class: "text-[#F23030] dark:text-[#F23030]",
-      click: () => toggleDonationStatus(row),
+      click: () => cancelDonation(row),
     });
   }
 
-  return [baseItems]; 
+  return [baseItems];
 };
 
-
-
-const toggleDonationStatus = async (row: any) => {
-  isLoading.value = true;
-  try {
-    let cancelDeduction;
-    if (row.status === 2) {
-      cancelDeduction = await deductionsStore.cancelPayment(row.id);
-    }
-    const index = deductions.value.findIndex(
-      (c) => c.id === row.id
-    );
-    if (index !== -1) {
-      deductions.value[index] = {
-        ...deductions.value[index],
-        status: cancelDeduction.data.status,
-      };
-    }
-
-    isLoading.value = false;
-  } catch (error) {
-    console.error("Failed to update status:", error);
-    isLoading.value = false;
-  }
+const isCancelModalOpen = ref(false);
+const cancelDonation = (row: any) => {
+  selectedRow.value = row;
+  isCancelModalOpen.value = true;
 };
-
 
 const isEditModalOpen = ref(false);
 const selectedRow = ref(null);
 
 // Update Payment Data
 const updatePaymentData = (row: any) => {
-  if(row.status === 2){
-  selectedRow.value = row;
-  isEditModalOpen.value = true;
-}
+  if (row.status === 2) {
+    selectedRow.value = row;
+    isEditModalOpen.value = true;
+  }
 };
 
-
 const handleUpdatedPayment = (updatedRow: any) => {
-  const index = deductions.value.findIndex(
-    (c) => c.id === updatedRow.id
-  );
+  const index = deductions.value.findIndex((c) => c.id === updatedRow.id);
   if (index !== -1) deductions.value[index] = { ...updatedRow };
 };
 
@@ -239,14 +277,20 @@ const getStatusLabel = (status: number) => {
   return status === 1
     ? t("deductionTable.status.1")
     : status === 2
-      ? t("deductionTable.status.2")
-      : status === 3
-        ? t("deductionTable.status.3")
-        : t("deductionTable.status.0");
+    ? t("deductionTable.status.2")
+    : status === 3
+    ? t("deductionTable.status.3")
+    : t("deductionTable.status.0");
 };
 
 const getStatusColor = (status: number) => {
-  return status === 1 ? "green" : status === 2 ? "yellow" : status === 3 ? "red" : "black";
+  return status === 1
+    ? "green"
+    : status === 2
+    ? "yellow"
+    : status === 3
+    ? "red"
+    : "black";
 };
 
 // Sorting Variables
@@ -274,6 +318,7 @@ const filteredData = computed(() => {
     );
   });
 });
+
 
 // Sorted Data
 const sortedData = computed(() => {

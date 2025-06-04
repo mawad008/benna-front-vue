@@ -2,12 +2,12 @@ export default defineAppConfig({
   ui: {
     primary: "blue",
     gray: "stone",
-    avatar:{
+    avatar: {
       slots: {
-        root: 'inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated',
-        image: 'h-full w-full rounded-[inherit] object-cover',
-        fallback: 'font-medium leading-none',
-        icon: 'text-muted shrink-0'
+        root: "inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated",
+        image: "h-full w-full rounded-[inherit] object-cover",
+        fallback: "font-medium leading-none",
+        icon: "text-muted shrink-0",
       },
     },
     Ubadge: {
@@ -149,7 +149,14 @@ export default defineAppConfig({
           solid:
             "bg-[#107b86] text-[#fff] hover:bg-[#044B56] hover:text-[#fff] focus-visible:ring-2 focus-visible:ring-[#107b86]",
         },
-
+        red: {
+          solid:
+            "bg-[#EF4444] text-[#fff] hover:bg-[#DC2626] hover:text-[#fff] focus-visible:ring-2 focus-visible:ring-[#EF4444] dark:bg-[#F87171] dark:hover:bg-[#DC2626] dark:focus-visible:ring-[#F87171]",
+        },
+        green: {
+          solid:
+            "bg-[#10B981] text-[#fff] hover:bg-[#059669] hover:text-[#fff] focus-visible:ring-2 focus-visible:ring-[#10B981] dark:bg-[#34D399] dark:hover:bg-[#059669] dark:focus-visible:ring-[#34D399]",
+        },
         icon: {
           solid:
             "bg-transparent text-[#111928] hover:bg-gray-200 focus-visible:ring-2 focus-visible:ring-gray-400",
@@ -208,19 +215,22 @@ export default defineAppConfig({
       variants: {
         transition: {
           true: {
-            overlay: 'data-[state=open]:animate-[fade-in_200ms_ease-out] data-[state=closed]:animate-[fade-out_200ms_ease-in]',
-            content: 'data-[state=open]:animate-[scale-in_200ms_ease-out] data-[state=closed]:animate-[scale-out_200ms_ease-in]'
-          }
+            overlay:
+              "data-[state=open]:animate-[fade-in_200ms_ease-out] data-[state=closed]:animate-[fade-out_200ms_ease-in]",
+            content:
+              "data-[state=open]:animate-[scale-in_200ms_ease-out] data-[state=closed]:animate-[scale-out_200ms_ease-in]",
+          },
         },
         fullscreen: {
           true: {
-            content: 'inset-0'
+            content: "inset-0",
           },
           false: {
-            content: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-4rem)] rounded-lg shadow-lg ring ring-default'
-          }
-        }
-      }
+            content:
+              "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg max-h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-4rem)] rounded-lg shadow-lg ring ring-default",
+          },
+        },
+      },
     },
     radio: {
       wrapper: "relative flex items-start",

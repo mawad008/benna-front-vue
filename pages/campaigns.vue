@@ -70,7 +70,7 @@
         </div>
         <br />
         <p class="text-2xl font-bold mb-4 text-dark">
-          {{ $t("campaignsPage.campaigns") }}
+          {{ $t("deductionPage.deductions") }}
         </p>
         <br />
         <CampaignTable :campaigns="campaignsStore.campaigns" />
@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted,computed,watch } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import Hero from "@/components/ui/Hero.vue";
 import CampaignTable from "@/components/CampaignTable.vue";
 import LoginModal from "@/components/modals/LoginModal.vue";
@@ -111,7 +111,7 @@ watch(hasUser, () => {
 
 // console.log(hasUser.value);
 
-onMounted(() => { 
+onMounted(() => {
   authStore.init();
   if (authStore.isLoggedIn) {
     campaignsStore.fetchCampaigns(locale.value);
@@ -122,7 +122,6 @@ const openLoginModal = () => {
   registerStore.step = 0;
   isLoginOpen.value = true;
   authStore.init();
-
 };
 const handleModalClose = () => {
   isLoginOpen.value = false;
@@ -140,7 +139,7 @@ const links = [
     to: "/",
   },
   {
-    label: t("campaignsPage.links.campaigns"),
+    label: t("campaignsPage.links.deductions"),
     link: true,
     to: "/campaigns",
   },

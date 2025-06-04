@@ -51,7 +51,7 @@
             variant="solid"
             block
           >
-            تعديل بيانات الدفع
+            {{ $t("editPaymentButton") }}
           </UButton>
         </div>
       </template>
@@ -105,9 +105,7 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
 import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
-import { useDeductionStore } from "@/stores/deductions";
-
-
+import { useDeductionsStore } from "@/stores/deductions";
 
 const donationStore = useDonationStore();
 const deductionStore = useDeductionsStore();
@@ -146,7 +144,7 @@ const closeModal = () => {
 
 const handleDonation = async () => {
   if (!props.row?.id) return;
-  await deductionStore.updatePayment(props.row.id);
+  await donationStore.updatePayment(props.row.id);
   if (donationStore.submissionError) {
     donationStore.showPayment = false;
     return;

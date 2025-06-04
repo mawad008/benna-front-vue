@@ -115,12 +115,17 @@
       <!-- Action Column -->
       <template #actions-data="{ row }">
         <!-- <UDropdown :items="items(row)"> -->
+        <UTooltip
+          :text="t('campaignTable.actions.showTransactions')"
+          placement="top"
+        >
           <UButton
-          @click="showTransactions(row)"
+            @click="showTransactions(row)"
             color="icon"
             variant="solid"
             icon="i-heroicons-eye"
           />
+        </UTooltip>
         <!-- </UDropdown> -->
       </template>
     </UTable>
@@ -249,7 +254,6 @@ const columns = ref([
   {
     key: "amount",
     label: t("campaignTable.columns.campaignAmount"),
-
   },
   {
     key: "date",

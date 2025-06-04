@@ -6,14 +6,14 @@
     <div
       class="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center text-white w-full m-auto"
     >
-      <div class="w-full px-4 md:px-6 lg:px-8 text-start mt-10">
-        <h1 class="font-semibold text-[19px] text-start mb-2">
+      <div class="w-full px-4 md:px-6 lg:px-8 text-center mt-10">
+        <h1 class="font-semibold text-[19px] text-center mb-2">
           {{ $t("hero.title") }}
         </h1>
         <p class="font-semibold text-[18px] p-2 mb-2 text-center">
           {{ $t("hero.deduction") }}
         </p>
-        <p class="font-normal text-[18px] text-start mb-2">
+        <p class="font-normal text-[18px] text-center mb-2">
           {{ $t("hero.quote") }}
         </p>
       </div>

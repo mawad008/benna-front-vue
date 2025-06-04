@@ -228,6 +228,8 @@ const validateExpiryDate = (month: string, year: string) => {
   }
 };
 
+const Moyasar = useRuntimeConfig().public.Moyasar;
+
 const handlePayment = async () => {
   Object.keys(errors).forEach((key) => (errors[key] = ""));
   if (!form.cardholderName.trim())
@@ -259,7 +261,8 @@ const handlePayment = async () => {
 
   try {
     const tokenData = {
-      publishable_api_key: "pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e",
+      // publishable_api_key: "pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e",
+      publishable_api_key: Moyasar.publishable_api_key,
       name: form.cardholderName.trim(),
       number: form.cardNumber.replace(/\s/g, ""),
       month: form.month.padStart(2, "0"),
@@ -319,7 +322,7 @@ const initiatePayment = async (token: string) => {
       // lang: locale.value,
     });
     const isFromCampaign =
-      route.name === "campaigns" || route.path.includes("/campaigns");
+      route.name === "deductions" || route.path.includes("/deductions");
     const targetPage = isFromCampaign ? "edit" : "thanks";
     const redirectUrl = `${window.location.origin}/${
       locale.value

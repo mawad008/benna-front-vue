@@ -60,7 +60,7 @@ export const useDonationStore = defineStore("donation", {
       try {
         // console.log(payload);
         const response = await post<{ data: donation }>(
-          "/api/create/deduction",
+          "api/create/deduction",
           payload
         );
         const { data } = response;
@@ -90,6 +90,39 @@ export const useDonationStore = defineStore("donation", {
         }
 
         console.error("Donation error:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async updatePayment(deduction_id: number) {
+      const donorStore = useDonorStore();
+
+      const payload = {
+        name: donorStore.donorName,
+        amount: donorStore.selectedAmount || donorStore.customAmount,
+        type: donorStore.recurringType,
+        date: donorStore.startDate,
+      };
+      // console.log("Payload for update:", payload);
+      const { post } = useApi();
+      this.loading = true;
+      try {
+        const response = await post(
+          `api/update/deduction/${deduction_id}`,
+          payload
+        );
+        const { data } = response;
+        // const index = this.deductions.findIndex((c) => c.id === deduction_id);
+        // if (index !== -1) {
+        //   this.deductions[index] = {
+        //     ...this.deductions[index],
+        //     status: data.status,
+        //   };
+        // }
+        return data;
+      } catch (error: any) {
+        this.error = error.message;
+        throw error;
       } finally {
         this.loading = false;
       }

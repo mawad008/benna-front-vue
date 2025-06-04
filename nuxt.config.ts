@@ -64,4 +64,11 @@ export default defineNuxtConfig({
     },
   },
   css: ["@/assets/main.css"],
+  runtimeConfig: {
+    public: {
+      Moyasar: {
+        publishable_api_key: "pk_live_uBjoMEHPt5spU8NzwQFtdHgdjD7ZJJDCVKxjs7RG",
+      },
+    },
+  },
 });
