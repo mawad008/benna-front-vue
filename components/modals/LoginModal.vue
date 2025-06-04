@@ -1,49 +1,35 @@
 <template>
   <Transition name="slide-left">
-    <div
-      v-if="isOpen"
-      ref="modalRef"
-      class="fixed inset-0 z-50 flex overflow-y-auto w-full h-screen bg-black/50"
-    >
+    <div v-if="isOpen" ref="modalRef" class="fixed inset-0 z-50 flex overflow-y-auto w-full h-screen bg-black/50">
       <div
-        class="relative z-50 m-auto w-[95%] h-[95vh] flex border border-gray-200 rounded-lg bg-white overflow-hidden overflow-y-auto"
-      >
+        class="relative z-50 m-auto w-[95%] h-[95vh] flex border border-gray-200 rounded-lg bg-white overflow-hidden overflow-y-auto">
         <!-- Left Image Section -->
-        <div
-          class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative"
-        >
+        <div class="hidden md:flex w-1/2 bg-[url('/bg.png')] bg-cover bg-center relative">
           <!-- Close Button -->
-          <button
-            @click="closeModal"
-            class="absolute top-5 z-60"
-            :class="locale === 'ar' ? 'right-5 left-auto' : 'left-5 right-auto'"
-          >
-            <UButton
-              color="gray"
-              variant="ghost"
-              size="lg"
-              icon="heroicons:x-mark"
-            />
+          <button @click="closeModal" class="absolute top-5 z-60"
+            :class="locale === 'ar' ? 'right-5 left-auto' : 'left-5 right-auto'">
+            <UButton color="gray" variant="ghost" size="lg" icon="heroicons:x-mark" />
           </button>
-          <div class="flex justify-center items-center w-full">
+
+
+          <div class="flex justify-center items-center w-full flex-col gap-4">
             <img src="/heart-hands.png" alt="Heart Hands" class="w-45 px-5" />
+            <p class="text-dark mb-4 text-white text-center text-[25px]">
+            اللهم أَعْطِ مُنْفِقًا خَلَفًا
+          </p>
           </div>
+
+       
         </div>
 
         <!-- Right Content Section -->
-        <div
-          class="relative w-full md:w-1/2 bg-white md:bg-transparent flex justify-center items-center p-4"
-        >
+        <div class="relative w-full md:w-1/2 bg-white md:bg-transparent flex justify-center items-center p-4">
           <div
-            class="w-full max-w-sm md:max-w-none md:h-full bg-white/30 md:bg-white backdrop-blur-md md:backdrop-blur-none rounded-lg p-6 flex items-center justify-center"
-          >
-            <div
-              class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px] relative overflow-hidden"
-            >
+            class="w-full max-w-sm md:max-w-none md:h-full bg-white/30 md:bg-white backdrop-blur-md md:backdrop-blur-none rounded-lg p-6 flex items-center justify-center">
+            <div class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px] relative overflow-hidden">
               <!-- Logo -->
               <div
-                class="lg:w-40 lg:h-40 md:w-32 md:h-32 flex items-center justify-center rounded-full bg-gradient-to-b from-[#169FAE] to-[#138B96] p-2 mb-4"
-              >
+                class="lg:w-40 lg:h-40 md:w-32 md:h-32 flex items-center justify-center rounded-full bg-gradient-to-b from-[#169FAE] to-[#138B96] p-2 mb-4">
                 <img src="/logo.png" alt="Logo" class="w-[50%] h-[50%]" />
               </div>
 
@@ -52,20 +38,13 @@
                 {{ $t("loginModel.title") }}
               </p>
 
-              <div
-                class="w-full flex flex-col items-center justify-center min-h-[210px]"
-              >
+              <div class="w-full flex flex-col items-center justify-center min-h-[210px]">
                 <!-- Dynamic Step Component -->
                 <Transition :name="store.transitionDirection" mode="out-in">
-                  <component
-                    :is="
-                      isLogin
-                        ? LoginSteps[store.step]
-                        : RegisterSteps[store.step]
-                    "
-                    @close="closeModal"
-                    @switch-to-login="switchToLogin"
-                  />
+                  <component :is="isLogin
+                      ? LoginSteps[store.step]
+                      : RegisterSteps[store.step]
+                    " @close="closeModal" @switch-to-login="switchToLogin" />
                 </Transition>
               </div>
 
@@ -76,11 +55,8 @@
 
               <!-- Toggle Login/Register -->
               <div class="flex justify-center">
-                <span
-                  @click="HandleUserRegister"
-                  class="mt-6 text-primary font-bold cursor-pointer hover:underline"
-                  :class="{ hidden: store.step > 1 }"
-                >
+                <span @click="HandleUserRegister" class="mt-6 text-primary font-bold cursor-pointer hover:underline"
+                  :class="{ hidden: store.step > 1 }">
                   {{
                     isLogin ? $t("loginModel.newUser") : $t("loginModel.login")
                   }}
@@ -168,18 +144,22 @@ const RegisterSteps = [
 .slide-left-leave-active {
   transition: transform 0.5s ease-in-out, opacity 0.4s ease-in-out;
 }
+
 .slide-left-enter-from {
   transform: translateX(100%);
   opacity: 0;
 }
+
 .slide-left-enter-to {
   transform: translateX(0);
   opacity: 1;
 }
+
 .slide-left-leave-from {
   transform: translateX(0);
   opacity: 1;
 }
+
 .slide-left-leave-to {
   transform: translateX(100%);
   opacity: 0;

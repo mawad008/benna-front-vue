@@ -1,11 +1,7 @@
 <template>
   <!-- <header class="absolute top-0 left-0 w-full z-50 bg-[#138b96] lg:bg-transparent "> -->
-  <header
-    class="relative lg:absolute top-0 left-0 w-full z-50 bg-[#138b96] lg:bg-transparent min-h-[83px]"
-  >
-    <nav
-      class="flex items-center justify-between px-8 py-4 text-white sticky top-0 mb-8"
-    >
+  <header class="relative lg:absolute top-0 left-0 w-full z-50 bg-[#138b96] lg:bg-transparent min-h-[83px]">
+    <nav class="flex items-center justify-between px-8 py-4 text-white sticky top-0 mb-8">
       <!-- Logo -->
       <div class="cursor-pointer" @click="$router.push(localePath('/'))">
         <img src="@/assets/svg/benna-logo.svg" alt="Logo" class="" />
@@ -13,24 +9,18 @@
       <div class="flex items-center gap-8">
         <!-- Desktop Navbar -->
         <ul class="hidden lg:flex gap-4 justify-between items-center w-full">
-          <li v-for="route in routes" :key="route.path" class="px-1">
-            <NuxtLink
-              :to="localePath(route.path)"
-              class="nav-link"
-              exact-active-class="active-link"
-            >
+          <li v-for="(route, index) in routes" :key="route.path" class="px-1">
+            <NuxtLink :to="localePath(route.path)" :class="['nav-link', { 'first-link': index === 0 }]"
+              exact-active-class="active-link">
               {{ $t(route.name) }}
             </NuxtLink>
           </li>
+
         </ul>
 
         <!-- Language Switcher (Desktop) -->
-        <NuxtLink
-          v-for="locale in availableLocales"
-          :key="locale.code"
-          :to="switchLocalePath(locale.code)"
-          class="nav-link hidden lg:block"
-        >
+        <NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)"
+          class="nav-link hidden lg:block">
           {{ locale.name }}
         </NuxtLink>
 
@@ -40,46 +30,29 @@
           <div @click="toggleDropdown" class="cursor-pointer">
             <template v-if="userName">
               <UTooltip :text="userName">
-                <UAvatar
-                  :alt="userName"
-                  size="sm"
-                  class="dark:bg-white bg-white"
-                />
+                <UAvatar :alt="userName" size="sm" class="dark:bg-white bg-white" />
               </UTooltip>
             </template>
             <template v-else>
-              <UAvatar
-                icon="i-lucide-user"
-                size="sm"
-                class="dark:bg-white bg-white"
-              />
+              <UAvatar icon="i-lucide-user" size="sm" class="dark:bg-white bg-white" />
             </template>
           </div>
 
           <!-- Logout Dropdown Menu -->
-          <div
-            v-if="isDropdownOpen"
-            :class="[
-              'absolute top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg',
-              locale === 'ar' ? 'left-0' : 'right-0',
-            ]"
-          >
+          <div v-if="isDropdownOpen" :class="[
+            'absolute top-8 mt-2 w-max bg-white text-black rounded-md shadow-lg',
+            locale === 'ar' ? 'left-0' : 'right-0',
+          ]">
             <template v-if="isLogged">
-              <NuxtLink
-                to="/"
-                @click="handleLogout"
+              <NuxtLink to="/" @click="handleLogout"
                 class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-                icon="i-lucide-arrow-left-start-on-rectangle"
-              >
+                icon="i-lucide-arrow-left-start-on-rectangle">
                 <span>{{ locale === "ar" ? "تسجيل الخروج" : "Logout" }}</span>
               </NuxtLink>
             </template>
             <template v-else>
-              <button
-                @click="openLoginModal"
-                class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50"
-                icon="i-lucide-log-in"
-              >
+              <button @click="openLoginModal"
+                class="block px-4 py-2 text-red-600 flex items-center space-x-2 hover:bg-red-50" icon="i-lucide-log-in">
                 <span>{{ locale === "ar" ? "تسجيل الدخول" : "Login" }}</span>
               </button>
             </template>
@@ -88,69 +61,46 @@
       </div>
 
       <!-- Mobile Menu Button -->
-      <button
-        @click="toggleMenu"
-        class="lg:hidden text-white flex items-center"
-      >
+      <button @click="toggleMenu" class="lg:hidden text-white flex items-center">
         <Icon name="heroicons-outline:menu" class="w-8 h-8" />
       </button>
     </nav>
 
     <!-- Mobile Menu -->
-    <div
-      v-if="isMenuOpen"
-      ref="mobileMenuRef"
-      class="absolute top-20 left-0 w-full bg-[#138b96] lg:hidden"
-    >
+    <div v-if="isMenuOpen" ref="mobileMenuRef" class="absolute top-20 left-0 w-full bg-[#138b96] lg:hidden">
       <ul class="flex flex-col text-white text-center py-4">
         <li v-for="route in routes" :key="route.path">
-          <NuxtLink
-            :to="localePath(route.path)"
-            class="block py-2 relative mobile-nav-link"
-            exact-active-class="active-mobile-link"
-            @click="closeMenu"
-          >
+          <NuxtLink :to="localePath(route.path)" class="block py-2 relative mobile-nav-link"
+            exact-active-class="active-mobile-link" @click="closeMenu">
             {{ $t(route.name) }}
             <span class="mobile-underline"></span>
           </NuxtLink>
         </li>
         <!-- Language Switcher (Mobile) -->
         <li v-for="locale in availableLocales" :key="locale.code">
-          <NuxtLink
-            :to="switchLocalePath(locale.code)"
-            class="block py-2 transition-colors"
-            exact-active-class="active-mobile-link"
-            @click="closeMenu"
-          >
+          <NuxtLink :to="switchLocalePath(locale.code)" class="block py-2 transition-colors"
+            exact-active-class="active-mobile-link" @click="closeMenu">
             {{ locale.name }}
           </NuxtLink>
         </li>
 
         <!-- Auth (Mobile) -->
         <li v-if="isLogged" class="flex items-center justify-center space-x-2">
-          <NuxtLink
-            to="/"
-            @click="
-              handleLogout;
-              closeMenu();
-            "
-            class="block py-2 text-red-600 hover:bg-red-50 bg-white rounded-md px-2"
-            icon="i-lucide-arrow-left-start-on-rectangle"
-          >
+          <NuxtLink to="/" @click="
+            handleLogout;
+          closeMenu();
+          " class="block py-2 text-red-600 hover:bg-red-50 bg-white rounded-md px-2"
+            icon="i-lucide-arrow-left-start-on-rectangle">
             <span class="px-2">{{
               locale === "ar" ? "تسجيل الخروج" : "Logout"
             }}</span>
           </NuxtLink>
         </li>
         <li v-else>
-          <button
-            @click="
-              openLoginModal;
-              closeMenu();
-            "
-            class="block py-2 text-white space-x-2 hover:bg-red-50"
-            icon="i-lucide-log-in"
-          >
+          <button @click="
+            openLoginModal;
+          closeMenu();
+          " class="block py-2 text-white space-x-2 hover:bg-red-50" icon="i-lucide-log-in">
             <span class="px-2">{{
               locale === "ar" ? "تسجيل الدخول" : "Login"
             }}</span>
@@ -251,11 +201,18 @@ header {
     height: 80px;
   }
 }
+
 .nav-link {
   position: relative;
   padding-bottom: 2px;
   transition: color 0.3s ease-in-out;
+  color: white;
 }
+
+.nav-link.first-link {
+  color: #FFB749;
+}
+
 
 .nav-link::after {
   content: "";
@@ -310,7 +267,8 @@ header {
 .lang-btn:hover {
   background: rgba(255, 255, 255, 0.4);
 }
-.space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+
+.space-x-reverse> :not([hidden])~ :not([hidden]) {
   margin-right: 1.5rem;
   margin-left: 0;
 }
