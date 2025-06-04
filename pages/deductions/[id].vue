@@ -17,7 +17,7 @@
       <button
         @click="router.push('/campaigns')"
         class="bg-[#138B96] text-white font-bold py-2 px-2 rounded-lg hover:bg-[#138B96]/80 transition-colors mt-4 text-[16px]"
-        icon="i-heroicons-arrow-left-20-solid"
+        :icon="icon"
         icon-position="end"
       >
         {{ $t("deductionPage.goBack") }}
@@ -31,7 +31,7 @@
         <UButton
           color="primary"
           variant="solid"
-          icon="i-heroicons-arrow-right"
+          :icon="icon"
           @click="router.push('/campaigns')"
         >
         </UButton>
@@ -60,6 +60,15 @@ const route = useRoute();
 const isLoading = ref(true);
 const campaign_id = route.params.id;
 const deductionsStore = useDeductionsStore();
+const { locale } = useI18n();
+
+const icon = computed(() => {
+  return locale.value === "ar"
+    ? "i-heroicons-arrow-right-20-solid"
+    : "i-heroicons-arrow-left-20-solid";
+});
+
+
 
 onMounted(() => {
   isLoading.value = true;

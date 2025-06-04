@@ -15,15 +15,9 @@
               <label class="text-sm text-gray-600 font-medium">{{
                 t("deductionTable.labels.status")
               }}</label>
-              <USelect
-                v-model="selectedStatus"
-                :options="statusOptions"
-                :placeholder="t('deductionTable.placeholder.chooseSatatus')"
-                color="white"
-                variant="outline"
-                option-attribute="label"
-                value-attribute="value"
-              />
+              <USelect v-model="selectedStatus" :options="statusOptions"
+                :placeholder="t('deductionTable.placeholder.chooseSatatus')" color="white" variant="outline"
+                option-attribute="label" value-attribute="value" />
             </div>
           </div>
         </div>
@@ -34,36 +28,21 @@
             <i class="i-lucide-search"></i>
             <span>{{ t("deductionTable.search") }}</span>
           </div>
-          <UInput
-            v-model="searchQuery"
-            :placeholder="t('deductionTable.placeholder.search')"
-            class="w-full max-w-md"
-            color="white"
-            variant="outline"
-          />
+          <UInput v-model="searchQuery" :placeholder="t('deductionTable.placeholder.search')" class="w-full max-w-md"
+            color="white" variant="outline" />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable
-      sticky
-      :rows="paginatedData"
-      loading-color="primary"
-      loading-animation="carousel"
-      :loading="isLoading"
-      :columns="columns"
-      class="w-full"
-      :sort-button="{
+    <UTable sticky :rows="paginatedData" loading-color="primary" loading-animation="carousel" :loading="isLoading"
+      :columns="columns" class="w-full" :sort-button="{
         icon: 'i-heroicons-sparkles-20-solid',
         color: 'white',
         variant: 'outline',
-      }"
-      :empty-state="{
+      }" :empty-state="{
         label: $t('deductionTable.empty'),
-      }"
-      @sort="handleSort"
-    >
+      }" @sort="handleSort">
       <!-- Row Number -->
       <template #index-data="{ index }">
         <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
@@ -85,16 +64,11 @@
       <!-- Action Column -->
       <template #actions-data="{ row }">
         <div class="flex items-center justify-start">
-        <UDropdown v-if="row.status === 2" :items="items(row)" > 
-          <UButton
-            color="icon"
-            variant="solid"
-            icon="i-heroicons-ellipsis-vertical-20-solid"
-          class="px-1"
-          />
-        </UDropdown>
-        <span v-else class="font-bold text-lg px-2">-</span>
-      </div>
+          <UDropdown v-if="row.status === 2" :items="items(row)">
+            <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" class="px-1" />
+          </UDropdown>
+          <span v-else class="font-bold text-lg px-2">-</span>
+        </div>
       </template>
     </UTable>
 
@@ -102,75 +76,51 @@
     <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
       <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
-          <UButton
-            :disabled="page === 1"
-            @click="page = page - 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-              />
+          <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
+            <!-- Right Arrow (AR) -->
+            <svg v-if="locale === 'ar'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
+            <!-- Left Arrow (EN) -->
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+
+
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton
-            :disabled="page === pageCount"
-            @click="page = page + 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
-              />
+          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon" class="p-1">
+            <!-- Left Arrow (AR) -->
+            <svg v-if="locale === 'ar'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke-width="1.5" stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
+            <!-- Right Arrow (EN) -->
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+
           </UButton>
         </div>
 
         <div class="flex text-gray-600 text-sm gap-1">
           <span>{{ filteredData?.length }}</span>
           <span>of</span>
-          <span
-            >{{ (page - 1) * pageSize + 1 }}-{{
-              Math.min(page * pageSize, filteredData?.length)
-            }}</span
-          >
+          <span>{{ (page - 1) * pageSize + 1 }}-{{
+            Math.min(page * pageSize, filteredData?.length)
+          }}</span>
         </div>
       </div>
     </div>
   </div>
 
-  <EditPayment
-    v-model:open="isEditModalOpen"
-    :row="selectedRow"
-    @updated="handleUpdatedPayment"
-  />
+  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
 
-  <CancelPayment
-    v-if="selectedRow && selectedRow?.status === 2"
-    :row-id="selectedRow?.id"
-    v-model:open="isCancelModalOpen"
-  />
+  <CancelPayment v-if="selectedRow && selectedRow?.status === 2" :row-id="selectedRow?.id"
+    v-model:open="isCancelModalOpen" />
 </template>
 
 <script setup lang="ts">
@@ -192,7 +142,7 @@ watch(
   },
   { deep: true }
 );
-
+const { locale } = useI18n();
 // Pagination
 const page = ref(1);
 const pageSize = ref(10);
@@ -267,7 +217,7 @@ const handleUpdatedPayment = (updatedRow: any) => {
 
 const selectedStatus = ref("");
 const statusOptions = [
-{ label: t("campaignTable.allStatus"), value: "all" },
+  { label: t("campaignTable.allStatus"), value: "all" },
   { label: t("deductionTable.status.0"), value: 0 },
   { label: t("deductionTable.status.1"), value: 1 },
   { label: t("deductionTable.status.2"), value: 2 },
@@ -278,20 +228,20 @@ const getStatusLabel = (status: number) => {
   return status === 1
     ? t("deductionTable.status.1")
     : status === 2
-    ? t("deductionTable.status.2")
-    : status === 3
-    ? t("deductionTable.status.3")
-    : t("deductionTable.status.0");
+      ? t("deductionTable.status.2")
+      : status === 3
+        ? t("deductionTable.status.3")
+        : t("deductionTable.status.0");
 };
 
 const getStatusColor = (status: number) => {
   return status === 1
     ? "green"
     : status === 2
-    ? "yellow"
-    : status === 3
-    ? "red"
-    : "black";
+      ? "yellow"
+      : status === 3
+        ? "red"
+        : "black";
 };
 
 // Sorting Variables
