@@ -1,6 +1,6 @@
 <template>
   <UModal
-    v-model="props.open"
+    v-model="isModalOpen"
     @ui:close="closeModal"
     :transition="true"
     :transition-props="{
@@ -20,7 +20,7 @@
       <p class="text-dark mb-6">
         {{ $t("cancelModal.message") }}
       </p>
-      <div class="flex justify-end justify-between">
+      <div class="flex justify-between">
         <UButton
           @click="cancelDeduction"
           color="red"
@@ -50,16 +50,25 @@ const props = defineProps<{
 const emit = defineEmits(["update:open"]);
 
 const deductionStore = useDeductionsStore();
-
 const isLoading = ref(false);
+
+
+const isModalOpen = ref(props.open);
+
+
+watch(() => props.open, (newVal) => {
+  isModalOpen.value = newVal;
+});
+
+const closeModal = () => {
+  isModalOpen.value = false;
+  emit("update:open", false);
+};
+
 const cancelDeduction = async () => {
   isLoading.value = true;
   await deductionStore.cancelPayment(props.rowId);
   isLoading.value = false;
-  emit("update:open", false);
-};
-
-const closeModal = () => {
-  emit("update:open", false);
+  closeModal();
 };
 </script>

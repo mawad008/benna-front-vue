@@ -84,18 +84,18 @@
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
-        <UDropdown v-if="row.status === 2" :items="items(row)">
+        <div class="flex items-center justify-start">
+        <UDropdown v-if="row.status === 2" :items="items(row)" > 
           <UButton
             color="icon"
             variant="solid"
             icon="i-heroicons-ellipsis-vertical-20-solid"
+          class="px-1"
           />
         </UDropdown>
-        <span v-else class="font-bold text-center">-</span>
+        <span v-else class="font-bold text-lg px-2">-</span>
+      </div>
       </template>
-      <!-- <template v-else #actions-data="{ row }">
-        <span>-</span>
-      </template> -->
     </UTable>
 
     <!-- Pagination -->
