@@ -158,7 +158,7 @@ const getGlobalIndex = (rowIndex: number) => {
 const columns = ref([
   { key: "index", label: "#" },
   { key: "name", label: t("deductionTable.columns.name") },
-  { key: "campaign_name", label: t("deductionTable.columns.campaignName") },
+  // { key: "campaign_name", label: t("deductionTable.columns.campaignName") },
   { key: "amount", label: t("deductionTable.columns.amount") },
   {
     key: "deduction_date",

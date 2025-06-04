@@ -57,6 +57,7 @@
     }
   },
   "deductionPage": {
+    "title":"Deductions",
     "loading": "Loading deductions...",
     "error": "Error loading deductions",
     "noDeductions": "No deductions found",

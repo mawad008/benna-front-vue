@@ -36,7 +36,9 @@
         >
         </UButton>
         <h1 class="font-janna font-bold text-dark text-[20px] leading-[37.2px]">
-          {{ deductionsStore.getCampaignName() }}
+          <!-- {{ deductionsStore.getCampaignName() }}
+             -->
+          {{ $t("deductionPage.title") }}
         </h1>
       </div>
       <br />
