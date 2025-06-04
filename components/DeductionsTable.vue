@@ -209,7 +209,7 @@ const columns = ref([
   { key: "index", label: "#" },
   { key: "name", label: t("deductionTable.columns.name") },
   { key: "campaign_name", label: t("deductionTable.columns.campaignName") },
-  { key: "amount", label: t("deductionTable.columns.amount"), sortable: true },
+  { key: "amount", label: t("deductionTable.columns.amount") },
   {
     key: "deduction_date",
     label: t("deductionTable.columns.deductionDate"),
@@ -267,6 +267,7 @@ const handleUpdatedPayment = (updatedRow: any) => {
 
 const selectedStatus = ref("");
 const statusOptions = [
+{ label: t("campaignTable.allStatus"), value: "all" },
   { label: t("deductionTable.status.0"), value: 0 },
   { label: t("deductionTable.status.1"), value: 1 },
   { label: t("deductionTable.status.2"), value: 2 },
@@ -314,6 +315,7 @@ const filteredData = computed(() => {
         normalizedName.includes(normalizedQuery) ||
         normalizedCampaignName.includes(normalizedQuery)) &&
       (selectedStatus.value === "" ||
+        selectedStatus.value === "all" ||
         row.status === Number(selectedStatus.value))
     );
   });

@@ -21,10 +21,15 @@
         {{ $t("cancelModal.message") }}
       </p>
       <div class="flex justify-end justify-between">
-        <UButton @click="cancelDeduction" color="red" variant="solid">
+        <UButton
+          @click="cancelDeduction"
+          color="red"
+          variant="solid"
+          :loading="isLoading"
+        >
           {{ $t("cancelModal.confirm") }}
         </UButton>
-        <UButton @click="closeModal" color="green" variant="outline">
+        <UButton @click="closeModal" color="white" variant="outline">
           {{ $t("cancelModal.cancel") }}
         </UButton>
       </div>
@@ -46,8 +51,11 @@ const emit = defineEmits(["update:open"]);
 
 const deductionStore = useDeductionsStore();
 
+const isLoading = ref(false);
 const cancelDeduction = async () => {
+  isLoading.value = true;
   await deductionStore.cancelPayment(props.rowId);
+  isLoading.value = false;
   emit("update:open", false);
 };
 
