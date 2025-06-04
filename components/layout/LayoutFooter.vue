@@ -5,7 +5,7 @@
     >
       <p>{{ $t("footer.title") }}</p>
 
-      <NuxtLink to="/terms" class="hover:text-primary">{{
+      <NuxtLink :to="`/${locale}/terms`" class="hover:text-primary">{{
         $t("terms")
       }}</NuxtLink>
 

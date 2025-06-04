@@ -225,6 +225,18 @@ header {
   transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
 }
 
+.nav-link::after.first-link{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #FFB749;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+
 .nav-link:hover::after {
   width: 100%;
   left: 0;
@@ -234,6 +246,11 @@ header {
   border-bottom: 2px solid white;
   font-weight: bold;
 }
+.active-link.first-link {
+  border-bottom: 2px solid white;
+  font-weight: bold;
+}
+
 
 .mobile-nav-link {
   position: relative;

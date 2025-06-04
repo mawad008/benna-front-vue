@@ -10,10 +10,10 @@ const route = useRoute();
 const langCookie = useCookie("i18n_redirected");
 
 onMounted(() => {
-  if (!langCookie.value) {
-    i18n.locale.value = "ar";
-    langCookie.value = "ar";
-  }
+  // if (!langCookie.value) {
+  //   i18n.locale.value = "ar";
+  //   langCookie.value = "ar";
+  // }
   localStorage.setItem("nuxt-color-mode", "light");
 });
 
