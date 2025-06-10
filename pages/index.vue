@@ -38,8 +38,9 @@
       </template>
 
       <template v-else>
-        <CustomPaymentCard />
-        <!-- <MoyasarPayment /> -->
+        <!-- <CustomPaymentCard /> -->
+        <MoyasarPayment />
+        
       </template>
     </div>
   </div>
@@ -55,12 +56,13 @@
 import Hero from "@/components/ui/Hero.vue";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
-// import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
+import MoyasarPayment from "@/components/cards/MoyasarPayment.vue";
 import LoginModal from "@/components/modals/LoginModal.vue";
 import { useDonationStore } from "@/stores/donation/donationStore";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
-import CustomPaymentCard from "@/components/cards/CustomPaymentCard.vue";
+
+//import CustomPaymentCard from "@/components/cards/CustomPaymentCard.vue";
 
 definePageMeta({
   layout: "default",
