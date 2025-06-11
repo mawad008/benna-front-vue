@@ -6,6 +6,7 @@ export const useDonorStore = defineStore("donor", {
     donorName: "" as string,
     customAmount: "" as string,
     selectedAmount: "" as string,
+    withdrawalOneRiyal: "1" as string,
     recurringType: "day" as string,
     startDate: "",
     errors: {
@@ -68,5 +69,15 @@ export const useDonorStore = defineStore("donor", {
       today.setHours(0, 0, 0, 0);
       return selectedDate >= today;
     },
+    isStartDateToday() {
+      if (!this.startDate) return false;
+      
+      const today = new Date();
+      const [day, month, year] = this.startDate.split("-").map(Number);
+      const selectedDate = new Date(year, month - 1, day);
+      selectedDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0);
+      return selectedDate.getTime() === today.getTime();
+    }
   },
 });

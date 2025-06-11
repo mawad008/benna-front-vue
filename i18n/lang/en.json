@@ -264,5 +264,6 @@
     "cancel": "  Continue Deduction",
     "confirm": " Cancel Deduction"
   },
-  "editPaymentButton": "Edit Payment Data"
+  "editPaymentButton": "Edit Payment Data",
+  "paymentWarningMessage":"One SAR will be deducted from your account to verify the payment details"
 }

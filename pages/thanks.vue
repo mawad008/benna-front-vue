@@ -42,14 +42,6 @@
         <p class="text-xl text-white mb-4">
           {{ errorMessage || "يرجى المحاولة مرة أخرى لاحقاً." }}
         </p>
-        <button
-          @click="retryPayment"
-          :disabled="isLoading"
-          aria-label="إعادة محاولة الدفع"
-          class="bg-white text-[#138B96] font-bold py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors"
-        >
-          {{ $t("successPage.retry") }}
-        </button>
       </div>
     </div>
   </section>
@@ -61,76 +53,39 @@ import { useRoute, useRouter } from "vue-router";
 import { useApi } from "@/composables/api";
 import { useI18n } from "vue-i18n";
 import { useDonationStore } from "@/stores/donation/donationStore";
-
+import { usePaymentStore } from "@/stores/donation/paymentStore";
 
 const { locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const id = ref<string | null>(route.query.id as string | null);
-const token = ref<string | null>(route.query.token as string | null);
 const status = ref<string | null>(route.query.status as string | null);
 const amount = ref<number | null>(
   route.query.amount ? parseFloat(route.query.amount as string) : null
 );
+const message = ref<string | null>(route.query.message as string | null);
+// console.log(message.value);
 const { post } = useApi();
 const donationStore = useDonationStore();
+const paymentStore = usePaymentStore();
 const isLoading = ref(true);
 const isSuccess = ref(false);
 const errorMessage = ref<string | null>(null);
 
-interface PaymentResponse {
-  data: {
-    status: string;
-  };
-};
-
-const createPayment = async () => {
-  try {
-    isLoading.value = true;
-    // if (!id.value || !status.value || !token.value || !amount.value) {
-    if (!token.value || !amount.value) {
-      throw new Error("معلومات الدفع غير صالحة");
-    }
-    const response = await post<PaymentResponse>("/api/createPayment", {
-      // id: id.value,
-      // status: status.value,
-      // amount: amount.value,
-      token: token.value,
-      deduction_id: Number(localStorage.getItem("donation")),
-
-    });
-    // console.log(response.data.status);
-    // if (response?.data?.status === "paid") {
-    isSuccess.value = true;
-    // } else {
-    //   throw new Error("Payment creation failed: Invalid response");
-    // }
-  } catch (error: any) {
-    console.error("Payment creation failed", error);
-    isSuccess.value = false;
-    errorMessage.value =
-      error.response?.data?.message ||
-      error.message ||
-      "حدث خطأ غير متوقع، يرجى المحاولة لاحقاً";
-  } finally {
-    isLoading.value = false;
-  }
-};
-
-const retryPayment = () => {
-  errorMessage.value = null;
-  isLoading.value = true;
-  createPayment();
-};
 
 onMounted(() => {
-  // if (!id.value || !status.value || !token.value || !amount.value) {
-  if (!token.value || !amount.value) {
-    isLoading.value = false;
-    errorMessage.value = "معلومات الدفع غير كاملة";
-    return;
-  }
-  createPayment();
+if(message.value === "APPROVED"){
+  //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
+  paymentStore.refundPayment(id.value!);
+  isSuccess.value = true;
+  isLoading.value = false;
+}else{
+  isLoading.value = false;
+  isSuccess.value = false;
+  errorMessage.value = message.value;
+} 
+
+
 });
 
 const goToHome = () => {

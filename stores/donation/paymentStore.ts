@@ -5,8 +5,8 @@ export const usePaymentStore = defineStore("payment", {
     selectedPaymentMethod: "",
     cardholderName: "",
     cardNumber: "",
-    expiryMonth: "", 
-    expiryYear: "", 
+    expiryMonth: "",
+    expiryYear: "",
     cvv: "",
     errors: {
       paymentMethod: "",
@@ -35,7 +35,7 @@ export const usePaymentStore = defineStore("payment", {
 
         // Validate expiry date
         const expiryDateRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-        const expiryDate = `${this.expiryMonth}/${this.expiryYear}`; 
+        const expiryDate = `${this.expiryMonth}/${this.expiryYear}`;
         if (expiryDateRegex.test(expiryDate)) {
           const currentYear = new Date().getFullYear() % 100;
           const currentMonth = new Date().getMonth() + 1;
@@ -59,6 +59,18 @@ export const usePaymentStore = defineStore("payment", {
       }
 
       return !Object.values(this.errors).some((error) => error);
+    },
+//This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
+   async refundPayment(payment_id: string) {
+      const { locale } = useI18n();
+      const { post } = useApi(locale.value);
+      try {
+        const response = await post(`/api/refund-payment?payment_id=${payment_id}`);
+        return response;
+      } catch (error: any) {
+        console.error("Refund payment failed", error);
+        throw error;
+      }
     },
   },
 });

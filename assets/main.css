@@ -54,3 +54,11 @@ body {
     transform: rotate(360deg);
   }
 }
+
+
+/* Moyasar Button */
+#mysr-form-form-el#mysr-form-form-el#mysr-form-form-el.mysr-form-moyasarForm[payment-form="true"]
+  .mysr-form-button {
+  background-color: #138b96 !important;
+
+}

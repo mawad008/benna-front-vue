@@ -259,5 +259,6 @@
     "cancel": "متابعة الاستقطاع",
     "confirm": " إلغاء الاستقطاع"
   },
-  "editPaymentButton":"تعديل بيانات الدفع"
+  "editPaymentButton":"تعديل بيانات الدفع",
+  "paymentWarningMessage":"سيتم خصم مبلغ 1 ريال من حسابك للتأكد من صحة بيانات البطاقة"
 }
