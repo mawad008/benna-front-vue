@@ -1,75 +1,25 @@
-# Nuxt Minimal Starter
+# Benna Donation Platform
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Benna is a modern, responsive donation platform built with Nuxt.js, providing a seamless donation experience with multiple payment options and multi-language support.
 
-## Setup
+## Features
 
-Make sure to install dependencies:
+- Secure payment processing
+- Multi-language support (i18n)
+- Responsive design for all devices
+- User authentication
+- Donation tracking and management
+- Modern UI with Tailwind CSS
+- Built with Nuxt 3 and Vue 3
 
-```bash
-# npm
-npm install
+## Tech Stack
 
-# pnpm
-pnpm install
+- **Frontend Framework**: Nuxt.js 3
+- **UI Library**: Nuxt UI, PrimeVue
+- **Styling**: Tailwind CSS
+- **State Management**: Pinia
+- **Form Handling**: Vee-Validate with Yup
+- **Internationalization**: @nuxtjs/i18n
+- **HTTP Client**: Axios
+- **Icons**: Hero Icons, PrimeIcons
 
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
