@@ -9,9 +9,9 @@
         <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
       </div>
       <div class="mysr-form" />
-      <P v-if="!donorStore.isStartDateToday()" class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50"> 
+      <p v-if="!donorStore.isStartDateToday()" class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50"> 
         <span>*</span>
-       {{ $t('paymentWarningMessage') }}</P>
+       {{ $t('paymentWarningMessage') }}</p>
     </div>
   </div>
 </template>
@@ -23,22 +23,38 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import Title from "@/components/ui/Title.vue";
 import { useI18n } from "vue-i18n";
 
+// props To Get deduction Id From Deduction Table
+const props = defineProps({
+  rowId: {
+    type: Number,
+
+  },
+})
 
 
 const { locale } = useI18n();
 const donationStore = useDonationStore();
 const donorStore = useDonorStore();
+
 const icon = computed(() => {
   return locale.value === "ar"
     ? "i-heroicons-arrow-right"
     : "i-heroicons-arrow-left";
 });
 
+const deductionId = computed(() => {
+  if(!props.rowId){
+  return Number(localStorage.getItem("donation"));
+  }
+  return props.rowId;
+});
 
 const paymnetAmount = computed(() => {
+   // withdrawal one riyal in case of start date is not today
   if(!donorStore.isStartDateToday()){
     return donorStore.withdrawalOneRiyal;
   }
+   // withdrawal the actual amount in case of start date is today
   return donorStore.selectedAmount || donorStore.customAmount;
 });
 
@@ -61,6 +77,13 @@ onMounted(() => {
     on_completed: async function (payment: any) {
       await saveTokenOnBackend(payment.source.token, payment);
     },
+    metadata: {
+      deduction_id : deductionId.value,
+      user_id : JSON.parse(localStorage.getItem("user")|| "")?.id,
+      type: donorStore.recurringType,
+      // "1" is the default campaign id
+      campaign_id : donationStore.campaign_id || "1",
+    },
 
   });
 });
@@ -71,7 +94,7 @@ async function saveTokenOnBackend(token: any, payment: any) {
   try {
     const response = await post("/api/createPayment", {
       token: token,
-      deduction_id: Number(localStorage.getItem("donation")),
+      deduction_id: deductionId.value,
     });
     console.log(response.data);
   } catch (error) {

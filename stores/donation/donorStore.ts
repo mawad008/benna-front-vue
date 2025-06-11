@@ -69,6 +69,7 @@ export const useDonorStore = defineStore("donor", {
       today.setHours(0, 0, 0, 0);
       return selectedDate >= today;
     },
+    // compare start date with today
     isStartDateToday() {
       if (!this.startDate) return false;
       

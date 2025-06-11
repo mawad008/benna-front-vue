@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { useDonorStore } from "./donorStore";
-import { usePaymentStore } from "./paymentStore";
 import { useApi } from "@/composables/api";
 import { useNuxtApp } from "#app";
 interface donation {

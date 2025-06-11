@@ -58,9 +58,14 @@
 
       <!-- Payment Card State -->
       <template v-if="donationStore.showPayment && !paymentSuccess">
-        <CustomPaymentCard
+        <!-- <CustomPaymentCard
           class="animate-in zoom-in-95 duration-300"
           @paymentSuccess="handlePaymentSuccess"
+        /> -->
+        <MoyasarPayment
+          class="animate-in zoom-in-95 duration-300"
+          @paymentSuccess="handlePaymentSuccess"
+          :rowId="props?.row?.id"
         />
       </template>
 
@@ -104,7 +109,8 @@ import { ref, defineProps, defineEmits, watch } from "vue";
 import { useDonationStore } from "@/stores/donation/donationStore";
 import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
-import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
+// import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
+import MoyasarPayment from "../cards/MoyasarPayment.vue";
 import { useDeductionsStore } from "@/stores/deductions";
 
 const donationStore = useDonationStore();

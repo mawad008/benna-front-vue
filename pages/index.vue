@@ -62,8 +62,6 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import { useRegisterStore } from "@/stores/register";
 import { useAuthStore } from "@/stores/auth";
 
-//import CustomPaymentCard from "@/components/cards/CustomPaymentCard.vue";
-
 definePageMeta({
   layout: "default",
 });
