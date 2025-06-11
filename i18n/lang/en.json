@@ -184,7 +184,7 @@
         "phone": "Phone Number",
         "next": "Continue Registering",
         "phoneError": "Enter Phone Number",
-        "phoneError2": "Phone Number must start with 05 and be 10 digits"
+        "phoneError2": "Phone Number must start with 05 or 5 and be 10 digits"
       },
       "success": {
         "title": "Welcome to our Website",

@@ -9,7 +9,7 @@
         <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
       </div>
       <div class="mysr-form" />
-      <P v-if="!donorStore.isStartDateToday()" class="text-center text-yellow-500 text-sm mt-2"> 
+      <P v-if="!donorStore.isStartDateToday()" class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50"> 
         <span>*</span>
        {{ $t('paymentWarningMessage') }}</P>
     </div>
@@ -51,8 +51,7 @@ onMounted(() => {
     currency: "SAR",
     description: "Donation From " + donorStore.donorName,
     language: locale.value,
-    // publishable_api_key: Moyasar.publishable_api_key,
-    publishable_api_key: "pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e",
+    publishable_api_key: Moyasar.publishable_api_key,
     callback_url: `${window.location.origin}/${locale.value}/thanks`,
     methods: ["creditcard", "mada", "visa"],
     tokenize: true,

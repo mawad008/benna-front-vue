@@ -10,7 +10,7 @@
         <h1 class="font-semibold text-[19px] text-center mb-2">
           {{ $t("hero.title") }}
         </h1>
-        <p class="font-semibold text-[18px] p-2 mb-2 text-center">
+        <p class="font-semibold text-[18px] p-2 mb-2 text-center text-[#9d2a06]">
           {{ $t("hero.deduction") }}
         </p>
         <p class="font-normal text-[18px] text-center mb-2">

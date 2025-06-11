@@ -67,7 +67,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       Moyasar: {
-        publishable_api_key: "pk_live_uBjoMEHPt5spU8NzwQFtdHgdjD7ZJJDCVKxjs7RG",
+        publishable_api_key: process.env.NODE_ENV === 'development' 
+          ? 'pk_test_2Ftd31JoJvPQhbYrKdmyPdr7HsfPVFZF8Q1mEs5e' 
+          : 'pk_live_uBjoMEHPt5spU8NzwQFtdHgdjD7ZJJDCVKxjs7RG',
       },
     },
   },

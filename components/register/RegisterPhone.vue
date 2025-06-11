@@ -70,7 +70,7 @@ const schema = yup.object({
     .string()
     .required(t("loginModel.register.phoneStep.phoneError"))
     .transform((value) => value.replace(/\D/g, ""))
-    .matches(/^05\d{8}$/, t("loginModel.register.phoneStep.phoneError2")),
+    .matches(/^(?:0)?5\d{8}$/, t("loginModel.register.phoneStep.phoneError2")),
 });
 
 const loading = ref(false);
