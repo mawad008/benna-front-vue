@@ -8,7 +8,7 @@
         <!-- Title with Badge -->
         <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
       </div>
-      <div class="mysr-form" />
+      <div class="mysr-form" :dir="locale === 'ar' ? 'rtl' : 'ltr'" />
       <p v-if="!donorStore.isStartDateToday()" class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50"> 
         <span>*</span>
        {{ $t('paymentWarningMessage') }}</p>
@@ -23,15 +23,6 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import Title from "@/components/ui/Title.vue";
 import { useI18n } from "vue-i18n";
 
-// props To Get deduction Id From Deduction Table
-const props = defineProps({
-  rowId: {
-    type: Number,
-
-  },
-})
-
-
 const { locale } = useI18n();
 const donationStore = useDonationStore();
 const donorStore = useDonorStore();
@@ -41,7 +32,13 @@ const icon = computed(() => {
     ? "i-heroicons-arrow-right"
     : "i-heroicons-arrow-left";
 });
-
+// props To Get deduction Id From Deduction Table in case of Edit on Payment
+const props = defineProps({
+  rowId: {
+    type: Number,
+  },
+});
+// props To Get deduction Id From LocalStorage in case of create a new payment
 const deductionId = computed(() => {
   if(!props.rowId){
   return Number(localStorage.getItem("donation"));
@@ -84,10 +81,10 @@ onMounted(() => {
       // "1" is the default campaign id
       campaign_id : donationStore.campaign_id || "1",
     },
-
   });
 });
 
+    
 async function saveTokenOnBackend(token: any, payment: any) {
   localStorage.setItem("payment", JSON.stringify(payment));
   const { post } = useApi();
@@ -101,8 +98,15 @@ async function saveTokenOnBackend(token: any, payment: any) {
     console.log(error);
   }
 }
+
+
 </script>
 
-<style scoped></style>
+<style scoped>
+.mysr-form form {
+  direction: rtl;
+}
+
+</style>
 
 
