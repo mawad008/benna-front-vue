@@ -15,15 +15,9 @@
               <label class="text-sm text-gray-600 font-medium">{{
                 $t("campaignTable.labels.status")
               }}</label>
-              <USelect
-                v-model="selectedStatus"
-                :options="statusOptions"
-                :placeholder="$t('campaignTable.placeholder.chooseSatatus')"
-                color="white"
-                variant="outline"
-                option-attribute="label"
-                value-attribute="value"
-              />
+              <USelect v-model="selectedStatus" :options="statusOptions"
+                :placeholder="$t('campaignTable.placeholder.chooseSatatus')" color="white" variant="outline"
+                option-attribute="label" value-attribute="value" />
             </div>
 
             <!-- Type Filter -->
@@ -31,15 +25,9 @@
               <label class="text-sm text-gray-600 font-medium">{{
                 $t("campaignTable.labels.type")
               }}</label>
-              <USelect
-                v-model="selectedType"
-                :options="typeOptions"
-                :placeholder="$t('campaignTable.placeholder.chooseType')"
-                color="white"
-                variant="outline"
-                option-attribute="label"
-                value-attribute="value"
-              />
+              <USelect v-model="selectedType" :options="typeOptions"
+                :placeholder="$t('campaignTable.placeholder.chooseType')" color="white" variant="outline"
+                option-attribute="label" value-attribute="value" />
             </div>
           </div>
         </div>
@@ -50,36 +38,21 @@
             <i class="i-lucide-search"></i>
             <span>{{ $t("campaignTable.search") }}</span>
           </div>
-          <UInput
-            v-model="searchQuery"
-            :placeholder="$t('campaignTable.placeholder.search')"
-            class="w-full max-w-md"
-            color="white"
-            variant="outline"
-          />
+          <UInput v-model="searchQuery" :placeholder="$t('campaignTable.placeholder.search')" class="w-full max-w-md"
+            color="white" variant="outline" />
         </div>
       </div>
     </div>
 
     <!-- Table -->
-    <UTable
-      sticky
-      :loading="isLoading"
-      loading-color="primary"
-      loading-animation="carousel"
-      :rows="paginatedData"
-      :columns="columns"
-      class="w-full"
-      :sort-button="{
+    <UTable sticky :loading="isLoading" loading-color="primary" loading-animation="carousel" :rows="paginatedData"
+      :columns="columns" class="w-full" :sort-button="{
         icon: 'i-heroicons-sparkles-20-solid',
         color: 'white',
         variant: 'outline',
-      }"
-      :empty-state="{
+      }" :empty-state="{
         label: $t('campaignTable.empty'),
-      }"
-      @sort="handleSort"
-    >
+      }" @sort="handleSort">
       <!-- Row Number -->
       <template #index-data="{ index }">
         <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
@@ -114,8 +87,10 @@
 
       <!-- Action Column -->
       <template #actions-data="{ row }">
-        <!-- <UDropdown :items="items(row)"> -->
-        <UTooltip
+        <UDropdown :items="items(row)">
+          <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" class="px-1" />
+        </UDropdown>
+        <!-- <UTooltip
           :text="t('campaignTable.actions.showTransactions')"
           placement="top"
         >
@@ -125,8 +100,7 @@
             variant="solid"
             icon="i-heroicons-eye"
           />
-        </UTooltip>
-        <!-- </UDropdown> -->
+        </UTooltip> -->
       </template>
     </UTable>
 
@@ -134,47 +108,17 @@
     <div class="container bg-white rounded-lg shadow-md p-2 mb-4">
       <div class="flex justify-between items-center m-2">
         <div class="flex items-center gap-2">
-          <UButton
-            :disabled="page === 1"
-            @click="page = page - 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="m8.25 4.5 7.5 7.5-7.5 7.5"
-              />
+          <UButton :disabled="page === 1" @click="page = page - 1" color="icon" class="p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </UButton>
           <span class="text-gray-600 text-sm">{{ page }}/{{ pageCount }}</span>
-          <UButton
-            :disabled="page === pageCount"
-            @click="page = page + 1"
-            color="icon"
-            class="p-1"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-4"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
-              />
+          <UButton :disabled="page === pageCount" @click="page = page + 1" color="icon" class="p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="size-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
           </UButton>
         </div>
@@ -182,31 +126,27 @@
         <div class="flex text-gray-600 text-sm gap-1">
           <span>{{ filteredData?.length }}</span>
           <span>of</span>
-          <span
-            >{{ (page - 1) * pageSize + 1 }}-{{
-              Math.min(page * pageSize, filteredData?.length)
-            }}</span
-          >
+          <span>{{ (page - 1) * pageSize + 1 }}-{{
+            Math.min(page * pageSize, filteredData?.length)
+          }}</span>
         </div>
       </div>
     </div>
   </div>
-  <EditPayment
-    v-model:open="isEditModalOpen"
-    :row="selectedRow"
-    @updated="handleUpdatedPayment"
-  />
+  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
+  <!-- <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" /> -->
+  <CancelPayment :row="selectedRow" v-model:open="isCancelModalOpen" @updated="handleUpdatedPayment" />
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
+import CancelPayment from "@/components/modals/CancelPayment.vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
-const toast = useToast();
 
 const props = defineProps<{ campaigns: any }>();
 const campaigns = ref(props.campaigns);
@@ -250,7 +190,7 @@ const getGlobalIndex = (rowIndex: number) => {
 // Table Columns
 const columns = ref([
   { key: "index", label: "#" },
-  { key: "campaign_name", label: t("campaignTable.columns.campaignName") },
+  { key: "name", label: t("campaignTable.columns.campaignName") },
   {
     key: "amount",
     label: t("campaignTable.columns.campaignAmount"),
@@ -270,65 +210,68 @@ const columns = ref([
   { key: "actions", label: t("campaignTable.columns.campaignActions") },
 ]);
 
-// const items = (row: any) => [
-//   [
-//     {
-//       label: t("campaignTable.actions.update"),
-//       icon: "i-heroicons-pencil-square",
-//       color: "info",
-//       class: "dark:text-[#138B96] text-[#138B96]",
-//       click: () => updatePaymentData(row),
-//     },
-//     {
-//       label:
-//         row.status === 1
-//           ? t("campaignTable.actions.pause")
-//           : row.status === 2
-//           ? t("campaignTable.actions.pause")
-//           : t("campaignTable.actions.resume"),
-//       icon:
-//         row.status === 1
-//           ? "i-heroicons-pause"
-//           : row.status === 2
-//           ? "i-heroicons-pause"
-//           : "i-heroicons-play",
-//       color:
-//         row.status === 1 ? "danger" : row.status === 2 ? "warning" : "success",
-//       class:
-//         row.status === 1
-//           ? "text-[#F23030] dark:text-[#F23030] "
-//           : row.status === 2
-//           ? "text-[#F23030] dark:text-[#F23030] "
-//           : "text-[#22AD5C] dark:text-[#22AD5C] ",
-//       click: () => toggleDonationStatus(row),
-//     },
-//     {
-//       label: t("campaignTable.actions.showTransactions"),
-//       icon: "i-heroicons-eye",
-//       color: "neutral",
-//       class: "dark:text-[#111928] text-[#111928]",
-//       click: () => showTransactions(row),
-//     },
-//   ],
-// ];
+const items = (row: any) => [
+  [
+    {
+      label: t("campaignTable.actions.update"),
+      icon: "i-heroicons-pencil-square",
+      color: "info",
+      class: "dark:text-[#138B96] text-[#138B96]",
+      click: () => updatePaymentData(row),
+    },
+    {
+      label:
+        row.status === 1
+          ? t("campaignTable.actions.pause")
+          : row.status === 2
+            ? t("campaignTable.actions.pause")
+            : t("campaignTable.actions.resume"),
+      icon:
+        row.status === 1
+          ? "i-heroicons-pause"
+          : row.status === 2
+            ? "i-heroicons-pause"
+            : "i-heroicons-play",
+      color:
+        row.status === 1 ? "danger" : row.status === 2 ? "warning" : "success",
+      class:
+        row.status === 1
+          ? "text-[#F23030] dark:text-[#F23030] "
+          : row.status === 2
+            ? "text-[#F23030] dark:text-[#F23030] "
+            : "text-[#22AD5C] dark:text-[#22AD5C] ",
+      click: () => toggleDonationStatus(row),
+    },
+    {
+      label: t("campaignTable.actions.showTransactions"),
+      icon: "i-heroicons-eye",
+      color: "neutral",
+      class: "dark:text-[#111928] text-[#111928]",
+      click: () => showTransactions(row),
+    },
+  ],
+];
+
 
 const toggleDonationStatus = async (row: any) => {
+  
   isLoading.value = true;
   try {
-    let updatedCampaign;
+    let updatedCampaign : any;
     if (row.status === 1 || row.status === 2) {
-      updatedCampaign = await campaignsStore.cancelPayment(row.campaign_id);
+      updatedCampaign = cancelDonation(row);
     } else {
-      updatedCampaign = await campaignsStore.activePayment(row.campaign_id);
+      updatedCampaign = await campaignsStore.activePayment(row.id);
     }
     const index = campaigns.value.findIndex(
-      (c) => c.campaign_id === row.campaign_id
+      (c: any) => c.id === row.id
     );
+    console.log(updatedCampaign);
     if (index !== -1) {
       campaigns.value[index] = {
         ...campaigns.value[index],
-        status: updatedCampaign.data.status,
-        next_time: updatedCampaign.data.next_time,
+        status: updatedCampaign.status,
+        next_time: updatedCampaign.next_time,
       };
     }
 
@@ -340,22 +283,22 @@ const toggleDonationStatus = async (row: any) => {
 };
 
 const showTransactions = (row: any) => {
-  router.push(`/deductions/${row.campaign_id}`);
+  router.push(`/deductions/${row.id}`);
 };
 const getStatusLabel = (status: number) => {
   return status === 1
     ? t("campaignTable.status.1")
     : status === 2
-    ? t("campaignTable.status.2")
-    : t("campaignTable.status.0");
+      ? t("campaignTable.status.2")
+      : t("campaignTable.status.0");
 };
 
 const getTypeLabel = (type: string) => {
   return type === "day"
     ? t("campaignTable.type.day")
     : type === "week"
-    ? t("campaignTable.type.week")
-    : t("campaignTable.type.month");
+      ? t("campaignTable.type.week")
+      : t("campaignTable.type.month");
 };
 
 const getStatusColor = (status: number) => {
@@ -373,7 +316,7 @@ const normalizeArabic = (text: string) => {
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
   return campaigns?.value?.filter((row: any) => {
-    const normalizedName = normalizeArabic(row.campaign_name.toLowerCase());
+    const normalizedName = normalizeArabic(row.name.toLowerCase());
     const normalizedType = normalizeArabic(row.type.toLowerCase());
     return (
       (searchQuery.value === "" ||
@@ -430,7 +373,7 @@ const handleSort = (key: string, order: "asc" | "desc" | null) => {
 };
 
 const isEditModalOpen = ref(false);
-const selectedRow = ref(null);
+const selectedRow = ref<any>(null);
 
 // Update Payment Data
 const updatePaymentData = (row: any) => {
@@ -439,8 +382,25 @@ const updatePaymentData = (row: any) => {
 };
 const handleUpdatedPayment = (updatedRow: any) => {
   const index = campaigns.value.findIndex(
-    (c) => c.campaign_id === updatedRow.campaign_id
+    (c) => c.id === updatedRow.id
   );
   if (index !== -1) campaigns.value[index] = { ...updatedRow };
 };
+
+const isCancelModalOpen = ref(false);
+
+const cancelDonation = (row: any) => {
+  selectedRow.value = row;
+  isCancelModalOpen.value = true;
+};
+
+// // Update Payment Data
+// const updatePaymentData = (row: any) => {
+//   if (row.status === 2) {
+//     selectedRow.value = row;
+//     isEditModalOpen.value = true;
+//   }
+// };
+
+
 </script>

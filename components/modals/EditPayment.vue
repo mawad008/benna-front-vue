@@ -111,10 +111,10 @@ import DonationCard from "@/components/cards/DonationCard.vue";
 import DonorNameCard from "@/components/cards/DonorNameCard.vue";
 // import CustomPaymentCard from "../cards/CustomPaymentCard.vue";
 import MoyasarPayment from "../cards/MoyasarPayment.vue";
-import { useDeductionsStore } from "@/stores/deductions";
+import { useDeductionHistoryStore } from "@/stores/deductions";
 
 const donationStore = useDonationStore();
-const deductionStore = useDeductionsStore();
+const deductionStore = useDeductionHistoryStore();
 
 const props = defineProps({
   row: Object,

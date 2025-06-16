@@ -86,7 +86,7 @@ onMounted(() => {
 
     
 async function saveTokenOnBackend(token: any, payment: any) {
-  localStorage.setItem("payment", JSON.stringify(payment));
+  // localStorage.setItem("payment", JSON.stringify(payment));
   const { post } = useApi();
   try {
     const response = await post("/api/createPayment", {

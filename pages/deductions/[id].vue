@@ -3,13 +3,13 @@
   <div class="container lg:mt-10 md:mt-20">
     <!-- Loading State -->
     <div
-      v-if="isLoading || deductionsStore.loading"
+      v-if="isLoading || deductionHistoryStore.loading"
       class="text-center text-gray-500 h-[calc(100vh-200px)] flex items-center justify-center"
     >
       <div class="spinner" aria-label="جاري التحميل"></div>
     </div>
     <div
-      v-else-if="deductionsStore.deductions.length === 0"
+      v-else-if="deductionHistoryStore.deductionHistory.length === 0"
       class="text-center text-gray-500 my-4 h-[calc(50vh-100px)] flex items-center justify-center text-2xl font-medium flex-col gap-4"
     >
       {{ $t("deductionPage.noDeductions") }}
@@ -42,16 +42,16 @@
         </h1>
       </div>
       <br />
-      <DeductionsTable :deductions="deductionsStore.deductions" />
+      <DeductionsTable :deductions="deductionHistoryStore.deductionHistory" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import Hero from "@/components/ui/Hero.vue";
-import DeductionsTable from "@/components/DeductionsTable.vue";
+import DeductionsTable from "@/components/tables/DeductionsTable.vue";
 import { useRoute } from "vue-router";
-import { useDeductionsStore } from "@/stores/deductions";
+import { useDeductionHistoryStore } from "@/stores/deductions";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
@@ -61,7 +61,7 @@ const router = useRouter();
 const route = useRoute();
 const isLoading = ref(true);
 const campaign_id = route.params.id;
-const deductionsStore = useDeductionsStore();
+const deductionHistoryStore = useDeductionHistoryStore();
 const { locale } = useI18n();
 
 const icon = computed(() => {
@@ -74,7 +74,7 @@ const icon = computed(() => {
 
 onMounted(() => {
   isLoading.value = true;
-  deductionsStore.fetchDeductions(Number(campaign_id));
+  deductionHistoryStore.fetchDeductions(Number(campaign_id));
   isLoading.value = false;
 });
 const { t } = useI18n();

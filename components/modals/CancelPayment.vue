@@ -23,7 +23,7 @@
       </p>
       <div class="flex justify-around">
         <UButton
-          @click="cancelDeduction"
+          @click="cancelPayment"
           color="red"
           variant="solid"
           :loading="isLoading"
@@ -41,16 +41,15 @@
 
 
 <script setup lang="ts">
-import { useDeductionsStore } from "@/stores/deductions";
-
+import { useCampaignsStore } from "@/stores/compaigns";
 const props = defineProps<{
-  rowId: number;
-  open: boolean;
+row:any;
+open: boolean;
 }>();
 
 const emit = defineEmits(["update:open"]);
 
-const deductionStore = useDeductionsStore();
+const campaignsStore = useCampaignsStore();
 const isLoading = ref(false);
 
 
@@ -65,10 +64,9 @@ const closeModal = () => {
   isModalOpen.value = false;
   emit("update:open", false);
 };
-
-const cancelDeduction = async () => {
+const cancelPayment = async () => {
   isLoading.value = true;
-  await deductionStore.cancelPayment(props.rowId);
+  await campaignsStore.cancelPayment(props.row.id);
   isLoading.value = false;
   closeModal();
 };

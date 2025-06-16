@@ -35,18 +35,27 @@
     </div>
 
     <!-- Table -->
-    <UTable sticky :rows="paginatedData" loading-color="primary" loading-animation="carousel" :loading="isLoading"
-      :columns="columns" class="w-full" :sort-button="{
+    <UTable sticky 
+    :rows="paginatedData" 
+    loading-color="primary" 
+    loading-animation="carousel" 
+    :loading="isLoading"
+      :columns="columns" 
+      class="w-full" 
+      :sort-button="{
         icon: 'i-heroicons-sparkles-20-solid',
         color: 'white',
         variant: 'outline',
-      }" :empty-state="{
+      }" 
+      :empty-state="{
         label: $t('deductionTable.empty'),
       }" @sort="handleSort">
+
       <!-- Row Number -->
       <template #index-data="{ index }">
         <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
       </template>
+      <!-- Amount Row -->
       <template #amount-data="{ row }">
         <div class="flex items-center gap-1 text-start">
           {{ row.amount }}
@@ -54,22 +63,22 @@
         </div>
       </template>
 
-      <!-- Status Badge -->
+      <!-- Status Row -->
       <template #status-data="{ row }">
         <UBadge :color="getStatusColor(row.status)" variant="subtle">
           {{ getStatusLabel(row.status) }}
         </UBadge>
       </template>
 
-      <!-- Action Column -->
-      <template #actions-data="{ row }">
+      <!-- Action Row -->
+      <!-- <template #actions-data="{ row }">
         <div class="flex items-center justify-start">
           <UDropdown v-if="row.status === 2" :items="items(row)">
             <UButton color="icon" variant="solid" icon="i-heroicons-ellipsis-vertical-20-solid" class="px-1" />
           </UDropdown>
           <span v-else class="font-bold text-lg px-2">-</span>
         </div>
-      </template>
+      </template> -->
     </UTable>
 
     <!-- Pagination -->
@@ -117,28 +126,27 @@
     </div>
   </div>
 
-  <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
+  <!-- <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
 
   <CancelPayment v-if="selectedRow && selectedRow?.status === 2" :row-id="selectedRow?.id"
-    v-model:open="isCancelModalOpen" />
+    v-model:open="isCancelModalOpen" /> -->
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useDeductionsStore } from "@/stores/deductions";
+import { useDeductionHistoryStore } from "@/stores/deductions";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import CancelPayment from "@/components/modals/CancelPayment.vue";
 const { t } = useI18n();
 
 const props = defineProps<{ deductions: any }>();
-const deductions = ref(props.deductions);
-const deductionsStore = useDeductionsStore();
+const deductionHistoryStore = useDeductionHistoryStore();
 const isLoading = ref(false);
 watch(
   () => props.deductions,
   (newDeductions) => {
-    deductions.value = newDeductions;
+    deductionHistoryStore.fetchDeductions(newDeductions);
   },
   { deep: true }
 );
@@ -166,32 +174,32 @@ const columns = ref([
     sortable: true,
   },
   { key: "status", label: t("deductionTable.columns.status") },
-  { key: "actions", label: t("campaignTable.columns.campaignActions") },
+  // { key: "actions", label: t("campaignTable.columns.campaignActions") },
 ]);
 
-const items = (row: any) => {
-  const baseItems = [
-    {
-      label: t("campaignTable.actions.update"),
-      icon: "i-heroicons-pencil-square",
-      color: "info",
-      class: "dark:text-[#138B96] text-[#138B96]",
-      click: () => updatePaymentData(row),
-    },
-  ];
+// const items = (row: any) => {
+//   const baseItems = [
+//     {
+//       label: t("campaignTable.actions.update"),
+//       icon: "i-heroicons-pencil-square",
+//       color: "info",
+//       class: "dark:text-[#138B96] text-[#138B96]",
+//       click: () => updatePaymentData(row),
+//     },
+//   ];
 
-  if (row.status === 2) {
-    baseItems.push({
-      label: t("campaignTable.actions.pause"),
-      icon: "i-heroicons-pause",
-      color: "danger",
-      class: "text-[#F23030] dark:text-[#F23030]",
-      click: () => cancelDonation(row),
-    });
-  }
+//   if (row.status === 2) {
+//     baseItems.push({
+//       label: t("campaignTable.actions.pause"),
+//       icon: "i-heroicons-pause",
+//       color: "danger",
+//       class: "text-[#F23030] dark:text-[#F23030]",
+//       click: () => cancelDonation(row),
+//     });
+//   }
 
-  return [baseItems];
-};
+//   return [baseItems];
+// };
 
 const isCancelModalOpen = ref(false);
 const cancelDonation = (row: any) => {
@@ -203,17 +211,17 @@ const isEditModalOpen = ref(false);
 const selectedRow = ref(null);
 
 // Update Payment Data
-const updatePaymentData = (row: any) => {
-  if (row.status === 2) {
-    selectedRow.value = row;
-    isEditModalOpen.value = true;
-  }
-};
+// const updatePaymentData = (row: any) => {
+//   if (row.status === 2) {
+//     selectedRow.value = row;
+//     isEditModalOpen.value = true;
+//   }
+// };
 
-const handleUpdatedPayment = (updatedRow: any) => {
-  const index = deductions.value.findIndex((c) => c.id === updatedRow.id);
-  if (index !== -1) deductions.value[index] = { ...updatedRow };
-};
+// const handleUpdatedPayment = (updatedRow: any) => {
+//   const index = deductions.value.findIndex((c) => c.id === updatedRow.id);
+//   if (index !== -1) deductions.value[index] = { ...updatedRow };
+// };
 
 const selectedStatus = ref("");
 const statusOptions = [
@@ -254,7 +262,7 @@ const normalizeArabic = (text: string) => {
 
 const filteredData = computed(() => {
   const normalizedQuery = normalizeArabic(searchQuery.value.toLowerCase());
-  return deductions?.value?.filter((row: any) => {
+  return deductionHistoryStore.deductionHistory?.filter((row: any) => {
     const normalizedName = normalizeArabic(row.name.toLowerCase());
     const normalizedCampaignName = normalizeArabic(
       row.campaign_name.toLowerCase()
