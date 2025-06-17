@@ -15,7 +15,7 @@
     prevent-close
   >
     <div class="bg-white rounded-lg w-full p-4 text-center">
-      <h2 class="text-xl font-semibold text-dark mb-4">
+      <h2 class="text-xl font-semibold text-red-600 mb-4">
         {{ $t("cancelModal.title") }}
       </h2>
       <p class="text-dark mb-6">

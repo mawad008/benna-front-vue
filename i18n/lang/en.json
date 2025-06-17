@@ -77,12 +77,12 @@
       "type": "Type"
     },
     "columns": {
-      "campaignName": "Campaign Name",
+      "donorName": "Donor Name",
       "campaignStatus": "Campaign Status",
       "campaignType": "Recurring Type",
       "campaignAmount": "Amount",
       "campaignStartDate": "Date",
-      "campaignActions": "Details",
+      "campaignActions": "Actions",
       "deductionNextTime": "Next Time",
       "deductionFirstDate": "Date"
     },
@@ -260,10 +260,16 @@
   },
   "cancelModal": {
     "title": "Confirm Deduction Cancellation",
-    "message": "This deduction cannot be resumed once cancelled. Are you sure you want to proceed?",
-    "cancel": "  Continue Deduction",
-    "confirm": " Cancel Deduction"
+    "message": "Are you sure you want to cancel this deduction?",
+    "cancel": "Continue Deduction",
+    "confirm": "Cancel Deduction"
   },
   "editPaymentButton": "Edit Payment Data",
-  "paymentWarningMessage":"One SAR will be deducted from your account to verify the payment details"
+  "paymentWarningMessage":"One SAR will be deducted from your account to verify the payment details",
+  "resumeModal": {
+    "title": "Confirm Deduction Resumption",
+    "message": "Are you sure you want to resume this deduction?",
+    "cancel": "Cancel Deduction",
+    "confirm": "Resume Deduction"
+  }
 }

@@ -73,12 +73,12 @@
       "type": "نوع الاستقطاع"
     },
     "columns": {
-      "campaignName": "اسم الاستقطاع",
+      "donorName": "اسم الاستقطاع",
       "campaignStatus": "حالة التبرع",
       "campaignType": "نوع الاستقطاع",
       "campaignAmount": "مبلغ الاستقطاع",
       "campaignStartDate": "تاريخ البدء",
-      "campaignActions": "التفاصيل",
+      "campaignActions": "الإجراءات",
       "deductionNextTime": "تاريخ الاستقطاع القادم",
       "deductionFirstDate": "تاريخ البدء"
     },
@@ -255,10 +255,16 @@
   },
   "cancelModal": {
     "title": "تأكيد إلغاء الاستقطاع",
-    "message": "لا يمكن استئناف هذا الاستقطاع بعد إلغائه. هل أنت متأكد من الغاء الاستقطاع؟",
+    "message": "هل أنت متأكد من الغاء الاستقطاع؟",
     "cancel": "متابعة الاستقطاع",
     "confirm": " إلغاء الاستقطاع"
   },
   "editPaymentButton":"تعديل بيانات الدفع",
-  "paymentWarningMessage":"سيتم خصم مبلغ 1 ريال من حسابك للتأكد من صحة بيانات البطاقة"
+  "paymentWarningMessage":"سيتم خصم مبلغ 1 ريال من حسابك للتأكد من صحة بيانات البطاقة",
+  "resumeModal": {
+    "title": "تأكيد استئناف الاستقطاع",
+    "message": "هل أنت متأكد من استئناف هذا الاستقطاع؟",
+    "cancel": "إلغاء الاستقطاع",
+    "confirm": " استئناف الاستقطاع"
+  }
 }

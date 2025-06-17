@@ -134,8 +134,8 @@
     </div>
   </div>
   <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" />
-  <!-- <EditPayment v-model:open="isEditModalOpen" :row="selectedRow" @updated="handleUpdatedPayment" /> -->
   <CancelPayment :row="selectedRow" v-model:open="isCancelModalOpen" @updated="handleUpdatedPayment" />
+  <ResumePayment :row="selectedRow" v-model:open="isResumeModalOpen" @updated="handleUpdatedPayment" />
 </template>
 
 <script setup lang="ts">
@@ -143,6 +143,7 @@ import { ref, computed } from "vue";
 import EditPayment from "@/components/modals/EditPayment.vue";
 import { useCampaignsStore } from "@/stores/compaigns";
 import CancelPayment from "@/components/modals/CancelPayment.vue";
+import ResumePayment from "@/components/modals/ResumePayment.vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
@@ -190,7 +191,7 @@ const getGlobalIndex = (rowIndex: number) => {
 // Table Columns
 const columns = ref([
   { key: "index", label: "#" },
-  { key: "name", label: t("campaignTable.columns.campaignName") },
+  { key: "name", label: t("campaignTable.columns.donorName") },
   {
     key: "amount",
     label: t("campaignTable.columns.campaignAmount"),
@@ -257,21 +258,19 @@ const toggleDonationStatus = async (row: any) => {
   
   isLoading.value = true;
   try {
-    let updatedCampaign : any;
     if (row.status === 1 || row.status === 2) {
-      updatedCampaign = cancelDonation(row);
+      cancelDonation(row);
     } else {
-      updatedCampaign = await campaignsStore.activePayment(row.id);
+     resumeDonation(row);
     }
     const index = campaigns.value.findIndex(
-      (c: any) => c.id === row.id
+      (c: any) => c.parent_id === row.parent_id
     );
-    console.log(updatedCampaign);
     if (index !== -1) {
       campaigns.value[index] = {
         ...campaigns.value[index],
-        status: updatedCampaign.status,
-        next_time: updatedCampaign.next_time,
+        status: row.status,
+        next_time: row.next_time,
       };
     }
 
@@ -283,7 +282,7 @@ const toggleDonationStatus = async (row: any) => {
 };
 
 const showTransactions = (row: any) => {
-  router.push(`/deductions/${row.id}`);
+  router.push(`/deductions/${row.parent_id}`);
 };
 const getStatusLabel = (status: number) => {
   return status === 1
@@ -382,7 +381,7 @@ const updatePaymentData = (row: any) => {
 };
 const handleUpdatedPayment = (updatedRow: any) => {
   const index = campaigns.value.findIndex(
-    (c) => c.id === updatedRow.id
+    (c) => c.parent_id === updatedRow.parent_id
   );
   if (index !== -1) campaigns.value[index] = { ...updatedRow };
 };
@@ -394,13 +393,11 @@ const cancelDonation = (row: any) => {
   isCancelModalOpen.value = true;
 };
 
-// // Update Payment Data
-// const updatePaymentData = (row: any) => {
-//   if (row.status === 2) {
-//     selectedRow.value = row;
-//     isEditModalOpen.value = true;
-//   }
-// };
+const isResumeModalOpen = ref(false);
 
+const resumeDonation = (row: any) => {
+  selectedRow.value = row;
+  isResumeModalOpen.value = true;
+};
 
 </script>
