@@ -248,20 +248,20 @@ const items = (row: any) => [
       icon: "i-heroicons-eye",
       color: "neutral",
       class: "dark:text-[#111928] text-[#111928]",
-      click: () => showTransactions(row),
+      click: () => showDeductionsHistory(row),
     },
   ],
 ];
 
 
 const toggleDonationStatus = async (row: any) => {
-  
+
   isLoading.value = true;
   try {
     if (row.status === 1 || row.status === 2) {
       cancelDonation(row);
     } else {
-     resumeDonation(row);
+      resumeDonation(row);
     }
     const index = campaigns.value.findIndex(
       (c: any) => c.parent_id === row.parent_id
@@ -281,7 +281,7 @@ const toggleDonationStatus = async (row: any) => {
   }
 };
 
-const showTransactions = (row: any) => {
+const showDeductionsHistory = (row: any) => {
   router.push(`/deductions/${row.parent_id}`);
 };
 const getStatusLabel = (status: number) => {
@@ -371,9 +371,10 @@ const handleSort = (key: string, order: "asc" | "desc" | null) => {
   sorting.value = order ? { key, order } : null;
 };
 
+
+// *Table Actions
 const isEditModalOpen = ref(false);
 const selectedRow = ref<any>(null);
-
 // Update Payment Data
 const updatePaymentData = (row: any) => {
   selectedRow.value = row;
@@ -385,7 +386,6 @@ const handleUpdatedPayment = (updatedRow: any) => {
   );
   if (index !== -1) campaigns.value[index] = { ...updatedRow };
 };
-
 const isCancelModalOpen = ref(false);
 
 const cancelDonation = (row: any) => {
@@ -399,5 +399,7 @@ const resumeDonation = (row: any) => {
   selectedRow.value = row;
   isResumeModalOpen.value = true;
 };
+
+
 
 </script>
