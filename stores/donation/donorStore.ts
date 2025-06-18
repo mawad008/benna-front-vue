@@ -72,12 +72,13 @@ export const useDonorStore = defineStore("donor", {
     // compare start date with today
     isStartDateToday() {
       if (!this.startDate) return false;
-      
       const today = new Date();
       const [day, month, year] = this.startDate.split("-").map(Number);
       const selectedDate = new Date(year, month - 1, day);
       selectedDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
+      // Just to keep the value to handle refund
+      localStorage.setItem("isToday", JSON.stringify(selectedDate.getTime() === today.getTime()));
       return selectedDate.getTime() === today.getTime();
     }
   },

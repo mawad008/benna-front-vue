@@ -54,7 +54,7 @@ const paymnetAmount = computed(() => {
    // withdrawal the actual amount in case of start date is today
   return donorStore.selectedAmount || donorStore.customAmount;
 });
-
+console.log(donorStore.isStartDateToday());
 const Moyasar = useRuntimeConfig().public.Moyasar;
 
 onMounted(() => {

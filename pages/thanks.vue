@@ -54,6 +54,7 @@ import { useApi } from "@/composables/api";
 import { useI18n } from "vue-i18n";
 import { useDonationStore } from "@/stores/donation/donationStore";
 import { usePaymentStore } from "@/stores/donation/paymentStore";
+import {useDonorStore} from "@/stores/donation/donorStore";
 
 const { locale } = useI18n();
 const route = useRoute();
@@ -64,19 +65,25 @@ const amount = ref<number | null>(
   route.query.amount ? parseFloat(route.query.amount as string) : null
 );
 const message = ref<string | null>(route.query.message as string | null);
-// console.log(message.value);
 const { post } = useApi();
 const donationStore = useDonationStore();
+const donorStore= useDonorStore();
 const paymentStore = usePaymentStore();
 const isLoading = ref(true);
 const isSuccess = ref(false);
 const errorMessage = ref<string | null>(null);
 
+const isToday = computed(() => {
+  return JSON.parse(localStorage.getItem("isToday") || "false");
+});
 
 onMounted(() => {
 if(message.value === "APPROVED"){
-  //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
-  paymentStore.refundPayment(id.value!);
+  if(!isToday.value){
+    //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
+    // and only used when the deduction is not starting today
+    paymentStore.refundPayment(id.value!);
+  }
   isSuccess.value = true;
   isLoading.value = false;
 }else{
