@@ -9,9 +9,11 @@
         <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
       </div>
       <div class="mysr-form" :dir="locale === 'ar' ? 'rtl' : 'ltr'" />
-      <p v-if="!donorStore.isStartDateToday()" class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50"> 
+      <p v-if="!donorStore.isStartDateToday()"
+        class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50">
         <span>*</span>
-       {{ $t('paymentWarningMessage') }}</p>
+        {{ $t('paymentWarningMessage') }}
+      </p>
     </div>
   </div>
 </template>
@@ -39,22 +41,23 @@ const props = defineProps({
   },
 });
 // props To Get deduction Id From LocalStorage in case of create a new payment
-const deductionId = computed(() => {
-  if(!props.rowId){
-  return Number(localStorage.getItem("donation"));
-  }
-  return props.rowId;
-});
+// const deductionId = computed(() => {
+//   if (!props.rowId) {
+//     return Number(localStorage.getItem("donation"));
+//   }
+//   return props.rowId;
+// });
 const deductionToken = localStorage.getItem("deductionToken");
+
 const paymnetAmount = computed(() => {
-   // withdrawal one riyal in case of start date is not today
-  if(!donorStore.isStartDateToday()){
+  // withdrawal one riyal in case of start date is not today
+  if (!donorStore.isStartDateToday()) {
     return donorStore.withdrawalOneRiyal;
   }
-   // withdrawal the actual amount in case of start date is today
+  // withdrawal the actual amount in case of start date is today
   return donorStore.selectedAmount || donorStore.customAmount;
 });
-// console.log(donorStore.isStartDateToday());
+
 const Moyasar = useRuntimeConfig().public.Moyasar;
 
 onMounted(() => {
@@ -71,35 +74,42 @@ onMounted(() => {
     credit_card: {
       save_card: true,
     },
-    on_completed: async function (payment: any) {
-      await saveTokenOnBackend(payment.source.token, payment);
+    on_completed: function (payment:any) {
+      return new Promise(function (resolve, reject) {
+        if (payment.status !== "failed") {
+          saveTokenOnBackend(payment.source.token, payment)
+          resolve(void 0);
+        } else {
+          reject();
+        }
+      });
     },
     metadata: {
-      deduction_id : deductionId.value,
-      user_id : JSON.parse(localStorage.getItem("user")|| "")?.id,
+      // deduction_id: deductionId.value,
+      user_id: JSON.parse(localStorage.getItem("user") || "")?.id,
       type: donorStore.recurringType,
       // "1" is the default campaign id
-      campaign_id : donationStore.campaign_id || "1",
+      campaign_id: donationStore.campaign_id || "1",
     },
   });
 });
 
-    
+
 async function saveTokenOnBackend(token: any, payment: any) {
   // localStorage.setItem("payment", JSON.stringify(payment));
   const { post } = useApi();
-  if(props.rowId){
+  if (props.rowId) {
     try {
-    const response = await post(`/api/update/deduction/${props.rowId}?step=1`, {
-      moyasar_token: token,
-      // deduction_id: deductionId.value,
-      registration_token: deductionToken,
-    });
-    console.log(response.data);
-  } catch (error) {
-    console.log(error);
-  }
-  }else{
+      const response = await post(`/api/update/deduction/${props.rowId}?step=1`, {
+        moyasar_token: token,
+        // deduction_id: deductionId.value,
+        registration_token: deductionToken,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
     try {
       const response = await post("/api/create/deduction?step=1", {
         moyasar_token: token,
@@ -113,14 +123,10 @@ async function saveTokenOnBackend(token: any, payment: any) {
   }
 }
 
-
 </script>
 
 <style scoped>
 .mysr-form form {
   direction: rtl;
 }
-
 </style>
-
-

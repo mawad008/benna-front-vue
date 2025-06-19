@@ -61,17 +61,17 @@ export const useDonationStore = defineStore("donation", {
         const response = await post("/api/create/deduction?step=0", payload);
         const { data } = response;
         // this.donation = data.data;
-        localStorage.setItem("donation", this.donation?.id?.toString());
+        // localStorage.setItem("donation", this.donation?.id?.toString());
         localStorage.setItem("deductionToken", data.registration_token);
         // console.log(this.donation?.id);
         // console.log("Donation submitted:", response.data);
 
         // Reset donor form
-        donorStore.donorName = "";
-        donorStore.selectedAmount = "";
-        donorStore.customAmount = "";
-        donorStore.recurringType = "day";
-        donorStore.startDate = "";
+        // donorStore.donorName = "";
+        // donorStore.selectedAmount = "";
+        // donorStore.customAmount = "";
+        // donorStore.recurringType = "day";
+        // donorStore.startDate = "";
 
         this.submissionError = "";
       } catch (error: any) {

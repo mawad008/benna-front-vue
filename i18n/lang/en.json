@@ -215,6 +215,25 @@
     "submissionRequired": "Please fill in all required fields correctly.",
     "generalSubmissionError": "An error occurred while submitting the donation. Please try again."
   },
+  "moyasarErrors": {
+    "INSUFFICIENT_FUNDS": "The card doesn't have sufficient funds to complete the transaction",
+    "DECLINED": "Transaction declined by the customer's bank. The customer should use an alternate credit card",
+    "BLOCKED": "The acquiring bank blocked the transaction without specifying the reason, could be suspected of fraud",
+    "EXPIRED_TRANSACTION": "The payment process took too long (more than 15 minutes) and then failed",
+    "UNSPECIFIED_FAILURE": "The customer's bank has declined the transaction for an undefined cause in their system",
+    "EXPIRED_CARD": "The transaction failed as the card appears to have expired",
+    "TIMED_OUT": "The customer's bank was unable to be connected. The customer should attempt to process this transaction again",
+    "INVALID_SECURITY_CODE": "The security number (CVC/CVV) was entered incorrectly by the cardholder",
+    "REFERRED": "The customer's bank has indicated there is a problem with the credit card number",
+    "AUTHENTICATION_FAILED": "Authentication is unsuccessful or not attempted by the cardholder",
+    "AUTHENTICATION_ATTEMPTED": "3D-Secure card authentication is unsuccessful",
+    "AUTHENTICATION_NOT_AVAILABLE": "3D-Secure card authentication is unsuccessful",
+    "AUTHENTICATION_ERROR": "There was an authentication error",
+    "VISA_NOT_SUPPORTED": "The merchant account is not configured to receive Visa transactions",
+    "MASTERCARD_NOT_SUPPORTED": "The merchant account is not configured to receive MasterCard transactions",
+    "CARD_NOT_ENROLLED": "The card was not listed 3D-Secure with the issuing bank. Contact your bank to activate the card for online payment",
+    "DEFAULT": "An error occurred while processing the payment, please try again"
+  },
   "generalError": "An error occurred while submitting the donation. Please try again.",
 
   "successPage": {

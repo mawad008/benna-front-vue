@@ -56,6 +56,9 @@ import { useDonationStore } from "@/stores/donation/donationStore";
 import { usePaymentStore } from "@/stores/donation/paymentStore";
 import {useDonorStore} from "@/stores/donation/donorStore";
 
+
+
+const {t} = useI18n();
 const { locale } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -74,25 +77,70 @@ const isSuccess = ref(false);
 const errorMessage = ref<string | null>(null);
 
 const isToday = computed(() => {
-  return JSON.parse(localStorage.getItem("isToday") || "false");
+  return localStorage.getItem("isToday");
 });
 
-onMounted(() => {
-if(message.value === "APPROVED"){
-  if(!isToday.value){
-    //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
-    // and only used when the deduction is not starting today
-    paymentStore.refundPayment(id.value!);
+// Function to map Moyasar error codes to translation keys
+const getMoyasarErrorKey = (errorCode: any) => {
+  if (!errorCode) return 'DEFAULT';
+  // Decode URL encoded characters (+ becomes space in URLs)
+  let decodedErrorCode = decodeURIComponent(errorCode);
+  // Handle error codes with colon (format: MAIN_ERROR:ADDITIONAL_INFO)
+  if (decodedErrorCode.includes(':')) {
+    // Extract only the main error code before the colon
+    decodedErrorCode = decodedErrorCode.split(':')[0].trim();
   }
-  isSuccess.value = true;
-  isLoading.value = false;
-}else{
-  isLoading.value = false;
-  isSuccess.value = false;
-  errorMessage.value = message.value;
-} 
+  // Replace spaces with underscores for consistency
+  decodedErrorCode = decodedErrorCode.replace(/\s+/g, '_');
+  // List of known Moyasar error codes (using underscores for consistency)
+  const knownErrors = [
+    'INSUFFICIENT_FUNDS',
+    'DECLINED',
+    'BLOCKED',
+    'EXPIRED_TRANSACTION',
+    'UNSPECIFIED_FAILURE',
+    'EXPIRED_CARD',
+    'TIMED_OUT',
+    'INVALID_SECURITY_CODE',
+    'REFERRED',
+    'AUTHENTICATION_FAILED',
+    'AUTHENTICATION_ATTEMPTED',
+    'AUTHENTICATION_NOT_AVAILABLE',
+    'AUTHENTICATION_ERROR',
+    'VISA_NOT_SUPPORTED',
+    'MASTERCARD_NOT_SUPPORTED',
+    'CARD_NOT_ENROLLED'
+  ];
 
+  // Check if the error code is in our known list
+  if (knownErrors.includes(decodedErrorCode)) {
+    return decodedErrorCode;
+  }
+  
+  // Log the error code for debugging
+  console.log('Unknown error code:', errorCode, 'Decoded:', decodedErrorCode);
+  
+  // Default error message if not found
+  return 'DEFAULT';
+};
 
+onMounted(() => {
+  if(message.value === "APPROVED" && status.value === "paid"){
+    if(!isToday.value){
+      //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
+      // and only used when the deduction is not starting today
+      paymentStore.refundPayment(id.value!);
+    }
+    isSuccess.value = true;
+    isLoading.value = false;
+  } else {
+    isLoading.value = false;
+    isSuccess.value = false;
+    
+    // Get the appropriate error message key
+    const errorKey = getMoyasarErrorKey(message.value);
+    errorMessage.value = t(`moyasarErrors.${errorKey}`);
+  } 
 });
 
 const goToHome = () => {
