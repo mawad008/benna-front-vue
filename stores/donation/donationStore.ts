@@ -58,22 +58,20 @@ export const useDonationStore = defineStore("donation", {
 
       try {
         // console.log(payload);
-        const response = await post<{ data: donation }>(
-          "api/create/deduction",
-          payload
-        );
+        const response = await post("/api/create/deduction?step=0", payload);
         const { data } = response;
-        this.donation = data.data;
+        // this.donation = data.data;
         localStorage.setItem("donation", this.donation?.id?.toString());
+        localStorage.setItem("deductionToken", data.registration_token);
         // console.log(this.donation?.id);
         // console.log("Donation submitted:", response.data);
 
         // Reset donor form
-        // donorStore.donorName = "";
-        // donorStore.selectedAmount = "";
-        // donorStore.customAmount = "";
-        // donorStore.recurringType = "day";
-        // donorStore.startDate = "";
+        donorStore.donorName = "";
+        donorStore.selectedAmount = "";
+        donorStore.customAmount = "";
+        donorStore.recurringType = "day";
+        donorStore.startDate = "";
 
         this.submissionError = "";
       } catch (error: any) {
@@ -107,10 +105,11 @@ export const useDonationStore = defineStore("donation", {
       this.loading = true;
       try {
         const response = await post(
-          `api/update/deduction/${deduction_id}`,
+          `api/update/deduction/${deduction_id}?step=0`,
           payload
         );
         const { data } = response;
+        localStorage.setItem("deductionToken", data.registration_token);
         // const index = this.deductions.findIndex((c) => c.id === deduction_id);
         // if (index !== -1) {
         //   this.deductions[index] = {

@@ -10,10 +10,11 @@ const route = useRoute();
 const langCookie = useCookie("i18n_redirected");
 
 onMounted(() => {
-  // if (!langCookie.value) {
-  //   i18n.locale.value = "ar";
-  //   langCookie.value = "ar";
-  // }
+  // Always set Arabic as default language on first load
+  if (!langCookie.value || langCookie.value !== "ar") {
+    i18n.locale.value = "ar";
+    langCookie.value = "ar";
+  }
   localStorage.setItem("nuxt-color-mode", "light");
 });
 

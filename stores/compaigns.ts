@@ -89,8 +89,8 @@ async activePayment(id: number) {
     if (updateCampaign !== -1) {
       this.campaigns[updateCampaign] = {
         ...this.campaigns[updateCampaign],
-        status: data.status,
-        next_time: data.next_time
+        status: data.data.status,
+        next_time: data.data.next_time
       };
     }
 

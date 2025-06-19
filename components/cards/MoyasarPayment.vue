@@ -45,7 +45,7 @@ const deductionId = computed(() => {
   }
   return props.rowId;
 });
-
+const deductionToken = localStorage.getItem("deductionToken");
 const paymnetAmount = computed(() => {
    // withdrawal one riyal in case of start date is not today
   if(!donorStore.isStartDateToday()){
@@ -54,11 +54,11 @@ const paymnetAmount = computed(() => {
    // withdrawal the actual amount in case of start date is today
   return donorStore.selectedAmount || donorStore.customAmount;
 });
-console.log(donorStore.isStartDateToday());
+// console.log(donorStore.isStartDateToday());
 const Moyasar = useRuntimeConfig().public.Moyasar;
 
 onMounted(() => {
-  window.Moyasar.init({
+  (window as any).Moyasar.init({
     element: ".mysr-form",
     amount: Number(paymnetAmount.value) * 100,
     currency: "SAR",
@@ -88,14 +88,28 @@ onMounted(() => {
 async function saveTokenOnBackend(token: any, payment: any) {
   // localStorage.setItem("payment", JSON.stringify(payment));
   const { post } = useApi();
-  try {
-    const response = await post("/api/createPayment", {
-      token: token,
-      deduction_id: deductionId.value,
+  if(props.rowId){
+    try {
+    const response = await post(`/api/update/deduction/${props.rowId}?step=1`, {
+      moyasar_token: token,
+      // deduction_id: deductionId.value,
+      registration_token: deductionToken,
     });
     console.log(response.data);
   } catch (error) {
     console.log(error);
+  }
+  }else{
+    try {
+      const response = await post("/api/create/deduction?step=1", {
+        moyasar_token: token,
+        // deduction_id: deductionId.value,
+        registration_token: deductionToken,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 
