@@ -147,7 +147,7 @@ import ResumePayment from "@/components/modals/ResumePayment.vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 
 const props = defineProps<{ campaigns: any }>();
 const campaigns = ref(props.campaigns);
@@ -282,7 +282,7 @@ const toggleDonationStatus = async (row: any) => {
 };
 
 const showDeductionsHistory = (row: any) => {
-  router.push(`/deductions/${row.parent_id}`);
+  router.push(`/${locale.value}/deductions/${row.parent_id}`);
 };
 const getStatusLabel = (status: number) => {
   return status === 1
