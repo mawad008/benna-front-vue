@@ -47,9 +47,9 @@ import { usePaymentStore } from "@/stores/donation/paymentStore";
 import { useDonorStore } from "@/stores/donation/donorStore";
 
 // Define middleware to prevent direct access
-definePageMeta({
-  middleware: ["payment-redirect"]
-});
+// definePageMeta({
+//   middleware: ["payment-redirect"]
+// });
 
 const { t } = useI18n();
 const { locale } = useI18n();
