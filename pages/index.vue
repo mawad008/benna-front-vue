@@ -64,6 +64,7 @@ import { useAuthStore } from "@/stores/auth";
 
 definePageMeta({
   layout: "default",
+  middleware: ['lang']
 });
 
 const route = useRoute();

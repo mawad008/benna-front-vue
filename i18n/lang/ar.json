@@ -279,7 +279,9 @@
     "confirm": " إلغاء الاستقطاع"
   },
   "editPaymentButton":"تعديل بيانات الدفع",
-  "paymentWarningMessage":"سيتم خصم مبلغ 1 ريال من حسابك للتأكد من صحة بيانات البطاقة",
+  "paymentWarningMessagep1":"سيتم خصم مبلغ 1 ريال من حسابك للتأكد من صحة بيانات البطاقة",
+  "paymentWarningMessagep2":"لبدأ عمل الاستقطاع بتاريخ  ",
+  "paymentWarningMessagep3":" و ذلك بمبلغ ",
   "resumeModal": {
     "title": "تأكيد استئناف الاستقطاع",
     "message": "هل أنت متأكد من استئناف هذا الاستقطاع؟",

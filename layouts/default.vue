@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import LayoutNavbar from "@/components/layout/LayoutNavbar.vue";
 import LayoutFooter from "@/components/layout/LayoutFooter.vue";
 // import Loader from "@/components/ui/Loader.vue";

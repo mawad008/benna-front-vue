@@ -12,7 +12,12 @@
       <p v-if="!donorStore.isStartDateToday()"
         class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50">
         <span>*</span>
-        {{ $t('paymentWarningMessage') }}
+        <span>{{ $t('paymentWarningMessagep1') }}</span>
+        <br>
+        <span>{{ $t('paymentWarningMessagep2') }} <span class="font-bold text-yellow-500 px-1">{{ donorStore.startDate }}</span></span>
+        <span>{{ $t('paymentWarningMessagep3') }} <span class="font-bold text-yellow-900 text-lg">{{ donorStore.selectedAmount
+          || donorStore.customAmount }} <img src="/unit copy.svg" alt="unit" class="w-4 h-4 inline"></span></span>
+
       </p>
     </div>
   </div>
@@ -41,12 +46,13 @@ const props = defineProps({
   },
 });
 // props To Get deduction Id From LocalStorage in case of create a new payment
-// const deductionId = computed(() => {
-//   if (!props.rowId) {
-//     return Number(localStorage.getItem("donation"));
-//   }
-//   return props.rowId;
-// });
+const deductionId = computed(() => {
+  if (!props.rowId) {
+    return Number(localStorage.getItem("donation"));
+  }
+  return props.rowId;
+});
+
 const deductionToken = localStorage.getItem("deductionToken");
 
 const paymnetAmount = computed(() => {
@@ -74,15 +80,19 @@ onMounted(() => {
     credit_card: {
       save_card: true,
     },
-    on_completed: function (payment:any) {
-      return new Promise(function (resolve, reject) {
-        if (payment.status !== "failed") {
-          saveTokenOnBackend(payment.source.token, payment)
-          resolve(void 0);
-        } else {
-          reject();
-        }
-      });
+    // on_completed: function (payment:any) {
+    //   return
+    //   // new Promise(function (resolve, reject) {
+    //   //   if (payment.status !== "failed") {
+    //   //     saveTokenOnBackend(payment.source.token, payment)
+    //   //     resolve(void 0);
+    //   //   } else {
+    //   //     reject();
+    //   //   }
+    //   // });
+    // },
+    on_completed: async function (payment: any) {
+      await paymentToken(payment);
     },
     metadata: {
       // deduction_id: deductionId.value,
@@ -94,34 +104,37 @@ onMounted(() => {
   });
 });
 
+async function paymentToken(payment: any) {
+  return (localStorage.setItem("payment", JSON.stringify(payment)))
+};
 
-async function saveTokenOnBackend(token: any, payment: any) {
-  // localStorage.setItem("payment", JSON.stringify(payment));
-  const { post } = useApi();
-  if (props.rowId) {
-    try {
-      const response = await post(`/api/update/deduction/${props.rowId}?step=1`, {
-        moyasar_token: token,
-        // deduction_id: deductionId.value,
-        registration_token: deductionToken,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  } else {
-    try {
-      const response = await post("/api/create/deduction?step=1", {
-        moyasar_token: token,
-        // deduction_id: deductionId.value,
-        registration_token: deductionToken,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
+// async function saveTokenOnBackend(token: any, payment: any) {
+//   localStorage.setItem("payment", JSON.stringify(payment));
+//   const { post } = useApi();
+//   if (props.rowId) {
+//     try {
+//       const response = await post(`/api/update/deduction/${props.rowId}?step=1`, {
+//         moyasar_token: token,
+//         // deduction_id: deductionId.value,
+//         registration_token: deductionToken,
+//       });
+//       console.log(response.data);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   } else {
+//     try {
+//       const response = await post("/api/create/deduction?step=1", {
+//         moyasar_token: token,
+//         // deduction_id: deductionId.value,
+//         registration_token: deductionToken,
+//       });
+//       console.log(response.data);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// }
 
 </script>
 

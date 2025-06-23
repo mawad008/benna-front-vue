@@ -16,31 +16,29 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       {
-        code: "en",
         language: "en",
+        code: "en",
         name: "EN",
         dir: "ltr",
         file: "en.json",
       },
       {
-        code: "ar",
         language: "ar",
+        code: "ar",
         name: "AR",
         dir: "rtl",
         file: "ar.json",
       },
     ],
     defaultLocale: "ar",
-    lazy: true,
     langDir: "lang",
+    lazy: true,
     strategy: "prefix_and_default",
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: "i18n_redirected",
       redirectOn: "root",
       alwaysRedirect: true,
-      cookieSecure: true,
-      fallbackLocale: "ar",
     },
   },
   app: {
@@ -53,13 +51,15 @@ export default defineNuxtConfig({
       link: [
         {
           rel: "stylesheet",
-          href: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.css",
+          // href: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.css",
+          href: "https://unpkg.com/moyasar-payment-form@2.0.14/dist/moyasar.css",
         },
         { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       ],
       script: [
         {
-          src: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js",
+          // src: "https://cdn.moyasar.com/mpf/1.15.0/moyasar.js",
+          src: "https://unpkg.com/moyasar-payment-form@2.0.14/dist/moyasar.umd.js",
           type: "text/javascript",
         },
       ],

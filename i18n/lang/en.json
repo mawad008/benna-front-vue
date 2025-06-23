@@ -284,7 +284,9 @@
     "confirm": "Cancel Deduction"
   },
   "editPaymentButton": "Edit Payment Data",
-  "paymentWarningMessage":"One SAR will be deducted from your account to verify the payment details",
+  "paymentWarningMessagep1":"One SAR will be deducted from your account to verify the payment details",
+  "paymentWarningMessagep2":"to start deducation from",
+  "paymentWarningMessagep3":"with the amount",
   "resumeModal": {
     "title": "Confirm Deduction Resumption",
     "message": "Are you sure you want to resume this deduction?",

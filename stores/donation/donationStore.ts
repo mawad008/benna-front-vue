@@ -9,6 +9,11 @@ interface donation {
   type: string;
   date: string;
   campaign_id: number;
+
+}
+interface updateDonation {
+  rowId: number;
+
 }
 
 export const useDonationStore = defineStore("donation", {
@@ -18,6 +23,7 @@ export const useDonationStore = defineStore("donation", {
     campaign_id: null,
     showPayment: false,
     donation: null as donation | null,
+    updateDonation: null as updateDonation | null,
   }),
 
   actions: {
@@ -92,8 +98,11 @@ export const useDonationStore = defineStore("donation", {
       }
     },
     async updatePayment(deduction_id: number) {
+      const updateDonation: updateDonation = {
+        rowId: deduction_id,
+      };
       const donorStore = useDonorStore();
-
+      localStorage.setItem("updateDeductionRow", updateDonation.rowId?.toString());
       const payload = {
         name: donorStore.donorName,
         amount: donorStore.selectedAmount || donorStore.customAmount,
@@ -105,7 +114,7 @@ export const useDonationStore = defineStore("donation", {
       this.loading = true;
       try {
         const response = await post(
-          `api/update/deduction/${deduction_id}?step=0`,
+          `api/update/deduction/${updateDonation.rowId}?step=0`,
           payload
         );
         const { data } = response;

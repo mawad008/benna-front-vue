@@ -148,6 +148,7 @@ const closeModal = () => {
   donationStore.showPayment = false;
 };
 console.log(props?.row?.id);
+
 const handleDonation = async () => {
   if (!props.row?.id) return;
   await donationStore.updatePayment(props.row.id);
