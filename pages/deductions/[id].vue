@@ -15,7 +15,7 @@
       {{ $t("deductionPage.noDeductions") }}
 
       <button
-        @click="router.push('/campaigns')"
+        @click="router.push(`/${locale}/campaigns`)"
         class="bg-[#138B96] text-white font-bold py-2 px-2 rounded-lg hover:bg-[#138B96]/80 transition-colors mt-4 text-[16px]"
         :icon="icon"
         icon-position="end"
@@ -32,7 +32,7 @@
           color="primary"
           variant="solid"
           :icon="icon"
-          @click="router.push('/campaigns')"
+          @click="router.push(`/${locale}/campaigns`)"
         >
         </UButton>
         <h1 class="font-janna font-bold text-dark text-[20px] leading-[37.2px]">

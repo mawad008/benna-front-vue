@@ -134,8 +134,10 @@
       "campaignName": "Campaign Name",
       "amount": "Amount",
       "deductionDate": "Date",
-      "status": "Status"
-    }
+      "status": "Status",
+      "notes": "Notes"
+    },
+    "isCreditCardConfirmed": "Card verification fees 1"
   },
   "contactPage": {
     "description": "We are happy to receive your message, whether it is an inquiry, a suggestion, or a complaint. Your message will be answered through the mobile number you provide. May Allah reward you and make you among the companions of the Prophet ﷺ.",

@@ -35,19 +35,12 @@
     </div>
 
     <!-- Table -->
-    <UTable sticky 
-    :rows="paginatedData" 
-    loading-color="primary" 
-    loading-animation="carousel" 
-    :loading="isLoading"
-      :columns="columns" 
-      class="w-full" 
-      :sort-button="{
+    <UTable sticky :rows="paginatedData" loading-color="primary" loading-animation="carousel" :loading="isLoading"
+      :columns="columns" class="w-full" :sort-button="{
         icon: 'i-heroicons-sparkles-20-solid',
         color: 'white',
         variant: 'outline',
-      }" 
-      :empty-state="{
+      }" :empty-state="{
         label: $t('deductionTable.empty'),
       }" @sort="handleSort">
 
@@ -55,11 +48,21 @@
       <template #index-data="{ index }">
         <span class="text-gray-900">{{ getGlobalIndex(index) }}</span>
       </template>
+
+
       <!-- Amount Row -->
       <template #amount-data="{ row }">
         <div class="flex items-center gap-1 text-start">
           {{ row.amount }}
           <img src="/unit.svg" alt="unit" class="w-4 h-4" />
+        </div>
+      </template>
+      
+      <!-- Date Row -->
+      <template #deduction_date="{ row }">
+        <div class="flex items-center gap-1 justify-center">
+          <span v-if="row.deduction_date">{{ row.deduction_date }}</span>
+          <span v-else> - </span>
         </div>
       </template>
 
@@ -69,6 +72,20 @@
           {{ getStatusLabel(row.status) }}
         </UBadge>
       </template>
+
+
+
+      <!-- is_creditcard_confirmed Row -->
+
+      <template #is_creditcard_confirmed-data="{ row }">
+        <div class="flex items-center gap-1 justify-center"> 
+          <UBadge color="gray" variant="subtle" v-if="row.is_creditcard_confirmed" class="self-start">
+            {{ t("deductionTable.isCreditCardConfirmed") }} <img src="/unit.svg" alt="unit" class="w-4 h-4" />
+          </UBadge>
+          <span v-else class="self-start"> - </span>
+        </div>
+      </template>
+
 
       <!-- Action Row -->
       <!-- <template #actions-data="{ row }">
@@ -162,6 +179,7 @@ const getGlobalIndex = (rowIndex: number) => {
   return (page.value - 1) * pageSize.value + rowIndex + 1;
 };
 
+
 // Table Columns
 const columns = ref([
   { key: "index", label: "#" },
@@ -174,6 +192,7 @@ const columns = ref([
     sortable: true,
   },
   { key: "status", label: t("deductionTable.columns.status") },
+  { key: "is_creditcard_confirmed", label: t("deductionTable.columns.notes") , class: "flex items-center justify-center"},
   // { key: "actions", label: t("campaignTable.columns.campaignActions") },
 ]);
 
@@ -280,6 +299,7 @@ const filteredData = computed(() => {
 });
 
 
+
 // Sorted Data
 const sortedData = computed(() => {
   if (!sorting.value) return filteredData.value;
@@ -302,9 +322,18 @@ const sortedData = computed(() => {
 // Paginated Data
 const paginatedData = computed(() => {
   const start = (page.value - 1) * pageSize.value;
-  return sortedData.value?.slice(start, start + pageSize.value);
-});
+  const data = sortedData.value?.map((row: any) => {
+    if (row.is_creditcard_confirmed) {
+      return {
+        ...row,
+        class: "bg-primary/10 hover:transition-all"
+      };
+    }
+    return row;
+  }) || [];
 
+  return data.slice(start, start + pageSize.value);
+});
 // Page Count
 const pageCount = computed(() =>
   Math.ceil(filteredData.value?.length / pageSize.value)

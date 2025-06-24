@@ -122,6 +122,7 @@ const getMoyasarErrorKey = (errorCode: any) => {
   // Default error message if not found
   return 'DEFAULT';
 };
+
 const deductionToken = computed(() => { return localStorage.getItem("deductionToken") });
 const updateDeductionRow = computed(() => { return localStorage.getItem("updateDeductionRow") });
 const payment_token = computed(() => {
@@ -138,7 +139,7 @@ const payment_token = computed(() => {
 
 
 async function saveTokenOnBackend() {
-  console.log(updateDeductionRow.value);
+  // console.log(updateDeductionRow.value);
   if (updateDeductionRow.value) {
     try {
       const response = await post(`/api/update/deduction/${updateDeductionRow.value}?step=1`, {
@@ -146,6 +147,7 @@ async function saveTokenOnBackend() {
         registration_token: deductionToken.value,
         payment_id: id.value,
       });
+      localStorage.removeItem("updateDeductionRow");
       // console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -157,6 +159,7 @@ async function saveTokenOnBackend() {
         registration_token: deductionToken.value,
         payment_id: id.value,
       });
+      localStorage.removeItem("updateDeductionRow");
       // console.log(response.data);
     } catch (error) {
       console.log(error);

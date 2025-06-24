@@ -8,6 +8,7 @@ interface DeductionHistory {
   campaign_name: string;
   deduction_date: string;
   status: number;
+  is_creditcard_confirmed: number;
 }
 
 export const useDeductionHistoryStore = defineStore("deductionHistory", {
@@ -39,31 +40,5 @@ export const useDeductionHistoryStore = defineStore("deductionHistory", {
     getCampaignName() {
       return this.DeductionCampaign;
     },
-    // async cancelPayment(deduction_id: number) {
-    //   const { post } = useApi();
-    //   this.loading = true;
-    //   try {
-    //     const response = await post<{ data: DeductionHistory }>(
-    //       "/api/cancel-payment",
-    //       { deduction_id }
-    //     );
-    //     const { data } = response;
-    //     const index = 
-    //     this.deductionHistory.findIndex((c) => c.id === deduction_id);
-    //     if (index !== -1) {
-    //       this.deductionHistory[index] = {
-    //         ...this.deductionHistory[index],
-    //         status: data.data.status,
-    //       };
-    //     }
-    //     console.log(data.data.status);
-    //     return data;
-    //   } catch (error: any) {
-    //     this.error = error.message;
-    //     throw error;
-    //   } finally {
-    //     this.loading = false;
-    //   }
-    // },
   },
 });

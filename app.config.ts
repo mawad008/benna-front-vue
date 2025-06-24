@@ -305,6 +305,7 @@ export default defineAppConfig({
         selected: "bg-white dark:bg-white",
         expanded: "bg-white dark:bg-white",
         active: "hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer",
+        creditcard_confirmed: "bg-green-50 dark:bg-green-50 cursor-pointer",
       },
       th: {
         base: "text-left rtl:text-right",
