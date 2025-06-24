@@ -24,6 +24,10 @@
 
         <!-- Right Content Section -->
         <div class="relative w-full md:w-1/2 bg-white md:bg-transparent flex justify-center items-center p-4">
+          <!-- Mobile Close Button (only visible on mobile) -->
+          <button @click="closeModal" class="absolute top-3 right-3 z-50 md:hidden">
+            <UButton color="gray" variant="ghost" size="sm" icon="heroicons:x-mark" />
+          </button>
           <div
             class="w-full max-w-sm md:max-w-none md:h-full bg-white/30 md:bg-white backdrop-blur-md md:backdrop-blur-none rounded-lg p-6 flex items-center justify-center">
             <div class="flex flex-col items-center w-full min-h-[300px] md:min-h-[400px] relative overflow-hidden">

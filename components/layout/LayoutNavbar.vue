@@ -88,12 +88,14 @@
       </div>
 
       <!-- Mobile Menu Button -->
-      <button
-        @click="toggleMenu"
-        class="lg:hidden text-white flex items-center"
-      >
-        <Icon name="heroicons-outline:menu" class="w-8 h-8" />
-      </button>
+        <button
+        ref="menuButtonRef"
+          @click="toggleMenu"
+          class="lg:hidden text-white flex items-center"
+        >
+          <Icon name="heroicons-outline:menu" class="w-8 h-8" />
+        </button>
+    
     </nav>
 
     <!-- Mobile Menu -->
@@ -218,13 +220,21 @@ const closeMenu = () => {
   isMenuOpen.value = false;
 };
 
+const menuButtonRef = ref<HTMLElement | null>(null);
+
 onMounted(() => {
   onClickOutside(dropdownRef, () => {
     isDropdownOpen.value = false;
   });
-  onClickOutside(mobileMenuRef, () => {
-    isMenuOpen.value = false;
-  });
+  const handleOutsideClick = (event: Event) => {
+    if (!menuButtonRef.value?.contains(event.target as Node)) {
+      isMenuOpen.value = false;
+    }
+  };
+  document.addEventListener('click', handleOutsideClick);
+  return () => {
+    document.removeEventListener('click', handleOutsideClick);
+  };
 });
 
 const routes = [
