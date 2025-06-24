@@ -124,12 +124,14 @@ export const useRegisterStore = defineStore("register", {
         };
         const response = await post("/api/valid/otp", payload);
         const { token, user } = response.data;
+        console.log(response.data);
         this.hasUser = true;
         authStore.setUser(user, token);
         this.nextStep();
       } catch (error: any) {
         if (error.response) {
           this.errors.otp = error.response.data.error;
+          console.log(response.data.error);
         } else {
           this.errors.otp = "رمز التحقق غير صالح";
         }
@@ -172,7 +174,7 @@ export const useRegisterStore = defineStore("register", {
         } else if (this.step === 1) {
           isValid = !this.errors.otp && !!this.otp.trim();
         }
-        if (isValid && this.step < 2) {
+        if (isValid && this.step < 1) {
           this.transitionDirection = "slide-left";
           this.step++;
         }

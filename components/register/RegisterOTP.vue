@@ -63,6 +63,16 @@ const countdown = ref(60);
 let interval: ReturnType<typeof setInterval> | null = null;
 const loading = ref(false);
 
+
+const emit = defineEmits(['close','nextStep']);
+
+const closeModal = () => {
+  emit('close');
+};
+
+
+
+
 const schema = yup.object({
   otp: yup
     .string()
@@ -96,15 +106,24 @@ watch(otp, () => {
 const onSubmit = handleSubmit(async () => {
   loading.value = true;
   semanticOTPError.value = "";
-
+try{
   await store.ValidateOTP(locale.value);
+  store.errors.otp = "";
+  loading.value = false;
+  if(store.mode==="login"){
+    closeModal();
+  }else{
+    store.nextStep();
+  }
+}catch(error:any){
+  loading.value = false;
   if (store.errors.otp == "OTP is incorrect") {
     semanticOTPError.value = "رمز التحقق غير صحيح";
   } else {
     semanticOTPError.value = store.errors.otp;
   }
-  store.errors.otp = "";
-  loading.value = false;
+}
+
 });
 
 onMounted(() => {
@@ -124,7 +143,6 @@ const startCountdown = () => {
 
 const resendOtp = async () => {
   if (countdown.value === 0) {
-    console.log("Resending OTP...");
     await store.ResendOTP(locale.value);
     startCountdown();
   }
