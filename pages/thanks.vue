@@ -171,11 +171,11 @@ async function saveTokenOnBackend() {
 
 onMounted(() => {
   if (message.value === "APPROVED" && status.value === "paid") {
-    if (!isToday.value) {
-      //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
-      // and only used when the deduction is not starting today
-      paymentStore.refundPayment(id.value!);
-    }
+    // if (!isToday.value) {
+    //   //This Fuction is only used to give the BE the ability to refund the payment with payment ID, But it is not used in the FE
+    //   // and only used when the deduction is not starting today
+    //   paymentStore.refundPayment(id.value!);
+    // }
     isSuccess.value = true;
     isLoading.value = false;
     saveTokenOnBackend();
