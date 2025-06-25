@@ -240,6 +240,8 @@
 
   "successPage": {
     "title": "The recurring donation was successful",
+    "paragraph":"Your donation has been received with amount",
+    "paragraph2":"Successfully. Thank you for your support to the Benaa Charity Association for Orphan Care in the Eastern Province.",
     "message": "You can activate additional recurring donations by returning to the homepage",
     "goToHome": "Back to Home",
     "loading": "Processing payment...",

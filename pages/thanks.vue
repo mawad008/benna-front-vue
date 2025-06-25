@@ -14,6 +14,11 @@
         <h1 class="text-text-2xl md:text-2xl font-bold text-white mb-4">
           {{ $t("successPage.title") }}
         </h1>
+        <p class="text-xl lg:text-xl text-white flex items-center gap-2 flex-row">
+          {{ $t("successPage.paragraph") }} </p>
+          <p> {{ amount }} <img src="/unit.svg" alt="saudi-riyal" class="w-6 h-6"></p>
+         <p>{{ $t("successPage.paragraph2") }}</p>
+     
         <p class="text-xl lg:text-xl text-white">
           {{ $t("successPage.message") }}
         </p>
