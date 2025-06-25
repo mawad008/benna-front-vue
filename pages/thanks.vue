@@ -1,6 +1,10 @@
 <template>
-  <section class="bg-[#138B96] min-h-screen w-full flex items-center justify-center">
-    <div class="container mx-auto flex flex-col items-center justify-center text-center py-24 px-4">
+  <section
+    class="bg-[#138B96] min-h-screen w-full flex items-center justify-center"
+  >
+    <div
+      class="container mx-auto flex flex-col items-center justify-center text-center py-24 px-4"
+    >
       <!-- Loading State -->
       <div v-if="isLoading" class="max-w-2xl">
         <p class="text-2xl text-white">
@@ -10,21 +14,31 @@
       </div>
 
       <!-- Success State -->
-      <div v-else-if="isSuccess" class="max-w-2xl flex flex-col items-center justify-center gap-4">
+      <div
+        v-else-if="isSuccess"
+        class="max-w-2xl flex flex-col items-center justify-center gap-4"
+      >
         <h1 class="text-text-2xl md:text-2xl font-bold text-white mb-4">
           {{ $t("successPage.title") }}
         </h1>
-        <p class="text-xl lg:text-xl text-white flex items-center gap-2 flex-row">
-          {{ $t("successPage.paragraph") }} </p>
-          <p> {{ amount }} <img src="/unit.svg" alt="saudi-riyal" class="w-6 h-6"></p>
-         <p>{{ $t("successPage.paragraph2") }}</p>
-     
-        <p class="text-xl lg:text-xl text-white">
-          {{ $t("successPage.message") }}
-        </p>
-        <button @click="goToHome"
+        <div class="text-white font-bold">
+          <p
+            class="text-xl font-bold text-white flex items-center justify-center gap-2 flex-row flex-wrap"
+          >
+            {{ $t("successPage.paragraph") }} {{ amount / 100 || 0 }}
+            <img src="/unit-white.svg" alt="saudi-riyal" class="w-6 h-6" />
+            {{ $t("successPage.paragraph2") }}
+          </p>
+          <p class="text-xl lg:text-xl text-white font-bold mt-4">
+            {{ $t("successPage.message") }}
+          </p>
+        </div>
+        <button
+          @click="goToHome"
           class="bg-white text-[#138B96] font-bold py-4 px-4 rounded-lg hover:bg-gray-200 transition-colors mt-4"
-          icon="i-heroicons-arrow-left-20-solid" icon-position="end">
+          icon="i-heroicons-arrow-left-20-solid"
+          icon-position="end"
+        >
           {{ $t("successPage.goToHome") }}
         </button>
       </div>
@@ -74,46 +88,45 @@ const isLoading = ref(true);
 const isSuccess = ref(false);
 const errorMessage = ref<string | null>(null);
 
-
 const isToday = computed(() => {
   try {
     return localStorage.getItem("isToday");
   } catch (error) {
-    console.error('Error accessing localStorage:', error);
+    console.error("Error accessing localStorage:", error);
     return null;
   }
 });
 
 // Function to map Moyasar error codes to translation keys
 const getMoyasarErrorKey = (errorCode: any) => {
-  if (!errorCode) return 'DEFAULT';
+  if (!errorCode) return "DEFAULT";
   // Decode URL encoded characters (+ becomes space in URLs)
   let decodedErrorCode = decodeURIComponent(errorCode);
   // Handle error codes with colon (format: MAIN_ERROR:ADDITIONAL_INFO)
-  if (decodedErrorCode.includes(':')) {
+  if (decodedErrorCode.includes(":")) {
     // Extract only the main error code before the colon
-    decodedErrorCode = decodedErrorCode.split(':')[0].trim();
+    decodedErrorCode = decodedErrorCode.split(":")[0].trim();
   }
   // Replace spaces with underscores for consistency
-  decodedErrorCode = decodedErrorCode.replace(/\s+/g, '_');
+  decodedErrorCode = decodedErrorCode.replace(/\s+/g, "_");
   // List of known Moyasar error codes (using underscores for consistency)
   const knownErrors = [
-    'INSUFFICIENT_FUNDS',
-    'DECLINED',
-    'BLOCKED',
-    'EXPIRED_TRANSACTION',
-    'UNSPECIFIED_FAILURE',
-    'EXPIRED_CARD',
-    'TIMED_OUT',
-    'INVALID_SECURITY_CODE',
-    'REFERRED',
-    'AUTHENTICATION_FAILED',
-    'AUTHENTICATION_ATTEMPTED',
-    'AUTHENTICATION_NOT_AVAILABLE',
-    'AUTHENTICATION_ERROR',
-    'VISA_NOT_SUPPORTED',
-    'MASTERCARD_NOT_SUPPORTED',
-    'CARD_NOT_ENROLLED'
+    "INSUFFICIENT_FUNDS",
+    "DECLINED",
+    "BLOCKED",
+    "EXPIRED_TRANSACTION",
+    "UNSPECIFIED_FAILURE",
+    "EXPIRED_CARD",
+    "TIMED_OUT",
+    "INVALID_SECURITY_CODE",
+    "REFERRED",
+    "AUTHENTICATION_FAILED",
+    "AUTHENTICATION_ATTEMPTED",
+    "AUTHENTICATION_NOT_AVAILABLE",
+    "AUTHENTICATION_ERROR",
+    "VISA_NOT_SUPPORTED",
+    "MASTERCARD_NOT_SUPPORTED",
+    "CARD_NOT_ENROLLED",
   ];
 
   // Check if the error code is in our known list
@@ -122,14 +135,18 @@ const getMoyasarErrorKey = (errorCode: any) => {
   }
 
   // Log the error code for debugging
-  console.log('Unknown error code:', errorCode, 'Decoded:', decodedErrorCode);
+  console.log("Unknown error code:", errorCode, "Decoded:", decodedErrorCode);
 
   // Default error message if not found
-  return 'DEFAULT';
+  return "DEFAULT";
 };
 
-const deductionToken = computed(() => { return localStorage.getItem("deductionToken") });
-const updateDeductionRow = computed(() => { return localStorage.getItem("updateDeductionRow") });
+const deductionToken = computed(() => {
+  return localStorage.getItem("deductionToken");
+});
+const updateDeductionRow = computed(() => {
+  return localStorage.getItem("updateDeductionRow");
+});
 const payment_token = computed(() => {
   try {
     const stored = localStorage.getItem("payment");
@@ -140,18 +157,18 @@ const payment_token = computed(() => {
   }
 });
 
-
-
-
 async function saveTokenOnBackend() {
   // console.log(updateDeductionRow.value);
   if (updateDeductionRow.value) {
     try {
-      const response = await post(`/api/update/deduction/${updateDeductionRow.value}?step=1`, {
-        moyasar_token: payment_token.value?.source?.token,
-        registration_token: deductionToken.value,
-        payment_id: id.value,
-      });
+      const response = await post(
+        `/api/update/deduction/${updateDeductionRow.value}?step=1`,
+        {
+          moyasar_token: payment_token.value?.source?.token,
+          registration_token: deductionToken.value,
+          payment_id: id.value,
+        }
+      );
       localStorage.removeItem("updateDeductionRow");
       // console.log(response.data);
     } catch (error) {
@@ -169,10 +186,8 @@ async function saveTokenOnBackend() {
     } catch (error) {
       console.log(error);
     }
-
   }
 }
-
 
 onMounted(() => {
   if (message.value === "APPROVED" && status.value === "paid") {
