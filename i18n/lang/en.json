@@ -21,8 +21,9 @@
     "donationCard": {
       "title": "Donation Card",
       "amount": "Donation Amount",
+      "amount-note":"This amount will be deducate now to confirm your data",
       "customAmount": "Custom Amount",
-      "startDate": "Start Date",
+      "startDate": "Next Deduction Date",
       "recurringType": "Recurring Type",
       "monthly": "Monthly",
       "weekly": "Weekly",

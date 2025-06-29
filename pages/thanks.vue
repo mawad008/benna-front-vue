@@ -1,10 +1,6 @@
 <template>
-  <section
-    class="bg-[#138B96] min-h-screen w-full flex items-center justify-center"
-  >
-    <div
-      class="container mx-auto flex flex-col items-center justify-center text-center py-24 px-4"
-    >
+  <section class="bg-[#138B96] min-h-screen w-full flex items-center justify-center">
+    <div class="container mx-auto flex flex-col items-center justify-center text-center py-24 px-4">
       <!-- Loading State -->
       <div v-if="isLoading" class="max-w-2xl">
         <p class="text-2xl text-white">
@@ -14,18 +10,13 @@
       </div>
 
       <!-- Success State -->
-      <div
-        v-else-if="isSuccess"
-        class="max-w-2xl flex flex-col items-center justify-center gap-4"
-      >
+      <div v-else-if="isSuccess" class="max-w-2xl flex flex-col items-center justify-center gap-4">
         <h1 class="text-text-2xl md:text-2xl font-bold text-white mb-4">
           {{ $t("successPage.title") }}
         </h1>
         <div class="text-white font-bold">
-          <p
-            class="text-xl font-bold text-white flex items-center justify-center gap-2 flex-row flex-wrap"
-          >
-            {{ $t("successPage.paragraph") }} {{ amount / 100 || 0 }}
+          <p class="text-xl font-bold text-white flex items-center justify-center gap-2 flex-row flex-wrap">
+            {{ $t("successPage.paragraph") }} {{ amount ? (amount / 100).toFixed(2) : '0.00' }}
             <img src="/unit-white.svg" alt="saudi-riyal" class="w-6 h-6" />
             {{ $t("successPage.paragraph2") }}
           </p>
@@ -33,12 +24,9 @@
             {{ $t("successPage.message") }}
           </p>
         </div>
-        <button
-          @click="goToHome"
+        <button @click="goToHome"
           class="bg-white text-[#138B96] font-bold py-4 px-4 rounded-lg hover:bg-gray-200 transition-colors mt-4"
-          icon="i-heroicons-arrow-left-20-solid"
-          icon-position="end"
-        >
+          icon="i-heroicons-arrow-left-20-solid" icon-position="end">
           {{ $t("successPage.goToHome") }}
         </button>
       </div>

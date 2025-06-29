@@ -9,7 +9,7 @@
         <Title :title="$t('cards.customPaymentCard.title')" badge="3" class="text-end" />
       </div>
       <div class="mysr-form" :dir="locale === 'ar' ? 'rtl' : 'ltr'" />
-      <p v-if="!donorStore.isStartDateToday()"
+      <!-- <p v-if="!donorStore.isStartDateToday()"
         class="text-center text-yellow-500 text-sm mt-2 py-4 px-2 rounded-lg border border-yellow-500 bg-yellow-50">
         <span>*</span>
         <span>{{ $t('paymentWarningMessagep1') }}</span>
@@ -18,7 +18,7 @@
         <span>{{ $t('paymentWarningMessagep3') }} <span class="font-bold text-yellow-900 text-lg">{{ donorStore.selectedAmount
           || donorStore.customAmount }} <img src="/unit copy.svg" alt="unit" class="w-4 h-4 inline"></span></span>
 
-      </p>
+      </p> -->
     </div>
   </div>
 </template>
@@ -57,9 +57,9 @@ const deductionToken = localStorage.getItem("deductionToken");
 
 const paymnetAmount = computed(() => {
   // withdrawal one riyal in case of start date is not today
-  if (!donorStore.isStartDateToday()) {
-    return donorStore.withdrawalOneRiyal;
-  }
+  // if (!donorStore.isStartDateToday()) {
+  //   return donorStore.withdrawalOneRiyal;
+  // }
   // withdrawal the actual amount in case of start date is today
   return donorStore.selectedAmount || donorStore.customAmount;
 });
@@ -107,34 +107,6 @@ onMounted(() => {
 async function paymentToken(payment: any) {
   return (localStorage.setItem("payment", JSON.stringify(payment)))
 };
-
-// async function saveTokenOnBackend(token: any, payment: any) {
-//   localStorage.setItem("payment", JSON.stringify(payment));
-//   const { post } = useApi();
-//   if (props.rowId) {
-//     try {
-//       const response = await post(`/api/update/deduction/${props.rowId}?step=1`, {
-//         moyasar_token: token,
-//         // deduction_id: deductionId.value,
-//         registration_token: deductionToken,
-//       });
-//       console.log(response.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   } else {
-//     try {
-//       const response = await post("/api/create/deduction?step=1", {
-//         moyasar_token: token,
-//         // deduction_id: deductionId.value,
-//         registration_token: deductionToken,
-//       });
-//       console.log(response.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// }
 
 </script>
 

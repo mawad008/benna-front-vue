@@ -76,7 +76,7 @@
 
 
       <!-- is_creditcard_confirmed Row -->
-
+<!-- 
       <template #is_creditcard_confirmed-data="{ row }">
         <div class="flex items-center gap-1 justify-center"> 
           <UBadge color="gray" variant="subtle" v-if="row.is_creditcard_confirmed" class="self-start">
@@ -84,7 +84,7 @@
           </UBadge>
           <span v-else class="self-start"> - </span>
         </div>
-      </template>
+      </template> -->
 
 
       <!-- Action Row -->
@@ -192,7 +192,7 @@ const columns = ref([
     sortable: true,
   },
   { key: "status", label: t("deductionTable.columns.status") },
-  { key: "is_creditcard_confirmed", label: t("deductionTable.columns.notes") , class: "flex items-center justify-center"},
+  // { key: "is_creditcard_confirmed", label: t("deductionTable.columns.notes") , class: "flex items-center justify-center"},
   // { key: "actions", label: t("campaignTable.columns.campaignActions") },
 ]);
 
@@ -323,12 +323,12 @@ const sortedData = computed(() => {
 const paginatedData = computed(() => {
   const start = (page.value - 1) * pageSize.value;
   const data = sortedData.value?.map((row: any) => {
-    if (row.is_creditcard_confirmed) {
-      return {
-        ...row,
-        class: "bg-primary/10 hover:transition-all"
-      };
-    }
+    // if (row.is_creditcard_confirmed) {
+    //   return {
+    //     ...row,
+    //     class: "bg-primary/10 hover:transition-all"
+    //   };
+    // }
     return row;
   }) || [];
 

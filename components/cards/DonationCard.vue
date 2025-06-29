@@ -41,6 +41,8 @@
               @input="donorStore.setCustomAmount($event.target.value)"
             />
           </div>
+          <UAlert v-if="donorStore.selectedAmount || donorStore.customAmount" color="blue" variant="soft" :title="$t('cards.donationCard.amount-note')" 
+          icon="i-heroicons:exclamation-circle-16-solid"/>
         </div>
 
         <p v-if="donorStore.errors.amount" class="text-red-500 text-xs mt-1">
